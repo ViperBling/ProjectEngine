@@ -1,0 +1,117 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						3
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "Framework",
+					"childIndexes" : 
+					[
+						2
+					],
+					"jsonFile" : "directory-Framework-Debug-71518dac3356a1b60dd6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Framework"
+				},
+				{
+					"build" : "Framework/Common",
+					"jsonFile" : "directory-Framework.Common-Debug-c74c172957e37a850d10.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 0,
+					"source" : "Framework/Common",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "Empty",
+					"jsonFile" : "directory-Empty-Debug-76ef3317e76c7ec455cb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.1"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Empty",
+					"targetIndexes" : 
+					[
+						1
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					],
+					"name" : "GameEngineFromScrath",
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 2,
+					"id" : "Common::@39b40c9fec5fa435d19f",
+					"jsonFile" : "target-Common-Debug-521586182f7ad4457873.json",
+					"name" : "Common",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "Empty::@f26e40c9abf4e9f4ef45",
+					"jsonFile" : "target-Empty-Debug-a5833c1d7d9c1fdaebe1.json",
+					"name" : "Empty",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "E:/Program/ProjectEngine/build",
+		"source" : "E:/Program/ProjectEngine"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 3
+	}
+}
