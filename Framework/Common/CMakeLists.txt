@@ -1,1 +1,4 @@
-add_library(Common BaseApplication.cpp ProjectEngine.cpp)
+add_library(Common 
+BaseApplication.cpp
+GraphicsManager.cpp
+ProjectEngine.cpp)
