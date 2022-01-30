@@ -159,7 +159,7 @@ HRESULT CreateGraphicsResources(HWND hWnd)
         scd.Windowed = TRUE;
         scd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-        const D3D_FEATURE_LEVEL FeatureLevel[] =
+        const D3D_FEATURE_LEVEL FeatureLevels[] =
         {
             D3D_FEATURE_LEVEL_11_1,
             D3D_FEATURE_LEVEL_11_0,
@@ -177,8 +177,8 @@ HRESULT CreateGraphicsResources(HWND hWnd)
             D3D_DRIVER_TYPE_HARDWARE,
             nullptr,
             0,
-            FeatureLevel,
-            _countof(FeatureLevel),
+            FeatureLevels,
+            _countof(FeatureLevels),
             D3D11_SDK_VERSION,
             &scd,
             &g_pSwapChain,
@@ -245,6 +245,8 @@ void RenderFrame()
         // draw
         g_pDevcon->Draw(3, 0);
     }
+
+    g_pSwapChain->Present(0, 0);
 }
 
 // the WindowProc function prototype
@@ -334,28 +336,35 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
         break;
 
         case WM_PAINT:
+        {
             result = CreateGraphicsResources(hWnd);
             RenderFrame();
             wasHandled = true;
+        }
         break;
         
         case WM_SIZE:
+        {
             if (g_pSwapChain != nullptr)
                 DiscardGraphicsResources();
 		    wasHandled = true;
-        
+        }
         break;
 
         // this message is read when the window is closed
         case WM_DESTROY:
+        {
             DiscardGraphicsResources();
 		    PostQuitMessage(0);
 		    wasHandled = true;
+        }
         break;
 
         case WM_DISPLAYCHANGE:
+        {
             InvalidateRect(hWnd, nullptr, false);
             wasHandled = true;
+        }   
         break;
     }
 
