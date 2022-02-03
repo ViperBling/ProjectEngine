@@ -537,7 +537,7 @@ void GetVideoCardInfo(char* cardName)
     return;
 }
 
-bool InitializeExtension(HWND, hwnd) 
+bool InitializeExtension(HWND hwnd) 
 {
     HDC deviceContext;
     PIXELFORMATDESCRIPTOR pixelFormat;
