@@ -514,7 +514,7 @@ bool LoadExtensionList()
     return true;
 }
 
-void FinializeOpenGL(HWND hwnd) 
+void FinalizeOpenGL(HWND hwnd) 
 {
     if (g_renderingContext)
     {
@@ -679,7 +679,7 @@ void OutputLinkerErrorMessage(HWND hwnd, unsigned int programId)
     fout.close();
 
     // Pop a message up on the screen to notify the user to check the text file for linker errors.
-    MessageBox(hwnd, _T("Error compiling linker.  Check linker-error.txt for message."), _T("Linker Error"), MB_OK);
+    MessageBox(hwnd, ("Error compiling linker.  Check linker-error.txt for message."), ("Linker Error"), MB_OK);
 }
 
 char* LoadShaderSourceFile(const char* filename)
@@ -1055,7 +1055,7 @@ int WINAPI WinMain(
     wc.hInstance = hInstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = _T("Temporary");
+    wc.lpszClassName = ("Temporary");
 
     // register the window class
     RegisterClassEx(&wc);
@@ -1063,8 +1063,8 @@ int WINAPI WinMain(
     // create the temporary window for OpenGL extension setup.
     hWnd = CreateWindowEx(
         WS_EX_APPWINDOW,
-        _T("Temporary"),    // name of the window class
-        _T("Temporary"),   // title of the window
+        ("Temporary"),    // name of the window class
+        ("Temporary"),   // title of the window
         WS_OVERLAPPEDWINDOW,    // window style
         0,    // x-position of the window
         0,    // y-position of the window
@@ -1078,7 +1078,7 @@ int WINAPI WinMain(
     // Don't show the window.
     ShowWindow(hWnd, SW_HIDE);
 
-    InitializeExtensions(hWnd);
+    InitializeExtension(hWnd);
 
     DestroyWindow(hWnd);
     hWnd = NULL;
@@ -1093,7 +1093,7 @@ int WINAPI WinMain(
     wc.hInstance = hInstance;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
-    wc.lpszClassName = _T("Hello, Engine!");
+    wc.lpszClassName = ("Hello, Engine!");
 
     // register the window class
     RegisterClassEx(&wc);
@@ -1101,8 +1101,8 @@ int WINAPI WinMain(
     // create the window and use the result as the handle
     hWnd = CreateWindowEx(
         WS_EX_APPWINDOW,
-        _T("Hello, Engine!"),    // name of the window class
-        _T("Hello, Engine!"),   // title of the window
+        ("Hello, Engine!"),    // name of the window class
+        ("Hello, Engine!"),   // title of the window
         WS_OVERLAPPEDWINDOW,    // window style
         300,    // x-position of the window
         300,    // y-position of the window
