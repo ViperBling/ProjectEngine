@@ -1,0 +1,2 @@
+add_executable(ProjectEngine WindowsApplication.cpp)
+target_link_libraries(ProjectEngine Common)

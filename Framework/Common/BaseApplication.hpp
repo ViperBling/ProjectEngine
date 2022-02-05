@@ -1,12 +1,14 @@
 #pragma once
 
 #include "IApplication.hpp"
+#include "GfxConfiguration.h"
 
 namespace ProjectEngine
 {
     class BaseApplication : implements IApplication
     {
     public:
+        BaseApplication(GfxConfiguration& cfg);
         virtual int Initialize();
         virtual void Finalize();
 
@@ -15,6 +17,12 @@ namespace ProjectEngine
         virtual bool IsQuit();
     
     protected:
-        bool m_bQuit;
+        // Flag if need quit the main loop of the application
+        static bool m_bQuit;
+        GfxConfiguration m_Config;
+
+    private:
+        // hide the default construct to enforce a configuration
+        BaseApplication(){};
     };
 } // namespace ProjectEngine
