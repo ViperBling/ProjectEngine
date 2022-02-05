@@ -1,22 +1,33 @@
 #include "BaseApplication.hpp"
+#include <iostream>
 
-int ProjectEngine::BaseApplication::Initialize()
+using namespace ProjectEngine;
+
+bool BaseApplication::m_bQuit = false;
+
+BaseApplication::BaseApplication(GfxConfiguration& cfg) : m_Config(cfg)
 {
-    m_bQuit = false;
+    
+}
+
+
+int BaseApplication::Initialize()
+{
+    std::cout << m_Config;
     return 0;
 }
 
-void ProjectEngine::BaseApplication::Finalize()
+void BaseApplication::Finalize()
 {
 
 }
 
-void ProjectEngine::BaseApplication::Tick()
+void BaseApplication::Tick()
 {
 
 }
 
-bool ProjectEngine::BaseApplication::IsQuit()
+bool BaseApplication::IsQuit()
 {
     return m_bQuit;
 }
