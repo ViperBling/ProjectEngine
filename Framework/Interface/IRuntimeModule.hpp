@@ -8,7 +8,7 @@ namespace ProjectEngine
     Interface IRuntimeModule {
     public:
         virtual ~IRuntimeModule() {};
-        // 定义纯虚函数，强制子类实现
+        // 纯虚函数
         virtual int Initialize() = 0;
         virtual void Finalize() = 0;
 
