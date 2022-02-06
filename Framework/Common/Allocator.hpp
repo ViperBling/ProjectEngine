@@ -1,4 +1,6 @@
-﻿#include <cstddef>
+﻿#pragma once
+
+#include <cstddef>
 #include <stdint.h>
 
 namespace ProjectEngine

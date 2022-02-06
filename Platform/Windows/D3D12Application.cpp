@@ -1,5 +1,5 @@
 #include "WindowsApplication.hpp"
-#include "D3d/D3D12GraphicsManager.hpp"
+#include "D3D/D3D12GraphicsManager.hpp"
 #include "MemoryManager.hpp"
 #include <tchar.h>
 

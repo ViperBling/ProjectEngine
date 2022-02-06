@@ -4,3 +4,5 @@ BaseApplication.cpp
 GraphicsManager.cpp
 MemoryManager.cpp
 ProjectEngine.cpp)
+
+target_link_libraries(Common GeomMath)
