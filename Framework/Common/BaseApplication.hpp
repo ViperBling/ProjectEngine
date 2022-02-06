@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IApplication.hpp"
-#include "GfxConfiguration.h"
 
 namespace ProjectEngine
 {
@@ -15,6 +14,8 @@ namespace ProjectEngine
         virtual void Tick();
 
         virtual bool IsQuit();
+
+        inline GfxConfiguration& GetConfiguration() { return m_Config; };
     
     protected:
         // Flag if need quit the main loop of the application

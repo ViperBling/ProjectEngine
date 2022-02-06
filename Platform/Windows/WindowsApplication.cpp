@@ -3,12 +3,12 @@
 
 using namespace ProjectEngine;
 
-namespace ProjectEngine
-{
-    GfxConfiguration config(8, 8, 8, 8, 32, 0, 0, 960, 540, L"ProjectEngine");
-    WindowsApplication g_App(config);
-    IApplication* g_pApp = &g_App;
-}
+// namespace ProjectEngine
+// {
+//     GfxConfiguration config(8, 8, 8, 8, 32, 0, 0, 960, 540, L"ProjectEngine");
+//     WindowsApplication g_App(config);
+//     IApplication* g_pApp = &g_App;
+// }
 
 int WindowsApplication::Initialize()
 {
@@ -43,9 +43,9 @@ int WindowsApplication::Initialize()
     RegisterClassEx(&wc);
 
     // create the window and use the result as the handle
-    hWnd = CreateWindowExW(
+    hWnd = CreateWindowEx(
         0,
-        L"ProjectEngine",      // name of the window class
+        _T("ProjectEngine"),      // name of the window class
         m_Config.appName,             // title of the window
         WS_OVERLAPPEDWINDOW,              // window style
         CW_USEDEFAULT,                    // x-position of the window

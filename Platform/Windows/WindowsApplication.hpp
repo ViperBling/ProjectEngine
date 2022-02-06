@@ -21,5 +21,10 @@ namespace ProjectEngine
             WPARAM wParam,
             LPARAM lParam
         );
+
+        inline HWND GetMainWindow() { return m_hWnd; };
+
+    private:
+        HWND m_hWnd;
     };
 }

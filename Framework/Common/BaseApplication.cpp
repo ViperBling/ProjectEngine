@@ -13,8 +13,10 @@ BaseApplication::BaseApplication(GfxConfiguration& cfg) : m_Config(cfg)
 
 int BaseApplication::Initialize()
 {
-    std::cout << m_Config;
-    return 0;
+    int result = 0;
+
+    std::wcout << m_Config;
+    return result;
 }
 
 void BaseApplication::Finalize()

@@ -26,6 +26,9 @@ namespace ProjectEngine
 
     // 最大可用块，也就是上面数组中的1024
     static const uint32_t kMaxBlockSize = kBlockSizes[kNumBlockSizes - 1];
+
+    size_t*        MemoryManager::m_pBlockSizeLookup;
+    Allocator*     MemoryManager::m_pAllocators;
 }
 
 int MemoryManager::Initialize()

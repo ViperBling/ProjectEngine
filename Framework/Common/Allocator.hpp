@@ -1,7 +1,5 @@
-﻿#pragma once
-
-#include <cstddef>
-#include <cstdint>
+﻿#include <cstddef>
+#include <stdint.h>
 
 namespace ProjectEngine
 {

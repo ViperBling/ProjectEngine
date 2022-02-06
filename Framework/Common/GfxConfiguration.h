@@ -1,7 +1,6 @@
 #pragma once
 #include <cstdint>
 #include <iostream>
-#include <cwchar>
 
 namespace ProjectEngine
 {
@@ -19,7 +18,7 @@ namespace ProjectEngine
             uint32_t msaa = 0,
             uint32_t width = 1920,
             uint32_t height = 1080,
-            const wchar_t* app_name = L"ProjectEngine"
+            const char* app_name = "ProjectEngine"
         ) :
             redBits(r), greenBits(g), blueBits(b), alphaBits(a),
             depthBits(d), stencilBits(s),
@@ -39,9 +38,9 @@ namespace ProjectEngine
         uint32_t screenWidth;
         uint32_t screenHeight;
 
-        const wchar_t* appName;
+        const char* appName;
 
-        friend std::ostream& operator<<(std::ostream& out, const GfxConfiguration& conf)
+        friend std::wostream& operator<<(std::wostream& out, const GfxConfiguration& conf)
         {
             out << "App Name: " << conf.appName << std::endl;
             out << "GfxConfiguration:" << 
