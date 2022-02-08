@@ -48,7 +48,7 @@ int ProjectEngine::WindowsApplication::Initialize()
         nullptr,                             // we have no parent window, NULL
         nullptr,                             // we aren't using menus, NULL
         hInstance,                        // application handle
-        nullptr);                            // used with multiple windows, NULL
+        this);                            // used with multiple windows, NULL
 
     // display the window on the screen
     ShowWindow(hWnd, SW_SHOW);
