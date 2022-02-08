@@ -18,7 +18,7 @@ namespace ProjectEngine
         template<typename T>
         void Delete(T* p)
         {
-            reinterpret_cast<T*>(p)->~T();
+            p->~T();
             Free(p, sizeof(T));
         }
         

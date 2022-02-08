@@ -1,5 +1,4 @@
-﻿#include <stdio.h>
-#include <iostream>
+﻿#include <iostream>
 #include <tchar.h>
 #include "OpenGLApplication.hpp"
 #include "OpenGL/OpenGLGraphicsManager.hpp"
@@ -42,8 +41,7 @@ int OpenGLApplication::Initialize()
         HDC  hDC  = GetDC(hWnd);
         // Set a temporary default pixel format.
         int nPixelFormat = ChoosePixelFormat(hDC, &pfd);
-        if (nPixelFormat == 0)
-            return -1;
+        if (nPixelFormat == 0) return -1;
 
         result = SetPixelFormat(hDC, nPixelFormat, &pfd);
         if(result != 1)

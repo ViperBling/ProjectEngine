@@ -4,7 +4,8 @@
 
 namespace ProjectEngine 
 {
-    Interface IRuntimeModule {
+    Interface IRuntimeModule
+    {
     public:
         virtual ~IRuntimeModule() {};
         // 纯虚函数

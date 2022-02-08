@@ -16,6 +16,9 @@ namespace ProjectEngine
         virtual bool IsQuit();
 
         inline GfxConfiguration& GetConfiguration() { return m_Config; };
+
+    protected:
+        virtual void OnDraw() {};
     
     protected:
         // Flag if need quit the main loop of the application

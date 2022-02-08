@@ -8,8 +8,8 @@ using namespace ProjectEngine;
 namespace ProjectEngine
 {
     extern IApplication* g_pApp;
-    extern GraphicsManager* g_pGraphicsManager;
     extern MemoryManager* g_pMemoryManager;
+    extern GraphicsManager* g_pGraphicsManager;
 }
 
 int main(int argc, char** argv) 

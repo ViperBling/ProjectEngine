@@ -1,26 +1,23 @@
 #include "WindowsApplication.hpp"
 #include <tchar.h>
+#include <iostream>
 
 using namespace ProjectEngine;
 
-// namespace ProjectEngine
-// {
-//     GfxConfiguration config(8, 8, 8, 8, 32, 0, 0, 960, 540, L"ProjectEngine");
-//     WindowsApplication g_App(config);
-//     IApplication* g_pApp = &g_App;
-// }
-
-int WindowsApplication::Initialize()
+int ProjectEngine::WindowsApplication::Initialize()
 {
     int result;
 
     result = BaseApplication::Initialize();
 
     if (result != 0)
+    {
+//        std::cout << "BaseApplication Initailize Failed! " << std::endl;
         exit(result);
+    }
 
     // Get the HINSTANCE of the Console Program
-    HINSTANCE hInstance = GetModuleHandle(nullptr);
+    HINSTANCE hInstance = GetModuleHandle(NULL);
 
     // the handle for the window, filled by a function
     HWND hWnd;
@@ -35,7 +32,7 @@ int WindowsApplication::Initialize()
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
     wc.lpszClassName = _T("ProjectEngine");
 
@@ -52,23 +49,25 @@ int WindowsApplication::Initialize()
         CW_USEDEFAULT,                    // y-position of the window
         m_Config.screenWidth,             // width of the window
         m_Config.screenHeight,            // height of the window
-        nullptr,                             // we have no parent window, NULL
-        nullptr,                             // we aren't using menus, NULL
+        NULL,                             // we have no parent window, NULL
+        NULL,                             // we aren't using menus, NULL
         hInstance,                        // application handle
-        nullptr);                            // used with multiple windows, NULL
+        NULL);                            // used with multiple windows, NULL
 
     // display the window on the screen
     ShowWindow(hWnd, SW_SHOW);
 
+    m_hWnd = hWnd;
+
     return result;
 }
 
-void WindowsApplication::Finalize()
+void ProjectEngine::WindowsApplication::Finalize()
 {
     
 }
 
-void WindowsApplication::Tick()
+void ProjectEngine::WindowsApplication::Tick()
 {
     // this struct holds Windows event messages
     MSG msg;
@@ -76,7 +75,7 @@ void WindowsApplication::Tick()
     // we use PeekMessage instead of GetMessage here
     // because we should not block the thread at anywhere
     // except the engine execution driver module
-    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
     {
         // translate keystroke messages into the right format
         TranslateMessage(&msg);
@@ -86,22 +85,47 @@ void WindowsApplication::Tick()
     }
 }
 
-LRESULT WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK ProjectEngine::WindowsApplication::WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    WindowsApplication* pThis;
+    if (message == WM_NCCREATE)
+    {
+        pThis = static_cast<WindowsApplication*>(reinterpret_cast<CREATESTRUCT*>(lParam)->lpCreateParams);
+
+        SetLastError(0);
+        if (!SetWindowLongPtr(hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pThis)))
+        {
+            if (GetLastError() != 0)
+                return FALSE;
+        }
+    }
+    else
+    {
+        pThis = reinterpret_cast<WindowsApplication*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+    }
+
     // sort through and find what code to run for the message given
     switch(message)
     {
         case WM_PAINT:
-        // we will replace this part with Rendering Module
         {
-        } break;
-    
-        // this message is read when the window is closed
+            pThis->OnDraw();
+        }
+            break;
+
+        case WM_KEYDOWN:
+        {
+            // we will replace this with input manager
+            m_bQuit = true;
+        }
+            break;
+
+            // this message is read when the window is closed
         case WM_DESTROY:
         {
             // close the application entirely
             PostQuitMessage(0);
-            BaseApplication::m_bQuit = true;
+            m_bQuit = true;
             return 0;
         }
     }

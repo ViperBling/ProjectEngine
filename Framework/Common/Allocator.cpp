@@ -1,6 +1,7 @@
-﻿#include "Allocator.hpp"
-#include <cassert>
-#include <cstring>
+﻿#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Allocator.hpp"
 
 #ifndef ALIGN
 #define ALIGN(x, a)     ( ( (x) + ( (a) - 1) ) & ~( (a) - 1) )
@@ -8,7 +9,7 @@
 
 using namespace ProjectEngine;
 
-Allocator::Allocator() :
+ProjectEngine::Allocator::Allocator() :
     m_pPageList(nullptr),
     m_pFreeList(nullptr),
     m_szDataSize(0),
@@ -19,19 +20,19 @@ Allocator::Allocator() :
 {
 }
 
-Allocator::Allocator(size_t data_size, size_t page_size, size_t alignment) :
+ProjectEngine::Allocator::Allocator(size_t data_size, size_t page_size, size_t alignment) :
     m_pPageList(nullptr),
     m_pFreeList(nullptr)
 {
     Reset(data_size, page_size, alignment);
 }
 
-Allocator::~Allocator()
+ProjectEngine::Allocator::~Allocator()
 {
     FreeAll();
 }
 
-void Allocator::Reset(size_t data_size, size_t page_size, size_t alignment)
+void ProjectEngine::Allocator::Reset(size_t data_size, size_t page_size, size_t alignment)
 {
     FreeAll();
 
@@ -39,20 +40,20 @@ void Allocator::Reset(size_t data_size, size_t page_size, size_t alignment)
     m_szPageSize = page_size;
 
     size_t minimal_size = (sizeof(BlockHeader) > m_szDataSize) ? sizeof(BlockHeader) : m_szDataSize;
-
     // this magic only works when alignment is 2^n, which should general be the case
     // because most CPU/GPU also requires the aligment be in 2^n
     // but still we use a assert to guarantee it
 #if defined(_DEBUG)
-    assert(alignment > 0 && ((alignment & (alignment - 1))) == 0);
+    assert(alignment > 0 && ((alignment & (alignment-1))) == 0);
 #endif
-
     m_szBlockSize = ALIGN(minimal_size, alignment);
+
     m_szAlignmentSize = m_szBlockSize - minimal_size;
+
     m_nBlocksPerPage = (m_szPageSize - sizeof(PageHeader)) / m_szBlockSize;
 }
 
-void* Allocator::Allocate()
+void* ProjectEngine::Allocator::Allocate()
 {
     // 如果没有空余的空间，就要新申请
     if (!m_pFreeList)
@@ -76,7 +77,7 @@ void* Allocator::Allocate()
 
         BlockHeader* pBlock = pNewPage->Blocks();
         // link each block in the page
-        for (uint32_t i = 0; i < m_nBlocksPerPage - 1; i++)
+        for (uint32_t i = 0; i < m_nBlocksPerPage; i++)
         {
             pBlock->pNext = NextBlock(pBlock);
             pBlock = NextBlock(pBlock);
@@ -97,7 +98,7 @@ void* Allocator::Allocate()
     return reinterpret_cast<void*>(freeBlock);
 }
 
-void Allocator::Free(void* p)
+void ProjectEngine::Allocator::Free(void* p)
 {
     BlockHeader* block = reinterpret_cast<BlockHeader*>(p);
 
@@ -110,7 +111,7 @@ void Allocator::Free(void* p)
     ++m_nFreeBlocks;
 }
 
-void Allocator::FreeAll()
+void ProjectEngine::Allocator::FreeAll()
 {
     PageHeader* pPage = m_pPageList;
     while (pPage)
@@ -130,8 +131,7 @@ void Allocator::FreeAll()
 }
 
 #if defined(_DEBUG)
-
-void Allocator::FillFreePage(PageHeader *pPage)
+void ProjectEngine::Allocator::FillFreePage(PageHeader *pPage)
 {
     // page header
     pPage->pNext = nullptr;
@@ -145,29 +145,29 @@ void Allocator::FillFreePage(PageHeader *pPage)
     }
 }
  
-void Allocator::FillFreeBlock(BlockHeader *pBlock)
+void ProjectEngine::Allocator::FillFreeBlock(BlockHeader *pBlock)
 {
     // block header + data
-    std::memset(pBlock, PATTERN_FREE, m_szBlockSize - m_szAlignmentSize);
+    memset(pBlock, PATTERN_FREE, m_szBlockSize - m_szAlignmentSize);
  
     // alignment
-    std::memset(reinterpret_cast<uint8_t*>(pBlock) + m_szBlockSize - m_szAlignmentSize, 
+    memset(reinterpret_cast<uint8_t*>(pBlock) + m_szBlockSize - m_szAlignmentSize,
                 PATTERN_ALIGN, m_szAlignmentSize);
 }
  
-void Allocator::FillAllocatedBlock(BlockHeader *pBlock)
+void ProjectEngine::Allocator::FillAllocatedBlock(BlockHeader *pBlock)
 {
     // block header + data
-    std::memset(pBlock, PATTERN_ALLOC, m_szBlockSize - m_szAlignmentSize);
+    memset(pBlock, PATTERN_ALLOC, m_szBlockSize - m_szAlignmentSize);
  
     // alignment
-    std::memset(reinterpret_cast<uint8_t*>(pBlock) + m_szBlockSize - m_szAlignmentSize, 
+    memset(reinterpret_cast<uint8_t*>(pBlock) + m_szBlockSize - m_szAlignmentSize,
                 PATTERN_ALIGN, m_szAlignmentSize);
 }
 
 #endif
 
-BlockHeader* Allocator::NextBlock(BlockHeader* pBlock)
+ProjectEngine::BlockHeader* ProjectEngine::Allocator::NextBlock(BlockHeader* pBlock)
 {
     return reinterpret_cast<BlockHeader*>(reinterpret_cast<uint8_t*>(pBlock) + m_szBlockSize);
 }

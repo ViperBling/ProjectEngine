@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include <cstddef>
+#include <stddef.h>
 #include <stdint.h>
 
 namespace ProjectEngine
@@ -34,13 +34,12 @@ namespace ProjectEngine
         // resets the allocator to a new configuration
         void Reset(size_t data_size, size_t page_size, size_t alignment);
 
-        // alloc and free
+        // alloc and free blocks
         void* Allocate();
-        void Free(void* p);
-        void FreeAll();
-    
+        void  Free(void* p);
+        void  FreeAll();
+
     private:
-    
 #if defined(_DEBUG)
         // fill a free page with debug patterns
         void FillFreePage(PageHeader* pPage);
@@ -52,7 +51,7 @@ namespace ProjectEngine
         void FillAllocatedBlock(BlockHeader* pBlock);
 #endif
 
-        // Get next block
+        // gets the next block
         BlockHeader* NextBlock(BlockHeader* pBlock);
 
         // the page list
@@ -65,15 +64,16 @@ namespace ProjectEngine
         size_t      m_szPageSize;
         size_t      m_szAlignmentSize;
         size_t      m_szBlockSize;
-        uint32_t    m_nBlocksPerPage;
+        size_t      m_nBlocksPerPage;
 
         // statistics
         uint32_t    m_nPages;
         uint32_t    m_nBlocks;
         uint32_t    m_nFreeBlocks;
 
+        // disable copy & assignment
         Allocator(const Allocator& clone);
-        Allocator &operator=(const Allocator& rhs);
+        Allocator &operator=(const Allocator &rhs);
     };
 }
 

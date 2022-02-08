@@ -15,14 +15,15 @@ namespace ProjectEngine
         virtual void Finalize();
         virtual void Tick();
 
-        static LRESULT CALLBACK WindowProc(
-            HWND hWnd,
-            UINT message,
-            WPARAM wParam,
-            LPARAM lParam
-        );
+        inline HWND GetMainWindow() const { return m_hWnd; };
 
-        inline HWND GetMainWindow() { return m_hWnd; };
+    private:
+        static LRESULT CALLBACK WindowProc(
+                HWND hWnd,
+                UINT message,
+                WPARAM wParam,
+                LPARAM lParam
+        );
 
     private:
         HWND m_hWnd;

@@ -11,6 +11,5 @@ namespace ProjectEngine
         virtual void Finalize();
 
         virtual void Tick();
-    private:
     };
 }

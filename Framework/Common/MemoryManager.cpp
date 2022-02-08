@@ -1,5 +1,4 @@
 ﻿#include "MemoryManager.hpp"
-#include <malloc.h>
 
 extern "C" void* malloc(size_t size);
 extern "C" void  free(void* p);
@@ -29,10 +28,12 @@ namespace ProjectEngine
     static const uint32_t kAlignment = 4;
 
     // number of elements in the block size array
-    static const uint32_t kNumBlockSizes = sizeof(kBlockSizes) / sizeof(kBlockSizes[0]);
+    static const uint32_t kNumBlockSizes =
+            sizeof(kBlockSizes) / sizeof(kBlockSizes[0]);
 
     // 最大可用块，也就是上面数组中的1024
-    static const uint32_t kMaxBlockSize = kBlockSizes[kNumBlockSizes - 1];
+    static const uint32_t kMaxBlockSize =
+            kBlockSizes[kNumBlockSizes - 1];
 
     size_t*        MemoryManager::m_pBlockSizeLookup;
     Allocator*     MemoryManager::m_pAllocators;
@@ -59,6 +60,7 @@ int MemoryManager::Initialize()
         {
             m_pAllocators[i].Reset(kBlockSizes[i], kPageSize, kAlignment);
         }
+        s_bInitialized = true;
     }
     return 0;
 }

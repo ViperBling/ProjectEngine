@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include <cstdint>
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include "GraphicsManager.hpp"
@@ -31,8 +31,8 @@ namespace ProjectEngine
         ID3D12RootSignature*            m_pRootSignature = nullptr;         // a graphics root signature defines what resources are bound to the pipeline
         ID3D12DescriptorHeap*           m_pRtvHeap = nullptr;               // an array of descriptors of GPU objects
         ID3D12PipelineState*            m_pPipelineState = nullptr;         // an object maintains the state of all currently set shaders
-                                                                            // and certain fixed function state objects
-                                                                            // such as the input assembler, tesselator, rasterizer and output manager
+        // and certain fixed function state objects
+        // such as the input assembler, tesselator, rasterizer and output manager
         ID3D12GraphicsCommandList*      m_pCommandList = nullptr;           // a list to store GPU commands, which will be submitted to GPU to execute when done
 
         uint32_t                        m_nRtvDescriptorSize;

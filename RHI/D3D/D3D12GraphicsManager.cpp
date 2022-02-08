@@ -2,22 +2,13 @@
 #include <d3dcompiler.h>
 #include "D3D12GraphicsManager.hpp"
 #include "WindowsApplication.hpp"
+#include "Utility.hpp"
 
 using namespace ProjectEngine;
 
 namespace ProjectEngine 
 {
     extern IApplication* g_pApp;
-
-	template<class T>
-	inline void SafeRelease(T **ppInterfaceToRelease)
-	{
-		if (*ppInterfaceToRelease != nullptr)
-		{
-			(*ppInterfaceToRelease)->Release();
-			(*ppInterfaceToRelease) = nullptr;
-		}
-	}
 
     static void GetHardwareAdapter(IDXGIFactory4* pFactory, IDXGIAdapter1** ppAdapter)
     {
@@ -26,21 +17,21 @@ namespace ProjectEngine
 
         for (UINT adapterIndex = 0; DXGI_ERROR_NOT_FOUND != pFactory->EnumAdapters1(adapterIndex, &pAdapter); adapterIndex++)
         {
-           DXGI_ADAPTER_DESC1 desc;
-           pAdapter->GetDesc1(&desc);
+            DXGI_ADAPTER_DESC1 desc;
+            pAdapter->GetDesc1(&desc);
 
-           if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
-           {
-               // Don't select the Basic Render Driver adapter.
-               continue;
-           }
+            if (desc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
+            {
+                // Don't select the Basic Render Driver adapter.
+                continue;
+            }
 
-           // Check to see if the adapter supports Direct3D 12, but don't create the
-           // actual device yet.
-           if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), nullptr)))
-           {
-               break;
-           }
+            // Check to see if the adapter supports Direct3D 12, but don't create the
+            // actual device yet.
+            if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, __uuidof(ID3D12Device), nullptr)))
+            {
+                break;
+            }
         }
 
         *ppAdapter = pAdapter;
@@ -56,7 +47,6 @@ HRESULT D3D12GraphicsManager::CreateRenderTarget()
     rtvHeapDesc.NumDescriptors = kFrameCount;
     rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
     rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-	
     if(FAILED(hr = m_pDev->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_pRtvHeap))))
     {
         return hr;
@@ -69,8 +59,7 @@ HRESULT D3D12GraphicsManager::CreateRenderTarget()
     // Create a RTV for each frame.
     for (uint32_t i = 0; i < kFrameCount; i++)
     {
-        if (FAILED(hr = m_pSwapChain->GetBuffer(i, IID_PPV_ARGS(&m_pRenderTargets[i]))))
-        {
+        if (FAILED(hr = m_pSwapChain->GetBuffer(i, IID_PPV_ARGS(&m_pRenderTargets[i])))) {
             break;
         }
         m_pDev->CreateRenderTargetView(m_pRenderTargets[i], nullptr, rtvHandle);
@@ -85,44 +74,40 @@ HRESULT D3D12GraphicsManager::CreateGraphicsResources()
     HRESULT hr;
 
 #if defined(_DEBUG)
-	// Enable the D3D12 debug layer.
-	{
-		ID3D12Debug* pDebugController;
-		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
-		{
-			pDebugController->EnableDebugLayer();
-		}
-		SafeRelease(&pDebugController);
-	}
+    // Enable the D3D12 debug layer.
+    {
+        ID3D12Debug* pDebugController;
+        if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&pDebugController))))
+        {
+            pDebugController->EnableDebugLayer();
+        }
+        SafeRelease(&pDebugController);
+    }
 #endif
 
-	IDXGIFactory4* pFactory;
-	if (FAILED(hr = CreateDXGIFactory1(IID_PPV_ARGS(&pFactory))))
-	{
-		return hr;
-	}
+    IDXGIFactory4* pFactory;
+    if (FAILED(hr = CreateDXGIFactory1(IID_PPV_ARGS(&pFactory)))) {
+        return hr;
+    }
 
-	IDXGIAdapter1* pHardwareAdapter;
-	GetHardwareAdapter(pFactory, &pHardwareAdapter);
+    IDXGIAdapter1* pHardwareAdapter;
+    GetHardwareAdapter(pFactory, &pHardwareAdapter);
 
-	if (FAILED(D3D12CreateDevice(pHardwareAdapter,
-		D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDev))))
-	{
+    if (FAILED(D3D12CreateDevice(pHardwareAdapter,
+                                 D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_pDev)))) {
 
-		IDXGIAdapter* pWarpAdapter;
-		if (FAILED(hr = pFactory->EnumWarpAdapter(IID_PPV_ARGS(&pWarpAdapter))))
-		{
-	        SafeRelease(&pFactory);
+        IDXGIAdapter* pWarpAdapter;
+        if (FAILED(hr = pFactory->EnumWarpAdapter(IID_PPV_ARGS(&pWarpAdapter)))) {
+            SafeRelease(&pFactory);
             return hr;
         }
 
         if(FAILED(hr = D3D12CreateDevice(pWarpAdapter, D3D_FEATURE_LEVEL_11_0,
-            IID_PPV_ARGS(&m_pDev))))
-        {
+                                         IID_PPV_ARGS(&m_pDev)))) {
             SafeRelease(&pFactory);
             return hr;
         }
-	}
+    }
 
 
     HWND hWnd = reinterpret_cast<WindowsApplication*>(g_pApp)->GetMainWindow();
@@ -132,8 +117,7 @@ HRESULT D3D12GraphicsManager::CreateGraphicsResources()
     queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
     queueDesc.Type  = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-    if(FAILED(hr = m_pDev->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue))))
-    {
+    if(FAILED(hr = m_pDev->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_pCommandQueue)))) {
         SafeRelease(&pFactory);
         return hr;
     }
@@ -150,25 +134,25 @@ HRESULT D3D12GraphicsManager::CreateGraphicsResources()
     scd.Format = DXGI_FORMAT_R8G8B8A8_UNORM;     	        // use 32-bit color
     scd.Stereo = FALSE;
     scd.SampleDesc.Count = 1;                               // multi-samples can not be used when in SwapEffect sets to
-                                                            // DXGI_SWAP_EFFECT_FLOP_DISCARD
+    // DXGI_SWAP_EFFECT_FLOP_DISCARD
     scd.SampleDesc.Quality = 0;                             // multi-samples can not be used when in SwapEffect sets to
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;      // how swap chain is to be used
     scd.BufferCount = kFrameCount;                          // back buffer count
     scd.Scaling     = DXGI_SCALING_STRETCH;
     scd.SwapEffect  = DXGI_SWAP_EFFECT_FLIP_DISCARD;        // DXGI_SWAP_EFFECT_FLIP_DISCARD only supported after Win10
-                                                            // use DXGI_SWAP_EFFECT_DISCARD on platforms early than Win10
+    // use DXGI_SWAP_EFFECT_DISCARD on platforms early than Win10
     scd.AlphaMode   = DXGI_ALPHA_MODE_UNSPECIFIED;
     scd.Flags    = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;  // allow full-screen transition
 
     IDXGISwapChain1* pSwapChain;
     if (FAILED(hr = pFactory->CreateSwapChainForHwnd(
-                m_pCommandQueue,                            // Swap chain needs the queue so that it can force a flush on it
-                hWnd,
-                &scd,
-                NULL,
-                NULL,
-                &pSwapChain
-                )))
+            m_pCommandQueue,                            // Swap chain needs the queue so that it can force a flush on it
+            hWnd,
+            &scd,
+            NULL,
+            NULL,
+            &pSwapChain
+    )))
     {
         SafeRelease(&pFactory);
         return hr;
@@ -207,9 +191,9 @@ void D3D12GraphicsManager::Finalize()
     SafeRelease(&m_pCommandAllocator);
     for (uint32_t i = 0; i < kFrameCount; i++)
     {
-	    SafeRelease(&m_pRenderTargets[i]);
+        SafeRelease(&m_pRenderTargets[i]);
     }
-	SafeRelease(&m_pSwapChain);
-	SafeRelease(&m_pDev);
+    SafeRelease(&m_pSwapChain);
+    SafeRelease(&m_pDev);
 }
 
