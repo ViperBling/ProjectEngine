@@ -25,7 +25,8 @@ namespace ProjectEngine
             m_szAlignment = rhs.m_szAlignment;
         }
 
-        Buffer(Buffer&& rhs) {
+        Buffer(Buffer&& rhs)
+        {
             m_pData = rhs.m_pData;
             m_szSize = rhs.m_szSize;
             m_szAlignment = rhs.m_szAlignment;
@@ -34,7 +35,8 @@ namespace ProjectEngine
             rhs.m_szAlignment = 4;
         }
 
-        Buffer& operator = (const Buffer& rhs) {
+        Buffer& operator = (const Buffer& rhs)
+        {
             if (m_szSize >= rhs.m_szSize && m_szAlignment == rhs.m_szAlignment)
             {
                 memcpy(m_pData, rhs.m_pData, rhs.m_szSize);
@@ -50,7 +52,8 @@ namespace ProjectEngine
             return *this;
         }
 
-        Buffer& operator = (Buffer&& rhs) {
+        Buffer& operator = (Buffer&& rhs)
+        {
             if (m_pData) g_pMemoryManager->Free(m_pData, m_szSize);
             m_pData = rhs.m_pData;
             m_szSize = rhs.m_szSize;
