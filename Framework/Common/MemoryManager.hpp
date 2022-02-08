@@ -9,21 +9,21 @@ namespace ProjectEngine
     class MemoryManager : implements IRuntimeModule
     {
     public:
-        template<typename T, typename... Arguments>
+        template<class T, typename... Arguments>
         T* New(Arguments... parameters)
         {
             return new (Allocate(sizeof(T))) T(parameters...);
         }
 
-        template<typename T>
+        template<class T>
         void Delete(T* p)
         {
             p->~T();
             Free(p, sizeof(T));
         }
-        
+
     public:
-        virtual ~MemoryManager(){}
+        virtual ~MemoryManager() {}
 
         virtual int Initialize();
         virtual void Finalize();
@@ -31,11 +31,11 @@ namespace ProjectEngine
 
         void* Allocate(size_t size);
         void* Allocate(size_t size, size_t alignment);
-        void Free(void* p, size_t size);
+        void  Free(void* p, size_t size);
 
     private:
-        static size_t*      m_pBlockSizeLookup;
-        static Allocator*   m_pAllocators;
+        static size_t*        m_pBlockSizeLookup;
+        static Allocator*     m_pAllocators;
 
     private:
         static Allocator* LookUpAllocator(size_t size);

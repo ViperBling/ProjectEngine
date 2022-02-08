@@ -1,7 +1,7 @@
 add_library(WindowsApplication WindowsApplication.cpp)
 
-add_executable(ProjectEngine_D3D12 WindowsApplication.cpp D3D12Application.cpp)
-target_link_libraries(ProjectEngine_D3D12 Common D3DRHI d3d12 dxgi d3dcompiler)
+add_executable(ProjectEngine_D3D12 D3D12Application.cpp)
+target_link_libraries(ProjectEngine_D3D12 WindowsApplication Common D3DRHI d3d12 dxgi d3dcompiler)
 
 find_package(OpenGL REQUIRED)
 

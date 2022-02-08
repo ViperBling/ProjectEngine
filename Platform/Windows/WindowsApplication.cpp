@@ -1,6 +1,5 @@
 #include "WindowsApplication.hpp"
 #include <tchar.h>
-#include <iostream>
 
 using namespace ProjectEngine;
 
@@ -11,13 +10,10 @@ int ProjectEngine::WindowsApplication::Initialize()
     result = BaseApplication::Initialize();
 
     if (result != 0)
-    {
-//        std::cout << "BaseApplication Initailize Failed! " << std::endl;
         exit(result);
-    }
 
     // Get the HINSTANCE of the Console Program
-    HINSTANCE hInstance = GetModuleHandle(NULL);
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
 
     // the handle for the window, filled by a function
     HWND hWnd;
@@ -32,7 +28,7 @@ int ProjectEngine::WindowsApplication::Initialize()
     wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = WindowProc;
     wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wc.hbrBackground = (HBRUSH)COLOR_WINDOW;
     wc.lpszClassName = _T("ProjectEngine");
 
@@ -42,17 +38,17 @@ int ProjectEngine::WindowsApplication::Initialize()
     // create the window and use the result as the handle
     hWnd = CreateWindowEx(
         0,
-        _T("ProjectEngine"),      // name of the window class
+        "ProjectEngine",      // name of the window class
         m_Config.appName,             // title of the window
         WS_OVERLAPPEDWINDOW,              // window style
         CW_USEDEFAULT,                    // x-position of the window
         CW_USEDEFAULT,                    // y-position of the window
         m_Config.screenWidth,             // width of the window
         m_Config.screenHeight,            // height of the window
-        NULL,                             // we have no parent window, NULL
-        NULL,                             // we aren't using menus, NULL
+        nullptr,                             // we have no parent window, NULL
+        nullptr,                             // we aren't using menus, NULL
         hInstance,                        // application handle
-        NULL);                            // used with multiple windows, NULL
+        nullptr);                            // used with multiple windows, NULL
 
     // display the window on the screen
     ShowWindow(hWnd, SW_SHOW);
@@ -75,7 +71,7 @@ void ProjectEngine::WindowsApplication::Tick()
     // we use PeekMessage instead of GetMessage here
     // because we should not block the thread at anywhere
     // except the engine execution driver module
-    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
         // translate keystroke messages into the right format
         TranslateMessage(&msg);
@@ -111,16 +107,16 @@ LRESULT CALLBACK ProjectEngine::WindowsApplication::WindowProc(HWND hWnd, UINT m
         {
             pThis->OnDraw();
         }
-            break;
+        break;
 
         case WM_KEYDOWN:
         {
             // we will replace this with input manager
             m_bQuit = true;
         }
-            break;
+        break;
 
-            // this message is read when the window is closed
+        // this message is read when the window is closed
         case WM_DESTROY:
         {
             // close the application entirely
@@ -131,7 +127,7 @@ LRESULT CALLBACK ProjectEngine::WindowsApplication::WindowProc(HWND hWnd, UINT m
     }
 
     // Handle any messages the switch statement didn't
-    return DefWindowProc (hWnd, message, wParam, lParam);
+    return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 
