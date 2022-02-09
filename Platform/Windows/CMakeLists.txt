@@ -7,9 +7,9 @@ find_package(OpenGL REQUIRED)
 
 add_executable(ProjectEngine_OpenGL
     OpenGLApplication.cpp
-    ${PROJECT_SOURCE_DIR}/External/GL/src/glad_wgl.c
+    ${PROJECT_SOURCE_DIR}/External/src/glad/src/glad_wgl.c
     )
 target_link_libraries(ProjectEngine_OpenGL WindowsApplication Common OpenGLRHI ${OPENGL_LIBRARIES})
-target_include_directories(ProjectEngine_OpenGL PRIVATE "${PROJECT_SOURCE_DIR}/External/GL/include")
+target_include_directories(ProjectEngine_OpenGL PRIVATE "${PROJECT_SOURCE_DIR}/External/src/glad/include")
 
 add_subdirectory(Test)
