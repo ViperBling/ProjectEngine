@@ -10,13 +10,13 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_library(xg Guid.cpp)
 
+include(PlatformDependencies)
 if (XG_TESTS)
 	add_executable(xgtest test/TestMain.cpp test/Test.cpp)
 	target_link_libraries(xgtest xg)
+	__add_xg_platform_dependencies(xgtest)
 endif()
 
-include(PlatformDependencies)
-__add_xg_platform_dependencies(xgtest)
 
 set_target_properties(xg
 PROPERTIES PUBLIC_HEADER Guid.hpp
