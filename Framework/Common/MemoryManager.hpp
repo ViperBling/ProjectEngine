@@ -40,5 +40,7 @@ namespace ProjectEngine
     private:
         static Allocator* LookUpAllocator(size_t size);
     };
+
+    extern MemoryManager*   g_pMemoryManager;
 }
 

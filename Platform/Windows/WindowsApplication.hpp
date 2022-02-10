@@ -25,7 +25,7 @@ namespace ProjectEngine
                 LPARAM lParam
         );
 
-    private:
+    protected:
         HWND m_hWnd;
     };
 }

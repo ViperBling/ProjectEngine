@@ -17,7 +17,14 @@ set_target_properties(OpenDDL
 )
 
 install(TARGETS OpenDDL
-    ARCHIVE DESTINATION lib
-    PUBLIC_HEADER DESTINATION include
+    ARCHIVE DESTINATION ${CMAKE_SYSTEM_NAME}/lib
+    PUBLIC_HEADER DESTINATION ${CMAKE_SYSTEM_NAME}/include
 )
+
+if(${MSVC})
+    install(FILES ${PROJECT_BINARY_DIR}/OpenDDL/Debug/OpenDDL.pdb
+        DESTINATION ${CMAKE_SYSTEM_NAME}/lib
+        CONFIGURATIONS Debug
+        )
+endif(${MSVC})
 

@@ -71,4 +71,6 @@ namespace ProjectEngine
     private:
         std::vector<std::string> m_strSearchPath;
     };
+
+    extern AssetLoader*     g_pAssetLoader;
 }

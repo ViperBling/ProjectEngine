@@ -103,20 +103,14 @@ LRESULT CALLBACK ProjectEngine::WindowsApplication::WindowProc(HWND hWnd, UINT m
     // sort through and find what code to run for the message given
     switch(message)
     {
-        case WM_PAINT:
-        {
-            pThis->OnDraw();
-        }
-        break;
-
         case WM_KEYDOWN:
         {
             // we will replace this with input manager
             m_bQuit = true;
         }
-        break;
+            break;
 
-        // this message is read when the window is closed
+            // this message is read when the window is closed
         case WM_DESTROY:
         {
             // close the application entirely
@@ -127,7 +121,7 @@ LRESULT CALLBACK ProjectEngine::WindowsApplication::WindowProc(HWND hWnd, UINT m
     }
 
     // Handle any messages the switch statement didn't
-    return DefWindowProc(hWnd, message, wParam, lParam);
+    return DefWindowProc (hWnd, message, wParam, lParam);
 }
 
 

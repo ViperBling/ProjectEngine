@@ -5,7 +5,6 @@
 #include <limits>
 #include <cstdint>
 #include "include/CrossProduct.h"
-#include "include/DotProduct.h"
 #include "include/MulByElement.h"
 #include "include/Normalize.h"
 #include "include/Transform.h"
@@ -24,10 +23,10 @@
 namespace ProjectEngine
 {
     template<typename T, size_t SizeOfArray>
-    constexpr size_t countof(T (&array)[SizeOfArray]) { return SizeOfArray; }
+    constexpr size_t countof(T (&)[SizeOfArray]) { return SizeOfArray; }
 
     template<typename T, size_t RowSize, size_t ColSize>
-    constexpr size_t countof(T (&array)[RowSize][ColSize]) { return RowSize * ColSize; }
+    constexpr size_t countof(T (&)[RowSize][ColSize]) { return RowSize * ColSize; }
 
 #ifdef max
 #undef max
@@ -146,7 +145,10 @@ namespace ProjectEngine
         operator const T*() const { return static_cast<const T*>(data); };
         Vector4Type& operator=(const T* f)
         {
-            memcpy(data, f, sizeof(T) * 4);
+            for (int32_t i = 0; i < 4; i++)
+            {
+                data[i] = *(f + i);
+            }
             return *this;
         }
     };
@@ -204,10 +206,25 @@ namespace ProjectEngine
         ispc::CrossProduct(vec1, vec2, result);
     }
 
+    template <typename T>
+    inline void DotProduct(T& result, const T* a, const T* b, size_t count)
+    {
+        T* _result = new T[count];
+
+        result = static_cast<T>(0);
+
+        ispc::MulByElement(a, b, _result, count);
+        for (size_t i = 0; i < count; i++) {
+            result += _result[i];
+        }
+
+        delete[] _result;
+    }
+
     template <template <typename> class TT, typename T>
     inline void DotProduct(T& result, const TT<T>& vec1, const TT<T>& vec2)
     {
-        ispc::DotProduct(vec1, vec2, &result, countof(vec1.data));
+        DotProduct(result, static_cast<const T*>(vec1), static_cast<const T*>(vec2), countof(vec1.data));
     }
 
     template <typename T>
@@ -236,11 +253,16 @@ namespace ProjectEngine
         operator const T*() const { return static_cast<const float*>(&data[0][0]); };
         Matrix& operator=(const T* _data)
         {
-            memcpy(data, _data, ROWS * COLS * sizeof(T));
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    data[i][j] = *(_data + i * COLS + j);
+                }
+            }
             return *this;
         }
     };
 
+    typedef Matrix<float, 3, 3> Matrix3X3f;
     typedef Matrix<float, 4, 4> Matrix4X4f;
 
     template <typename T, int ROWS, int COLS>
@@ -275,7 +297,7 @@ namespace ProjectEngine
     template <typename T, int ROWS, int COLS>
     void MatrixSub(Matrix<T, ROWS, COLS>& result, const Matrix<T, ROWS, COLS>& matrix1, const Matrix<T, ROWS, COLS>& matrix2)
     {
-        ispc::AddByElement(matrix1, matrix2, result, countof(result.data));
+        ispc::SubByElement(matrix1, matrix2, result, countof(result.data));
     }
 
     template <typename T, int ROWS, int COLS>
@@ -294,11 +316,9 @@ namespace ProjectEngine
         Transpose(matrix2_transpose, matrix2);
         for (int i = 0; i < Da; i++) {
             for (int j = 0; j < Dc; j++) {
-                ispc::DotProduct(matrix1[i], matrix2_transpose[j], &result[i][j], Db);
+                DotProduct(result[i][j], matrix1[i], matrix2_transpose[j], Db);
             }
         }
-
-//        return;
     }
 
     template <typename T, int ROWS, int COLS>
@@ -316,16 +336,18 @@ namespace ProjectEngine
         ispc::Transpose(matrix1, result, ROWS, COLS);
     }
 
-    template <typename T>
-    inline void Normalize(T& result)
+    template <template <typename> class TT, typename T>
+    inline void Normalize(TT<T>& a)
     {
-        ispc::Normalize(result, countof(result.data));
+        T length;
+        DotProduct(length, static_cast<T*>(a), static_cast<T*>(a), countof(a.data));
+        length = sqrt(length);
+        ispc::Normalize(a, length, countof(a.data));
     }
 
     inline void MatrixRotationYawPitchRoll(Matrix4X4f& matrix, const float yaw, const float pitch, const float roll)
     {
         float cYaw, cPitch, cRoll, sYaw, sPitch, sRoll;
-
 
         // Get the cosine and sin of the yaw, pitch, and roll.
         cYaw = cosf(yaw);
@@ -345,8 +367,6 @@ namespace ProjectEngine
         }}};
 
         matrix = tmp;
-
-//        return;
     }
 
     inline void TransformCoord(Vector3f& vector, const Matrix4X4f& matrix)
@@ -357,8 +377,6 @@ namespace ProjectEngine
     inline void Transform(Vector4f& vector, const Matrix4X4f& matrix)
     {
         ispc::Transform(vector, matrix);
-
-//        return;
     }
 
     inline void BuildViewMatrix(Matrix4X4f& result, const Vector3f position, const Vector3f lookAt, const Vector3f up)
@@ -389,7 +407,7 @@ namespace ProjectEngine
             { xAxis.y, yAxis.y, zAxis.y, 0.0f },
             { xAxis.z, yAxis.z, zAxis.z, 0.0f },
             { result1, result2, result3, 1.0f }
-       }}};
+        }}};
 
         result = tmp;
     }
@@ -404,10 +422,7 @@ namespace ProjectEngine
         }}};
 
         matrix = identity;
-
-//        return;
     }
-
 
     inline void BuildPerspectiveFovLHMatrix(Matrix4X4f& matrix, const float fieldOfView, const float screenAspect, const float screenNear, const float screenDepth)
     {
@@ -419,8 +434,6 @@ namespace ProjectEngine
         }}};
 
         matrix = perspective;
-
-//        return;
     }
 
 
@@ -434,8 +447,6 @@ namespace ProjectEngine
         }}};
 
         matrix = translation;
-
-//        return;
     }
 
     inline void MatrixRotationX(Matrix4X4f& matrix, const float angle)
@@ -450,8 +461,6 @@ namespace ProjectEngine
         }}};
 
         matrix = rotation;
-
-//        return;
     }
 
     inline void MatrixScale(Matrix4X4f& matrix, const float x, const float y, const float z)
@@ -464,8 +473,6 @@ namespace ProjectEngine
         }}};
 
         matrix = scale;
-
-//        return;
     }
 
     inline void MatrixRotationY(Matrix4X4f& matrix, const float angle)
@@ -480,8 +487,6 @@ namespace ProjectEngine
         }}};
 
         matrix = rotation;
-
-//        return;
     }
 
 
@@ -497,8 +502,6 @@ namespace ProjectEngine
         }}};
 
         matrix = rotation;
-
-//        return;
     }
 
     inline void MatrixRotationAxis(Matrix4X4f& matrix, const Vector3f& axis, const float angle)
@@ -520,7 +523,7 @@ namespace ProjectEngine
         Matrix4X4f rotation = {{{
             {   1.0f - 2.0f * q.y * q.y - 2.0f * q.z * q.z,  2.0f * q.x * q.y + 2.0f * q.w * q.z,   2.0f * q.x * q.z - 2.0f * q.w * q.y,    0.0f    },
             {   2.0f * q.x * q.y - 2.0f * q.w * q.z,    1.0f - 2.0f * q.x * q.x - 2.0f * q.z * q.z, 2.0f * q.y * q.z + 2.0f * q.w * q.x,    0.0f    },
-            {   2.0f * q.x * q.z + 2.0f * q.w * q.y,    2.0f * q.y * q.z - 2.0f * q.y * q.z - 2.0f * q.w * q.x, 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y, 0.0f    },
+            {   2.0f * q.x * q.z + 2.0f * q.w * q.y,    2.0f * q.y * q.z - 2.0f * q.w * q.x, 1.0f - 2.0f * q.x * q.x - 2.0f * q.y * q.y, 0.0f    },
             {   0.0f,   0.0f,   0.0f,   1.0f    }
         }}};
 

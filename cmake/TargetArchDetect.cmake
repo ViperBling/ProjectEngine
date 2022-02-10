@@ -108,12 +108,12 @@ function(target_architecture output_var)
         # way, we can detect the correct target architecture even when cross-compiling,
         # since the program itself never needs to be run (only the compiler/preprocessor)
         try_run(
-            run_result_unused
-            compile_result_unused
-            "${CMAKE_BINARY_DIR}"
-            "${CMAKE_BINARY_DIR}/arch.c"
-            COMPILE_OUTPUT_VARIABLE ARCH
-            CMAKE_FLAGS CMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
+                run_result_unused
+                compile_result_unused
+                "${CMAKE_BINARY_DIR}"
+                "${CMAKE_BINARY_DIR}/arch.c"
+                COMPILE_OUTPUT_VARIABLE ARCH
+                CMAKE_FLAGS CMAKE_OSX_ARCHITECTURES=${CMAKE_OSX_ARCHITECTURES}
         )
 
         # Parse the architecture name from the compiler output

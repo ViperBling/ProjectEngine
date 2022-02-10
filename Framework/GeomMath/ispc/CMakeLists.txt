@@ -1,6 +1,5 @@
 set(FUNCTIONS 
-    CrossProduct 
-    DotProduct 
+    CrossProduct
     MulByElement 
     Transpose 
     Normalize

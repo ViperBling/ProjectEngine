@@ -12,5 +12,9 @@ namespace ProjectEngine
         virtual int Initialize();
         virtual void Finalize();
         virtual void Tick();
+
+        virtual void Clear();
+        virtual void Draw();
     };
+    extern GraphicsManager* g_pGraphicsManager;
 } // namespace ProjectEngine

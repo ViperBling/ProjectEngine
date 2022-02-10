@@ -13,6 +13,7 @@ namespace ProjectEngine {
         virtual void Tick();
 
     private:
+        HDC   m_hDC;
         HGLRC m_RenderContext;
     };
 }
