@@ -11,5 +11,3 @@ add_executable(ProjectEngine_OpenGL
     )
 target_link_libraries(ProjectEngine_OpenGL WindowsApplication Common OpenGLRHI ${OPENGL_LIBRARIES})
 target_include_directories(ProjectEngine_OpenGL PRIVATE "${PROJECT_SOURCE_DIR}/External/src/glad/include")
-
-add_subdirectory(Test)

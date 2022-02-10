@@ -2,7 +2,9 @@
 
 using namespace ProjectEngine;
 
-SceneManager::~SceneManager() noexcept {}
+SceneManager::~SceneManager() {
+
+}
 
 int SceneManager::Initialize() {
     int result = 0;
