@@ -7,6 +7,7 @@ add_library(Common
     MemoryManager.cpp
     SceneManager.cpp
     SceneObject.cpp
+    SceneParser.cpp
     ProjectEngine.cpp
     )
 

@@ -81,7 +81,7 @@ namespace ProjectEngine
         kVertexDataTypeDouble1   = "DUB1"_i32,
         kVertexDataTypeDouble2   = "DUB2"_i32,
         kVertexDataTypeDouble3   = "DUB3"_i32,
-        kVertexDataTypeDouble4   = "DUB3"_i32
+        kVertexDataTypeDouble4   = "DUB4"_i32
     };
 
     std::ostream& operator<<(std::ostream& out, VertexDataType type);
@@ -112,6 +112,72 @@ namespace ProjectEngine
         SceneObjectVertexArray(SceneObjectVertexArray& arr) = default;
         SceneObjectVertexArray(SceneObjectVertexArray&& arr) = default;
 
+        const std::string& GetAttributeName() const { return m_strAttribute; };
+        VertexDataType GetDataType() const { return m_DataType; };
+        size_t GetDataSize() const
+        {
+            size_t size = m_szData;
+
+            switch(m_DataType) {
+                case VertexDataType::kVertexDataTypeFloat1:
+                case VertexDataType::kVertexDataTypeFloat2:
+                case VertexDataType::kVertexDataTypeFloat3:
+                case VertexDataType::kVertexDataTypeFloat4:
+                    size *= sizeof(float);
+                    break;
+                case VertexDataType::kVertexDataTypeDouble1:
+                case VertexDataType::kVertexDataTypeDouble2:
+                case VertexDataType::kVertexDataTypeDouble3:
+                case VertexDataType::kVertexDataTypeDouble4:
+                    size *= sizeof(double);
+                    break;
+                default:
+                    size = 0;
+                    assert(0);
+                    break;
+            }
+
+            return size;
+        };
+        const void* GetData() const { return m_pData; };
+        size_t GetVertexCount() const
+        {
+            size_t size = m_szData;
+
+            switch(m_DataType) {
+                case VertexDataType::kVertexDataTypeFloat1:
+                    size /= 1;
+                    break;
+                case VertexDataType::kVertexDataTypeFloat2:
+                    size /= 2;
+                    break;
+                case VertexDataType::kVertexDataTypeFloat3:
+                    size /= 3;
+                    break;
+                case VertexDataType::kVertexDataTypeFloat4:
+                    size /= 4;
+                    break;
+                case VertexDataType::kVertexDataTypeDouble1:
+                    size /= 1;
+                    break;
+                case VertexDataType::kVertexDataTypeDouble2:
+                    size /= 2;
+                    break;
+                case VertexDataType::kVertexDataTypeDouble3:
+                    size /= 3;
+                    break;
+                case VertexDataType::kVertexDataTypeDouble4:
+                    size /= 4;
+                    break;
+                default:
+                    size = 0;
+                    assert(0);
+                    break;
+            }
+
+            return size;
+        }
+
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectVertexArray& obj);
     };
 
@@ -132,7 +198,6 @@ namespace ProjectEngine
         const IndexDataType m_DataType;
 
         const void*       m_pData;
-
         const size_t      m_szData;
 
     public:
@@ -151,10 +216,43 @@ namespace ProjectEngine
         SceneObjectIndexArray(SceneObjectIndexArray& arr) = default;
         SceneObjectIndexArray(SceneObjectIndexArray&& arr) = default;
 
+        const IndexDataType GetIndexType() const { return m_DataType; };
+        const void* GetData() const { return m_pData; };
+        size_t GetDataSize() const
+        {
+            size_t size = m_szData;
+
+            switch(m_DataType) {
+                case IndexDataType::kIndexDataTypeInt8:
+                    size *= sizeof(int8_t);
+                    break;
+                case IndexDataType::kIndexDataTypeInt16:
+                    size *= sizeof(int16_t);
+                    break;
+                case IndexDataType::kIndexDataTypeInt32:
+                    size *= sizeof(int32_t);
+                    break;
+                case IndexDataType::kIndexDataTypeInt64:
+                    size *= sizeof(int64_t);
+                    break;
+                default:
+                    size = 0;
+                    assert(0);
+                    break;
+            }
+
+            return size;
+        };
+
+        size_t GetIndexCount() const
+        {
+            return m_szData;
+        }
+
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectIndexArray& obj);
     };
 
-    typedef enum _PrimitiveType : int32_t {
+    ENUM(PrimitiveType) {
         kPrimitiveTypeNone = "NONE"_i32,        ///< No particular primitive type.
         kPrimitiveTypePointList = "PLST"_i32,   ///< For N>=0, vertex N renders a point.
         kPrimitiveTypeLineList = "LLST"_i32,    ///< For N>=0, vertices [N*2+0, N*2+1] render a line.
@@ -172,7 +270,7 @@ namespace ProjectEngine
         kPrimitiveTypeQuadList = "QLST"_i32,    ///< For N>=0, vertices [N*4+0, N*4+1, N*4+2] and [N*4+0, N*4+2, N*4+3] render triangles.
         kPrimitiveTypeQuadStrip = "QSTR"_i32,   ///< For N>=0, vertices [N*2+0, N*2+1, N*2+3] and [N*2+0, N*2+3, N*2+2] render triangles.
         kPrimitiveTypePolygon = "POLY"_i32,     ///< For N>=0, vertices [0, N+1, N+2] render a triangle.
-    } PrimitiveType;
+    };
 
     std::ostream& operator<<(std::ostream& out, PrimitiveType type);
 
@@ -196,10 +294,26 @@ namespace ProjectEngine
             m_bVisible(visible),
             m_bShadow(shadow),
             m_bMotionBlur(motion_blur) {};
+        SceneObjectMesh(SceneObjectMesh&& mesh) :
+            BaseSceneObject(SceneObjectType::kSceneObjectTypeMesh),
+            m_IndexArray(std::move(mesh.m_IndexArray)),
+            m_VertexArray(std::move(mesh.m_VertexArray)),
+            m_PrimitiveType(mesh.m_PrimitiveType),
+            m_bVisible(mesh.m_bVisible),
+            m_bShadow(mesh.m_bShadow),
+            m_bMotionBlur(mesh.m_bMotionBlur) {};
 
         void AddIndexArray(SceneObjectIndexArray&& array) { m_IndexArray.push_back(std::move(array)); };
         void AddVertexArray(SceneObjectVertexArray&& array) { m_VertexArray.push_back(std::move(array)); };
         void SetPrimitiveType(PrimitiveType type) { m_PrimitiveType = type;  };
+
+        size_t GetIndexCount() const { return (m_IndexArray.empty()? 0 : m_IndexArray[0].GetIndexCount()); };
+        size_t GetVertexCount() const { return (m_VertexArray.empty()? 0 : m_VertexArray[0].GetVertexCount()); };
+        size_t GetVertexPropertiesCount() const { return m_VertexArray.size(); };
+        const SceneObjectVertexArray& GetVertexPropertyArray(const size_t index) const { return m_VertexArray[index]; };
+        const SceneObjectIndexArray& GetIndexArray(const size_t index) const { return m_IndexArray[index]; };
+        const PrimitiveType& GetPrimitiveType() { return m_PrimitiveType; };
+
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectMesh& obj);
     };
@@ -207,8 +321,8 @@ namespace ProjectEngine
     class SceneObjectTexture : public BaseSceneObject
     {
     protected:
-        uint32_t m_nTexCoordIndex;
         std::string m_Name;
+        uint32_t m_nTexCoordIndex;
         std::shared_ptr<Image> m_pImage;
         std::vector<Matrix4X4f> m_Transforms;
 
@@ -234,7 +348,8 @@ namespace ProjectEngine
 
         SceneObjectTexture(SceneObjectTexture&) = default;
         SceneObjectTexture(SceneObjectTexture&&) = default;
-        void SetName(std::string& name) { m_Name = name; };
+        void SetName(const std::string& name) { m_Name = name; };
+        void SetName(std::string&& name) { m_Name = std::move(name); };
         void AddTransform(Matrix4X4f& matrix) { m_Transforms.push_back(matrix); };
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectTexture& obj);
@@ -251,12 +366,12 @@ namespace ProjectEngine
         ParameterValueMap(const T value) : Value(value) {};
         ParameterValueMap(const std::shared_ptr<SceneObjectTexture>& value) : ValueMap(value) {};
 
-        ParameterValueMap(const ParameterValueMap& rhs) = default;
+        ParameterValueMap(const ParameterValueMap<T>& rhs) = default;
 
-        ParameterValueMap(ParameterValueMap&& rhs) = default;
+        ParameterValueMap(ParameterValueMap<T>&& rhs) = default;
 
-        ParameterValueMap& operator=(const ParameterValueMap& rhs) = default;
-        ParameterValueMap& operator=(ParameterValueMap&& rhs) = default;
+        ParameterValueMap& operator=(const ParameterValueMap<T>& rhs) = default;
+        ParameterValueMap& operator=(ParameterValueMap<T>&& rhs) = default;
         ParameterValueMap& operator=(const std::shared_ptr<SceneObjectTexture>& rhs)
         {
             ValueMap = rhs;
@@ -268,13 +383,13 @@ namespace ProjectEngine
         friend std::ostream& operator<<(std::ostream& out, const ParameterValueMap<T>& obj)
         {
             out << "Parameter Value: " << obj.Value << std::endl;
-            if (obj.ValueMap) {
+            if (obj.ValueMap)
+            {
                 out << "Parameter Map: " << *obj.ValueMap << std::endl;
             }
 
             return out;
         }
-
     };
 
     typedef ParameterValueMap<Vector4f> Color;
@@ -360,12 +475,16 @@ namespace ProjectEngine
 
         void SetVisibility(bool visible) { m_bVisible = visible; };
         const bool Visible() { return m_bVisible; };
+
         void SetIfCastShadow(bool shadow) { m_bShadow = shadow; };
         const bool CastShadow() { return m_bShadow; };
+
         void SetIfMotionBlur(bool motion_blur) { m_bMotionBlur = motion_blur; };
         const bool MotionBlur() { return m_bMotionBlur; };
 
         void AddMesh(std::shared_ptr<SceneObjectMesh>& mesh) { m_Mesh.push_back(std::move(mesh)); };
+        const std::weak_ptr<SceneObjectMesh> GetMesh() { return (m_Mesh.empty()? nullptr : m_Mesh[0]); };
+        const std::weak_ptr<SceneObjectMesh> GetMeshLOD(size_t lod) { return (lod < m_Mesh.size()? m_Mesh[lod] : nullptr); };
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectGeometry& obj);
     };
@@ -381,9 +500,32 @@ namespace ProjectEngine
         Color       m_LightColor;
         float       m_fIntensity;
         AttenFunc   m_LightAttenuation;
-        float       m_fNearClipDistance;
-        float       m_fFarClipDistance;
         bool        m_bCastShadows;
+        std::string m_strTexture;
+
+    public:
+        void SetIfCastShadow(bool shadow) { m_bCastShadows = shadow; };
+
+        void SetColor(std::string& attrib, Vector4f& color)
+        {
+            if(attrib == "light") {
+                m_LightColor = Color(color);
+            }
+        };
+
+        void SetParam(std::string& attrib, float param)
+        {
+            if(attrib == "intensity") {
+                m_fIntensity = param;
+            }
+        };
+
+        void SetTexture(std::string& attrib, std::string& textureName)
+        {
+            if(attrib == "projection") {
+                m_strTexture = textureName;
+            }
+        };
 
     protected:
         // can only be used as base class of delivered lighting objects
@@ -398,8 +540,6 @@ namespace ProjectEngine
             m_LightColor(std::move(color)),
             m_fIntensity(intensity),
             m_LightAttenuation(atten_func),
-            m_fNearClipDistance(near_clip),
-            m_fFarClipDistance(far_clip),
             m_bCastShadows(cast_shadows) {};
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectLight& obj);
@@ -419,18 +559,7 @@ namespace ProjectEngine
         float   m_fConeAngle;
         float   m_fPenumbraAngle;
     public:
-        SceneObjectSpotLight(
-            Color&& color = Vector4f(1.0f),
-            float intensity = 10.0f,
-            AttenFunc atten_func = DefaultAttenFunc,
-            float near_clip = 1.0f,
-            float far_clip = 100.0f,
-            bool cast_shadows = false,
-            float cone_angle = PI / 4.0f,
-            float penumbra_angle = PI / 3.0f) :
-            SceneObjectLight(std::move(color), intensity, atten_func, near_clip, far_clip, cast_shadows),
-            m_fConeAngle(cone_angle),
-            m_fPenumbraAngle(penumbra_angle) {};
+        SceneObjectSpotLight(void) : SceneObjectLight(), m_fConeAngle(PI / 4.0f), m_fPenumbraAngle(PI / 3.0f) {};
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectSpotLight& obj);
     };
@@ -441,6 +570,27 @@ namespace ProjectEngine
         float m_fAspect;
         float m_fNearClipDistance;
         float m_fFarClipDistance;
+
+    public:
+        void SetColor(std::string& attrib, Vector4f& color)
+        {
+            // TODO: extension
+        };
+
+        void SetParam(std::string& attrib, float param)
+        {
+            if(attrib == "near") {
+                m_fNearClipDistance = param;
+            }
+            else if(attrib == "far") {
+                m_fFarClipDistance = param;
+            }
+        };
+
+        void SetTexture(std::string& attrib, std::string& textureName)
+        {
+            // TODO: extension
+        };
 
     protected:
         // can only be used as base class
@@ -468,6 +618,15 @@ namespace ProjectEngine
     {
     protected:
         float m_fFov;
+
+    public:
+        void SetParam(std::string& attrib, float param)
+        {
+            // TODO: handle fovx, fovy
+            if(attrib == "fov") {
+                m_fFov = param;
+            }
+        };
 
     public:
         SceneObjectPerspectiveCamera(

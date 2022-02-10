@@ -2,6 +2,10 @@
 
 #include "GraphicsManager.hpp"
 #include "GeomMath.hpp"
+#include <unordered_map>
+#include <vector>
+#include <string>
+#include "glad/glad.h"
 
 namespace ProjectEngine
 {
@@ -20,7 +24,7 @@ namespace ProjectEngine
     private:
         bool SetShaderParameters(float* worldMatrix, float* viewMatrix, float* projectionMatrix);
 
-        bool InitializeBuffers();
+        void InitializeBuffers();
         void RenderBuffers();
         void CalculateCameraPosition();
         bool InitializeShader(const char* vsFilename, const char* fsFilename);
@@ -34,8 +38,16 @@ namespace ProjectEngine
         const float screenDepth = 1000.0f;
         const float screenNear = 0.1f;
 
-        int     m_vertexCount, m_indexCount;
-        unsigned int m_vertexArrayId, m_vertexBufferId, m_indexBufferId;
+        struct DrawBatchContext {
+            GLuint  vao;
+            GLenum  mode;
+            GLenum  type;
+            GLsizei count;
+        };
+
+
+        std::vector<DrawBatchContext> m_VAO;
+        std::unordered_map<std::string, unsigned int> m_Buffers;
 
         float m_positionX = 0, m_positionY = 0, m_positionZ = -10;
         float m_rotationX = 0, m_rotationY = 0, m_rotationZ = 0;

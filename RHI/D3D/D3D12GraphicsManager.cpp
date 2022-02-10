@@ -386,8 +386,8 @@ HRESULT ProjectEngine::D3D12GraphicsManager::CreateGraphicsResources()
             m_pCommandQueue,                            // Swap chain needs the queue so that it can force a flush on it
             hWnd,
             &scd,
-            NULL,
-            NULL,
+            nullptr,
+            nullptr,
             &pSwapChain
     )))
     {
