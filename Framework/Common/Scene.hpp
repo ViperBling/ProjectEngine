@@ -11,7 +11,7 @@ namespace ProjectEngine
     class Scene
     {
     public:
-        std::unique_ptr<BaseSceneNode> SceneGraph;
+        std::shared_ptr<BaseSceneNode> SceneGraph;
 
         std::unordered_multimap<std::string, std::shared_ptr<SceneCameraNode>>  CameraNodes;
         std::unordered_multimap<std::string, std::shared_ptr<SceneLightNode>>  LightNodes;
