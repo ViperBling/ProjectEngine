@@ -4,13 +4,17 @@
 #include <iostream>
 #include <limits>
 #include <cstdint>
+#include "include/AddByElement.h"
 #include "include/CrossProduct.h"
+#include "include/InverseMatrix4X4f.h"
+#include "include/MatrixExchangeYandZ.h"
 #include "include/MulByElement.h"
 #include "include/Normalize.h"
+#include "include/SubByElement.h"
 #include "include/Transform.h"
 #include "include/Transpose.h"
-#include "include/AddByElement.h"
-#include "include/SubByElement.h"
+
+
 
 #ifndef PI
 #define PI 3.14159265358979323846f
@@ -65,7 +69,6 @@ namespace ProjectEngine
 			return TT<T>( v[Indexes]... );
 		}
 	};
-
 
     template <typename T>
     struct Vector2Type
@@ -162,8 +165,9 @@ namespace ProjectEngine
     std::ostream& operator<<(std::ostream& out, TT<T> vector)
     {
         out << "( ";
-        for (int i = 0; i < countof(vector.data); i++) {
-                out << vector.data[i] << ((i == countof(vector.data) - 1)? ' ' : ',');
+        for (uint32_t i = 0; i < countof(vector.data); i++)
+        {
+            out << vector.data[i] << ((i == countof(vector.data) - 1)? ' ' : ',');
         }
         out << ")\n";
 
@@ -349,6 +353,7 @@ namespace ProjectEngine
     {
         float cYaw, cPitch, cRoll, sYaw, sPitch, sRoll;
 
+
         // Get the cosine and sin of the yaw, pitch, and roll.
         cYaw = cosf(yaw);
         cPitch = cosf(pitch);
@@ -377,6 +382,12 @@ namespace ProjectEngine
     inline void Transform(Vector4f& vector, const Matrix4X4f& matrix)
     {
         ispc::Transform(vector, matrix);
+    }
+
+    template <typename T, int ROWS, int COLS>
+    inline void ExchangeYandZ(Matrix<T,ROWS,COLS>& matrix)
+    {
+        ispc::MatrixExchangeYandZ(matrix, ROWS, COLS);
     }
 
     inline void BuildViewMatrix(Matrix4X4f& result, const Vector3f position, const Vector3f lookAt, const Vector3f up)
@@ -436,6 +447,17 @@ namespace ProjectEngine
         matrix = perspective;
     }
 
+    inline void BuildPerspectiveFovRHMatrix(Matrix4X4f& matrix, const float fieldOfView, const float screenAspect, const float screenNear, const float screenDepth)
+    {
+        Matrix4X4f perspective = {{{
+            { 1.0f / (screenAspect * tanf(fieldOfView * 0.5f)), 0.0f, 0.0f, 0.0f },
+            { 0.0f, 1.0f / tanf(fieldOfView * 0.5f), 0.0f, 0.0f },
+            { 0.0f, 0.0f, screenDepth / (screenNear - screenDepth), -1.0f },
+            { 0.0f, 0.0f, (-screenNear * screenDepth) / (screenDepth - screenNear), 0.0f }
+        }}};
+
+        matrix = perspective;
+    }
 
     inline void MatrixTranslation(Matrix4X4f& matrix, const float x, const float y, const float z)
     {
@@ -528,6 +550,11 @@ namespace ProjectEngine
         }}};
 
         matrix = rotation;
+    }
+
+    inline bool InverseMatrix4X4f(Matrix4X4f& matrix)
+    {
+        return ispc::InverseMatrix4X4f(matrix);
     }
 
 } // namespace ProjectEngine

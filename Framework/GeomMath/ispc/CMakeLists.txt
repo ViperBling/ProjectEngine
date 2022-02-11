@@ -1,11 +1,13 @@
-set(FUNCTIONS 
-    CrossProduct
-    MulByElement 
-    Transpose 
-    Normalize
-    Transform 
-    AddByElement 
-    SubByElement
+set(FUNCTIONS
+        AddByElement
+        CrossProduct
+        InverseMatrix4x4f
+        MatrixExchangeYandZ
+        MulByElement
+        Normalize
+        SubByElement
+        Transform
+        Transpose
 )
 
 foreach(FUNC IN LISTS FUNCTIONS)

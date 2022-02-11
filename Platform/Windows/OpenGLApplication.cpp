@@ -45,15 +45,15 @@ int OpenGLApplication::Initialize()
     WNDCLASSEX WndClassEx;
     memset(&WndClassEx, 0, sizeof(WNDCLASSEX));
 
-    HINSTANCE hInstance = GetModuleHandle(NULL);
+    HINSTANCE hInstance = GetModuleHandle(nullptr);
 
     WndClassEx.cbSize = sizeof(WNDCLASSEX);
     WndClassEx.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
     WndClassEx.lpfnWndProc = WndProc;
     WndClassEx.hInstance = hInstance;
-    WndClassEx.hIcon = LoadIcon(NULL, IDI_APPLICATION);
-    WndClassEx.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
-    WndClassEx.hCursor = LoadCursor(NULL, IDC_ARROW);
+    WndClassEx.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+    WndClassEx.hIconSm = LoadIcon(nullptr, IDI_APPLICATION);
+    WndClassEx.hCursor = LoadCursor(nullptr, IDC_ARROW);
     WndClassEx.lpszClassName = _T("InitWindow");
 
     RegisterClassEx(&WndClassEx);
@@ -66,7 +66,8 @@ int OpenGLApplication::Initialize()
             CW_USEDEFAULT,
             nullptr,
             nullptr,
-            hInstance, nullptr);
+            hInstance,
+            nullptr);
 
     PIXELFORMATDESCRIPTOR pfd;
     memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
@@ -153,7 +154,7 @@ int OpenGLApplication::Initialize()
 
         UINT numFormats;
 
-        if(FAILED(wglChoosePixelFormatARB(m_hDC, attributes, nullptr, 1, &nPixelFormat, &numFormats)) || numFormats == 0)
+        if(FAILED(wglChoosePixelFormatARB(m_hDC, attributes, nullptr, 1, &nPixelFormat, &numFormats)))
         {
 //            printf("wglChoosePixelFormatARB failed!\n");
             std::cout << "wglChoosePixelFormatARB failed!" << std::endl;

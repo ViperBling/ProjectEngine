@@ -1,7 +1,7 @@
 #pragma once
+
 #include "GeomMath.hpp"
 #include "IRuntimeModule.hpp"
-#include "SceneNode.hpp"
 #include "SceneParser.hpp"
 
 namespace ProjectEngine

@@ -53,9 +53,11 @@ namespace ProjectEngine
         BaseSceneObject(Guid& guid, SceneObjectType type) : m_Guid(guid), m_Type(type) {};
         BaseSceneObject(Guid&& guid, SceneObjectType type) : m_Guid(std::move(guid)), m_Type(type) {};
         BaseSceneObject(BaseSceneObject&& obj) : m_Guid(std::move(obj.m_Guid)), m_Type(obj.m_Type) {};
-        BaseSceneObject& operator=(BaseSceneObject&& obj) {
+        BaseSceneObject& operator=(BaseSceneObject&& obj)
+        {
             this->m_Guid = std::move(obj.m_Guid);
-            this->m_Type = obj.m_Type; return *this;
+            this->m_Type = obj.m_Type;
+            return *this;
         };
         virtual ~BaseSceneObject() {};
 
@@ -108,7 +110,6 @@ namespace ProjectEngine
                 m_DataType(data_type),
                 m_pData(data),
                 m_szData(data_size) {};
-
         SceneObjectVertexArray(SceneObjectVertexArray& arr) = default;
         SceneObjectVertexArray(SceneObjectVertexArray&& arr) = default;
 
@@ -136,9 +137,9 @@ namespace ProjectEngine
                     assert(0);
                     break;
             }
-
             return size;
         };
+
         const void* GetData() const { return m_pData; };
         size_t GetVertexCount() const
         {
@@ -174,7 +175,6 @@ namespace ProjectEngine
                     assert(0);
                     break;
             }
-
             return size;
         }
 
@@ -212,7 +212,6 @@ namespace ProjectEngine
                 m_DataType(data_type),
                 m_pData(data),
                 m_szData(data_size) {};
-
         SceneObjectIndexArray(SceneObjectIndexArray& arr) = default;
         SceneObjectIndexArray(SceneObjectIndexArray&& arr) = default;
 
@@ -240,7 +239,6 @@ namespace ProjectEngine
                     assert(0);
                     break;
             }
-
             return size;
         };
 
@@ -314,7 +312,6 @@ namespace ProjectEngine
         const SceneObjectIndexArray& GetIndexArray(const size_t index) const { return m_IndexArray[index]; };
         const PrimitiveType& GetPrimitiveType() { return m_PrimitiveType; };
 
-
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectMesh& obj);
     };
 
@@ -369,7 +366,6 @@ namespace ProjectEngine
         ParameterValueMap(const ParameterValueMap<T>& rhs) = default;
 
         ParameterValueMap(ParameterValueMap<T>&& rhs) = default;
-
         ParameterValueMap& operator=(const ParameterValueMap<T>& rhs) = default;
         ParameterValueMap& operator=(ParameterValueMap<T>&& rhs) = default;
         ParameterValueMap& operator=(const std::shared_ptr<SceneObjectTexture>& rhs)
@@ -387,7 +383,6 @@ namespace ProjectEngine
             {
                 out << "Parameter Map: " << *obj.ValueMap << std::endl;
             }
-
             return out;
         }
     };
@@ -417,22 +412,15 @@ namespace ProjectEngine
             BaseSceneObject(SceneObjectType::kSceneObjectTypeMaterial),
             m_Name(std::move(name)) {};
 
-        SceneObjectMaterial(
-            const std::string& name = "",
-            Color&& base_color = Vector4f(1.0f),
-            Parameter&& metallic = 0.0f,
-            Parameter&& roughness = 0.0f,
-            Normal&& normal = Vector3f(0.0f, 0.0f, 1.0f),
-            Parameter&& specular = 0.0f,
-            Parameter&& ao = 0.0f) :
+        SceneObjectMaterial() :
             BaseSceneObject(SceneObjectType::kSceneObjectTypeMaterial),
-            m_Name(name),
-            m_BaseColor(std::move(base_color)),
-            m_Metallic(std::move(metallic)),
-            m_Roughness(std::move(roughness)),
-            m_Normal(std::move(normal)),
-            m_Specular(std::move(specular)),
-            m_AmbientOcclusion(std::move(ao)) {};
+            m_Name(""),
+            m_BaseColor(Vector4f(1.0f)),
+            m_Metallic(0.0f),
+            m_Roughness(0.0f),
+            m_Normal(Vector3f(0.0f, 0.0f, 1.0f)),
+            m_Specular(0.0f),
+            m_AmbientOcclusion(1.0f) {};
 
         void SetName(const std::string& name) { m_Name = name; };
         void SetName(std::string&& name) { m_Name = std::move(name); };
@@ -527,20 +515,22 @@ namespace ProjectEngine
             }
         };
 
+        void SetAttenuation(AttenFunc func)
+        {
+            m_LightAttenuation = func;
+        }
+
+        const Color& GetColor() { return m_LightColor; };
+        float GetIntensity() { return m_fIntensity; };
+
     protected:
         // can only be used as base class of delivered lighting objects
-        SceneObjectLight(
-            Color&& color = Vector4f(1.0f),
-            float intensity = 10.0f,
-            AttenFunc atten_func = DefaultAttenFunc,
-            float near_clip = 1.0f,
-            float far_clip = 100.0f,
-            bool cast_shadows = false) :
+        SceneObjectLight() :
             BaseSceneObject(SceneObjectType::kSceneObjectTypeLight),
-            m_LightColor(std::move(color)),
-            m_fIntensity(intensity),
-            m_LightAttenuation(atten_func),
-            m_bCastShadows(cast_shadows) {};
+            m_LightColor(Vector4f(1.0f)),
+            m_fIntensity(100.0f),
+            m_LightAttenuation(DefaultAttenFunc),
+            m_bCastShadows(false) {};
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectLight& obj);
     };
@@ -559,7 +549,7 @@ namespace ProjectEngine
         float   m_fConeAngle;
         float   m_fPenumbraAngle;
     public:
-        SceneObjectSpotLight(void) : SceneObjectLight(), m_fConeAngle(PI / 4.0f), m_fPenumbraAngle(PI / 3.0f) {};
+        SceneObjectSpotLight() : SceneObjectLight(), m_fConeAngle(PI / 4.0f), m_fPenumbraAngle(PI / 3.0f) {};
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectSpotLight& obj);
     };
@@ -592,16 +582,16 @@ namespace ProjectEngine
             // TODO: extension
         };
 
+        float GetNearClipDistance() const { return m_fNearClipDistance; };
+        float GetFarClipDistance() const { return m_fFarClipDistance; };
+
     protected:
         // can only be used as base class
-        SceneObjectCamera(
-            float aspect = 16.0f / 9.0f,
-            float near_clip = 1.0f,
-            float far_clip = 100.0f) :
+        SceneObjectCamera() :
             BaseSceneObject(SceneObjectType::kSceneObjectTypeCamera),
-            m_fAspect(aspect),
-            m_fNearClipDistance(near_clip),
-            m_fFarClipDistance(far_clip) {};
+            m_fAspect(16.0f / 9.0f),
+            m_fNearClipDistance(1.0f),
+            m_fFarClipDistance(100.0f) {};
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectCamera& obj);
     };
@@ -626,16 +616,12 @@ namespace ProjectEngine
             if(attrib == "fov") {
                 m_fFov = param;
             }
+            SceneObjectCamera::SetParam(attrib, param);
         };
 
     public:
-        SceneObjectPerspectiveCamera(
-            float aspect = 16.0f / 9.0f,
-            float near_clip = 1.0f,
-            float far_clip = 100.0f,
-            float fov = PI / 2.0) :
-            SceneObjectCamera(aspect, near_clip, far_clip),
-            m_fFov(fov) {};
+        SceneObjectPerspectiveCamera(float fov = PI / 2.0) : SceneObjectCamera(), m_fFov(fov) {};
+        float GetFov() const { return m_fFov; };
 
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectPerspectiveCamera& obj);
     };
@@ -647,15 +633,13 @@ namespace ProjectEngine
         bool m_bSceneObjectOnly;
 
     public:
-        SceneObjectTransform() {
-            BuildIdentityMatrix(m_matrix);
-            m_bSceneObjectOnly = false;
-        }
+        SceneObjectTransform() { BuildIdentityMatrix(m_matrix); m_bSceneObjectOnly = false; };
 
-        SceneObjectTransform(const Matrix4X4f& matrix, const bool object_only = false) {
-            m_matrix = matrix;
-            m_bSceneObjectOnly = object_only;
-        }
+        SceneObjectTransform(const Matrix4X4f& matrix, const bool object_only = false) { m_matrix = matrix; m_bSceneObjectOnly = object_only; };
+
+        operator Matrix4X4f() { return m_matrix; };
+        operator const Matrix4X4f() const { return m_matrix; };
+
         friend std::ostream& operator<<(std::ostream& out, const SceneObjectTransform& obj);
     };
 
