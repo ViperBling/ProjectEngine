@@ -2,7 +2,7 @@
 
 namespace ProjectEngine
 {
-#define CHECK_APPLICATION_INIT(result)      if(result != 0) { exit(result); }
+#define CHECK_APPLICATION_INIT(result)      if((result) != 0) { exit(result); }
 
     class IApplication
     {

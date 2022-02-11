@@ -2,7 +2,7 @@ if( CMAKE_BUILD_TYPE STREQUAL "Release" )
     find_library(XG_LIBRARY xg PATHS ${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Release_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Release_x64/include")
 
-else( CMAKE_BUILD_TYPE STREQUAL "Release" )
+else( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     find_library(XG_LIBRARY xg PATHS ${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Debug_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Debug_x64/include")
 

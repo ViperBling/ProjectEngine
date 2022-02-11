@@ -6,6 +6,8 @@ set (CMAKE_CXX_STANDARD 17)
 
 include_directories("${PROJECT_SOURCE_DIR}/CMake")
 include_directories("${PROJECT_SOURCE_DIR}/Sources")
+include_directories("${PROJECT_SOURCE_DIR}/Sources/Framework/Common")
+include_directories("${PROJECT_SOURCE_DIR}/Sources/Framework/Interface")
 include_directories("${PROJECT_SOURCE_DIR}/External")
 
 include(${PROJECT_SOURCE_DIR}/CMake/TargetArchDetect.cmake)

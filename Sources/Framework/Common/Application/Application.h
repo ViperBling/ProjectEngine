@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Framework/Interface/IApplication.h"
+#include "IApplication.h"
 
 namespace ProjectEngine
 {

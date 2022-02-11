@@ -5,6 +5,8 @@
 #include "Platform/Platform.h"
 #include "EngineConfig.h"
 
+#include "Application/WindowsApplication.h"
+
 using namespace std;
 
 int main()
@@ -16,10 +18,15 @@ int main()
     cout << "EngineTargetPlatform: " << PROJECTENGINE_PLATFORM << endl;
     cout << "EngineBuildType: " << BUILD_TYPE << endl;
 
-    int a, b;
-    a = 1, b = 2;
+#if defined(PROJECTENGINE_WINDOWS)
 
-    PROJECTENGINE_ASSERT(a > b);
+    cout << "Creating Windows..." << endl;
+    ProjectEngine::WindowsApplication WinApp;
+    CHECK_APPLICATION_INIT(WinApp.Initialize());
+    WinApp.Run();
+    WinApp.Finalize();
+
+#endif
 
     return 0;
 }
