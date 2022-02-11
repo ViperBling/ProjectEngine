@@ -37,7 +37,7 @@ namespace ProjectEngine
         }
 
         // Now retrieve the info log.
-        glGetShaderInfoLog(shaderId, logSize, NULL, infoLog);
+        glGetShaderInfoLog(shaderId, logSize, nullptr, infoLog);
 
         // Open a file to write the error message to.
         fout.open("shader-error.txt");
@@ -53,8 +53,6 @@ namespace ProjectEngine
 
         // Pop a message up on the screen to notify the user to check the text file for compile errors.
         cerr << "Error compiling shader.  Check shader-error.txt for message." << shaderFilename << endl;
-
-        return;
     }
 
     static void OutputLinkerErrorMessage(unsigned int programId)
@@ -78,7 +76,7 @@ namespace ProjectEngine
         }
 
         // Now retrieve the info log.
-        glGetProgramInfoLog(programId, logSize, NULL, infoLog);
+        glGetProgramInfoLog(programId, logSize, nullptr, infoLog);
 
         // Open a file to write the error message to.
         fout.open("linker-error.txt");
@@ -258,7 +256,7 @@ void OpenGLGraphicsManager::InitializeBuffers()
         // Set the number of vertices in the vertex array.
         auto vertexCount = pMesh->GetVertexCount();
 
-        // Allocate an OpenGL vertex array object
+        // Allocate an OpenGL vertex array object.
         GLuint vao;
         glGenVertexArrays(1, &vao);
 

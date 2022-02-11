@@ -345,9 +345,9 @@ namespace ProjectEngine
             BaseSceneObject(SceneObjectType::kSceneObjectTypeTexture),
             m_nTexCoordIndex(coord_index),
             m_pImage(std::move(image)) {};
-
         SceneObjectTexture(SceneObjectTexture&) = default;
         SceneObjectTexture(SceneObjectTexture&&) = default;
+
         void SetName(const std::string& name) { m_Name = name; };
         void SetName(std::string&& name) { m_Name = std::move(name); };
         void AddTransform(Matrix4X4f& matrix) { m_Transforms.push_back(matrix); };

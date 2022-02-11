@@ -15,8 +15,6 @@ int ProjectEngine::WindowsApplication::Initialize()
     // Get the HINSTANCE of the Console Program
     HINSTANCE hInstance = GetModuleHandle(nullptr);
 
-    // the handle for the window, filled by a function
-    HWND hWnd;
     // this struct holds information for the window class
     WNDCLASSEX wc;
 
@@ -36,7 +34,7 @@ int ProjectEngine::WindowsApplication::Initialize()
     RegisterClassEx(&wc);
 
     // create the window and use the result as the handle
-    hWnd = CreateWindowEx(
+    m_hWnd = CreateWindowEx(
         0,
         "ProjectEngine",      // name of the window class
         m_Config.appName,             // title of the window
@@ -51,9 +49,7 @@ int ProjectEngine::WindowsApplication::Initialize()
         this);                            // used with multiple windows, NULL
 
     // display the window on the screen
-    ShowWindow(hWnd, SW_SHOW);
-
-    m_hWnd = hWnd;
+    ShowWindow(m_hWnd, SW_SHOW);
 
     return result;
 }

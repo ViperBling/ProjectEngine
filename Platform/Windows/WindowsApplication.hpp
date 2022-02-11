@@ -15,7 +15,7 @@ namespace ProjectEngine
         virtual void Finalize();
         virtual void Tick();
 
-        inline HWND GetMainWindow() const { return m_hWnd; };
+        HWND GetMainWindow() const { return m_hWnd; };
 
     private:
         static LRESULT CALLBACK WindowProc(

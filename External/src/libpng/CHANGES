@@ -5505,8 +5505,8 @@ Version 1.6.22beta02 [February 8, 2016]
   Corrected error in PNG_IMAGE_PNG_SIZE_MAX. This new macro underreported
     the palette size because it failed to take into account that the memory
     palette has to be expanded to full RGB when it is written to PNG.
-  Updated CMakeLists.txt, added supporting scripts/gen*.cmake.in
-    and test.cmake.in (Roger Leigh).
+  Updated CMakeLists.txt, added supporting scripts/gen*.CMake.in
+    and test.CMake.in (Roger Leigh).
   Relaxed limit checks on gamma values in pngrtran.c. As suggested in
     the comments gamma values outside the range currently permitted
     by png_set_alpha_mode are useful for HDR data encoding.  These values
@@ -5523,7 +5523,7 @@ Version 1.6.22beta03 [March 9, 2016]
     (Robert C. Seacord).
   Removed dubious "#if INT_MAX" test from png.h that was added to
     libpng-1.6.19beta02 (John Bowler).
-  Add ${INCLUDES} in scripts/genout.cmake.in (Bug report by Nixon Kwok).
+  Add ${INCLUDES} in scripts/genout.CMake.in (Bug report by Nixon Kwok).
   Updated LICENSE to say files in the contrib directory are not
     necessarily under the libpng license, and that some makefiles have
     other copyright owners.
@@ -5554,7 +5554,7 @@ Version 1.6.22beta05 [April 27, 2016]
 Version 1.6.22beta06 [May 5, 2016]
   Rebased contrib/intel_sse.patch.
   Quieted two Coverity issues in contrib/libtests/timepng.c.
-  Fixed issues with scripts/genout.cmake.in (David Capello, Nixon Kwok):
+  Fixed issues with scripts/genout.CMake.in (David Capello, Nixon Kwok):
     Added support to use multiple directories in ZLIBINCDIR variable,
     Fixed CMAKE_C_FLAGS with multiple values when genout is compiled on MSVC,
     Fixed pnglibconf.c compilation on OS X including the sysroot path.
@@ -5948,8 +5948,8 @@ Version 1.6.32beta08 [August 3, 2017]
     does not work (the eXIf chunk data can contain zeroes).
 
 Version 1.6.32beta09 [August 3, 2017]
-  Require cmake-2.8.8 in CMakeLists.txt. Revised symlink creation,
-    no longer using deprecated cmake LOCATION feature (Clifford Yapp).
+  Require CMake-2.8.8 in CMakeLists.txt. Revised symlink creation,
+    no longer using deprecated CMake LOCATION feature (Clifford Yapp).
   Fixed five-byte error in the calculation of IDAT maximum possible size.
   
 Version 1.6.32beta10 [August 5, 2017]
@@ -5959,7 +5959,7 @@ Version 1.6.32beta10 [August 5, 2017]
   Moved testing of bad pngs into a separate tests/pngtest-badpngs script
   Added the --xfail (expected FAIL) option to pngtest.c. It writes XFAIL
     in the output but PASS for the libpng test.
-  Require cmake-3.0.2 in CMakeLists.txt (Clifford Yapp).
+  Require CMake-3.0.2 in CMakeLists.txt (Clifford Yapp).
   Fix "const" declaration info_ptr argument to png_get_eXIf_1() and the
     num_exif argument to png_get_eXIf_1() (Github Issue 171).
 
@@ -6013,7 +6013,7 @@ Version 1.6.33beta03 [September 14, 2017]
   Fixed incorrect typecast of some arguments to png_malloc() and
     png_calloc() that were png_uint_32 instead of png_alloc_size_t
     (Bug report by "irwir" in Github libpng issue #175).
-  Use pnglibconf.h.prebuilt when building for ANDROID with cmake (Github
+  Use pnglibconf.h.prebuilt when building for ANDROID with CMake (Github
     issue 162, by rcdailey).
 
 Version 1.6.33rc01 [September 20, 2017]
