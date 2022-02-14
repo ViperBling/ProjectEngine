@@ -17,24 +17,24 @@ ENDIF(${WIN32})
 
 
 add_library(ProjectEngineLib
-        ${SourcesPath}/Framework/Common/Memory/Allocator.cpp
-        ${SourcesPath}/Framework/Common/Memory/MemoryManager.cpp
-        ${SourcesPath}/Framework/Common/Application/Application.cpp
+    ${SourcesPath}/Framework/Common/Memory/Allocator.cpp
+    ${SourcesPath}/Framework/Common/Memory/MemoryManager.cpp
+    ${SourcesPath}/Framework/Common/Application/Application.cpp
 
-        ${SourcesPath}/Framework/Common/Object/World.cpp
-        ${SourcesPath}/Framework/Common/Object/Entity.cpp
+    ${SourcesPath}/Framework/Common/Object/World.cpp
+    ${SourcesPath}/Framework/Common/Object/Entity.cpp
 
-        ${SourcesPath}/Framework/Common/Object/Components/TransformComponent.cpp
-        ${SourcesPath}/Framework/Common/Object/Components/MeshRenderComponent.cpp
+    ${SourcesPath}/Framework/Common/Object/Components/TransformComponent.cpp
+    ${SourcesPath}/Framework/Common/Object/Components/MeshRenderComponent.cpp
 
-        ${SourcesPath}/Framework/Common/Object/System/MeshRenderSystem.cpp
+    ${SourcesPath}/Framework/Common/Object/System/MeshRenderSystem.cpp
 
-        ${SourcesPath}/Framework/RHI/RenderObject.cpp
-        ${SourcesPath}/Framework/RHI/RenderMesh.cpp
-        ${SourcesPath}/Framework/RHI/VertexBuffer.cpp
+    ${SourcesPath}/Framework/RHI/RenderObject.cpp
+    ${SourcesPath}/Framework/RHI/RenderMesh.cpp
+    ${SourcesPath}/Framework/RHI/VertexBuffer.cpp
 
-        ${PlatformOnlySources}
-        )
+    ${PlatformOnlySources}
+)
 
 
 IF(${WIN32})
