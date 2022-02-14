@@ -77,7 +77,8 @@ void* ProjectEngine::Allocator::Allocate()
         for (uint32_t i = 0; i < m_nBlocksPerPage - 1; i++)
         {
             pBlock->pNext = NextBlock(pBlock);
-            pBlock = NextBlock(pBlock);
+//            pBlock = NextBlock(pBlock);
+            pBlock = pBlock->pNext;
         }
         pBlock->pNext = nullptr;
 
@@ -129,8 +130,6 @@ void ProjectEngine::Allocator::FreeAll()
 #if defined(PROJECTENGINE_DEBUG)
 void ProjectEngine::Allocator::DebugFillFreePage(PageHeader *pPage)
 {
-    // page header
-//    pPage->pNext = nullptr;
 
     // blocks
     BlockHeader *pBlock = pPage->Blocks();

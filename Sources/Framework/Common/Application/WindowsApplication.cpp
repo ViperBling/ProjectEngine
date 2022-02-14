@@ -1,4 +1,6 @@
 #include "WindowsApplication.h"
+#include "D3D11/GraphicsManagerD3D11.h"
+#include "Object/World.h"
 
 using namespace ProjectEngine;
 
@@ -6,11 +8,26 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
 {
     CHECK_APPLICATION_INIT(Application::Initialize());
     CreateMainWindow();
+
+    mMemoryManager = new MemoryManager();
+    mMemoryManager->Initialize();
+
+    mGraphicsManager = new GraphicsManagerD3D11();
+    auto manager = dynamic_cast<GraphicsManagerD3D11*>(mGraphicsManager);
+    manager->InitializeWithWindow(mHWND);
+
+    mWorld = new World(this);
+    mWorld->Initialize();
+
     return 0;
 }
 
 void ProjectEngine::WindowsApplication::Finalize() noexcept
 {
+    mWorld->Finalize();
+
+    mGraphicsManager->Finalize();
+    mMemoryManager->Finalize();
 }
 
 void ProjectEngine::WindowsApplication::Tick() noexcept
@@ -22,12 +39,13 @@ void ProjectEngine::WindowsApplication::Tick() noexcept
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+    mWorld->Tick();
     Render();
 }
 
 void ProjectEngine::WindowsApplication::Render() noexcept
 {
-
+    mWorld->Render();
 }
 
 HWND ProjectEngine::WindowsApplication::GetWindowsHandler() noexcept

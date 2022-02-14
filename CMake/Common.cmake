@@ -17,7 +17,6 @@ else()
     add_compile_definitions(arch_unknown)
 endif()
 
-
 MESSAGE( STATUS "TARGET_ARCH: " ${TARGET_ARCH} )
 
 IF (CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "None")

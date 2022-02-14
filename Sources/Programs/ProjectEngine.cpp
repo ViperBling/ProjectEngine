@@ -7,7 +7,13 @@
 
 #include "Application/WindowsApplication.h"
 
+namespace ProjectEngine
+{
+    extern Application* GApp = GWindowsApplication::GetInstance();
+}
+
 using namespace std;
+using namespace ProjectEngine;
 
 int main()
 {
@@ -18,15 +24,13 @@ int main()
     cout << "EngineTargetPlatform: " << PROJECTENGINE_PLATFORM << endl;
     cout << "EngineBuildType: " << BUILD_TYPE << endl;
 
-#if defined(PROJECTENGINE_WINDOWS)
 
-    cout << "Creating Windows..." << endl;
-    ProjectEngine::WindowsApplication WinApp;
-    CHECK_APPLICATION_INIT(WinApp.Initialize());
-    WinApp.Run();
-    WinApp.Finalize();
+    CHECK_APPLICATION_INIT(GApp->Initialize());
+    GApp->mWorld->LoadScene("E:\\Program\\ProjectEngine\\Asset\\Scene\\aili_cycle.fbx");
+    GApp->mWorld->DumpEntities();
 
-#endif
+    GApp->Run();
+    GApp->Finalize();
 
     return 0;
 }

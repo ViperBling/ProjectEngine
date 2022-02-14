@@ -1,6 +1,9 @@
 #pragma once
 
 #include "IApplication.h"
+#include "Memory/MemoryManager.h"
+#include "GraphicsManager.h"
+#include "Object/World.h"
 
 namespace ProjectEngine
 {
@@ -14,6 +17,12 @@ namespace ProjectEngine
         virtual void Finalize() noexcept;
         virtual void Quit() noexcept;
         virtual bool IsQuit() noexcept;
+
+    public:
+        MemoryManager* mMemoryManager;
+        GraphicsManager* mGraphicsManager;
+
+        World* mWorld;
 
     private:
         bool mQuit = false;

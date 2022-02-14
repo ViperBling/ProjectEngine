@@ -32,8 +32,8 @@ namespace ProjectEngine
     static const uint32_t kMaxBlockSize =
             kBlockSizes[kNumBlockSizes - 1];
 
-    size_t*        MemoryManager::m_pBlockSizeLookup;
-    Allocator*     MemoryManager::m_pAllocators;
+    size_t*        MemoryManager::m_pBlockSizeLookup = nullptr;
+    Allocator*     MemoryManager::m_pAllocators = nullptr;
 }
 
 int MemoryManager::Initialize() noexcept

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Allocator.h"
-#include "Framework/Interface/IModule.h"
-#include "Framework/Common/Singleton.h"
+#include "IModule.h"
+#include "Singleton.h"
 
 namespace ProjectEngine
 {
@@ -23,6 +23,7 @@ namespace ProjectEngine
         }
 
     public:
+        MemoryManager() = default;
         virtual ~MemoryManager() = default;
 
         virtual int Initialize() noexcept;
@@ -35,15 +36,10 @@ namespace ProjectEngine
         static size_t*        m_pBlockSizeLookup;
         static Allocator*     m_pAllocators;
 
-        friend class Singleton<MemoryManager>;
-
     private:
-        MemoryManager() = default;
-        MemoryManager(const MemoryManager& manager) = default;
-        MemoryManager& operator=(const MemoryManager&) = default;
+         MemoryManager(const MemoryManager& manager) = default;
+         MemoryManager& operator=(const MemoryManager&) = default;
 
         static Allocator* LookUpAllocator(size_t size);
     };
-
-    typedef Singleton<MemoryManager> GMemoryManager;
 }
