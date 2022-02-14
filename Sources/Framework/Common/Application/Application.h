@@ -27,4 +27,6 @@ namespace ProjectEngine
     private:
         bool mQuit = false;
     };
+
+    extern Application* GApp;
 }

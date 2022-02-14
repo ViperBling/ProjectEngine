@@ -15,7 +15,7 @@ namespace ProjectEngine
     {
     public:
         virtual		int		Initialize() noexcept;
-        virtual		int		InitializeWithWindow(HWND hWnd) noexcept;
+        virtual		int		InitializeWithWindow(HWND handler) noexcept;
         virtual		void	Finalize() noexcept;
         virtual		void	Tick() noexcept;
 
@@ -23,12 +23,19 @@ namespace ProjectEngine
         virtual		void	ClearRenderTarget(float r, float g, float b, float a) noexcept;
 
         virtual		std::shared_ptr<VertexBuffer>	CreateVertexBuffer(void* data, int count, VertexFormat vf) noexcept;
-        virtual		void	DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept;
+
+        virtual		std::shared_ptr<IndexBuffer>	CreateIndexBuffer(void* data, int count, IndexFormat iformat) noexcept;
 
         virtual		std::shared_ptr<RenderMesh>		CreateRenderMesh(aiMesh* mesh) noexcept;
-        virtual		void	DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept;
+        virtual		std::shared_ptr<RenderMesh>		CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept;
 
-    protected:
+        virtual		void	LoadShaders() noexcept;
+        virtual		std::shared_ptr<Shader>	UseShader(const std::string& shaderName) noexcept;
+
+        virtual		void	Draw(unsigned int vcount, unsigned int start) noexcept;
+        virtual		void	DrawIndexed(unsigned int icount, unsigned int start, int baseLoc) noexcept;
+
+    public:
         HWND m_hwnd;
 
         char m_videoCardDescription[128];

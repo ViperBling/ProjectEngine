@@ -2,6 +2,9 @@
 
 #include "GraphicsManagerD3D11.h"
 #include "VertexBufferD3D11.h"
+#include "IndexBufferD3D11.h"
+#include "ShaderD3D11.h"
+#include "RenderMeshD3D11.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
@@ -43,6 +46,7 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     result = factory->EnumAdapters(0, &adapter);
     PROJECTENGINE_ASSERT(result >= 0);
 
+
     // Enumerate the primary adapter output (monitor).
     result = adapter->EnumOutputs(0, &adapterOutput);
     PROJECTENGINE_ASSERT(result >= 0);
@@ -73,7 +77,7 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     result = adapter->GetDesc(&adapterDesc);
     PROJECTENGINE_ASSERT(result >= 0);
 
-    m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1024 / 1024);
+    m_videoCardMemory = (int)(adapterDesc.DedicatedVideoMemory / 1280 / 1280);
 
     // Convert the name of the video card to a character array and store it.
     error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
@@ -83,10 +87,6 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
 
     delete[] displayModeList;
     displayModeList = 0;
-
-    SAVE_RELEASE_DXOBJ(adapterOutput);
-    SAVE_RELEASE_DXOBJ(adapter);
-    SAVE_RELEASE_DXOBJ(factory);
 
     // Initialize the swap chain description.
     ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -120,7 +120,7 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     swapChainDesc.OutputWindow = m_hwnd;
 
     // Turn multisampling off.
-    swapChainDesc.SampleDesc.Count = 1;
+    swapChainDesc.SampleDesc.Count = 4;
     swapChainDesc.SampleDesc.Quality = 0;
 
     // Set to full screen or windowed mode.
@@ -147,20 +147,23 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     featureLevel = D3D_FEATURE_LEVEL_11_0;
 
     // Create the swap chain, Direct3D device, and Direct3D device context.
-    result = D3D11CreateDeviceAndSwapChain(
-            nullptr, D3D_DRIVER_TYPE_HARDWARE,
-            nullptr, 0,
-            &featureLevel, 1,
-            D3D11_SDK_VERSION,
-            &swapChainDesc,
-            &m_swapChain, &m_device,
-            nullptr, &m_deviceContext);
+    result = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, D3D10_CREATE_DEVICE_DEBUG, &featureLevel, 1,
+                               D3D11_SDK_VERSION, &m_device, NULL, &m_deviceContext);
+    PROJECTENGINE_ASSERT(result >= 0);
+
+    UINT x4MsaaQuality;
+    result = m_device->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, 8, &x4MsaaQuality);
+    PROJECTENGINE_ASSERT(result >= 0);
+
+    result = m_device->CheckMultisampleQualityLevels(DXGI_FORMAT_D24_UNORM_S8_UINT, 8, &x4MsaaQuality);
+    PROJECTENGINE_ASSERT(result >= 0);
+
+    result = factory->CreateSwapChain(m_device, &swapChainDesc, &m_swapChain);
     PROJECTENGINE_ASSERT(result >= 0);
 
     // Get the pointer to the back buffer.
     result = m_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&backBufferPtr);
     PROJECTENGINE_ASSERT(result >= 0);
-
     // Create the render target view with the back buffer pointer.
     result = m_device->CreateRenderTargetView(backBufferPtr, NULL, &m_renderTargetView);
     PROJECTENGINE_ASSERT(result >= 0);
@@ -178,13 +181,13 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     depthBufferDesc.MipLevels = 1;
     depthBufferDesc.ArraySize = 1;
     depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthBufferDesc.SampleDesc.Count = 1;
+    depthBufferDesc.SampleDesc.Count = 4;
     depthBufferDesc.SampleDesc.Quality = 0;
     depthBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     depthBufferDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     depthBufferDesc.CPUAccessFlags = 0;
     depthBufferDesc.MiscFlags = 0;
-    result = m_device->CreateTexture2D(&depthBufferDesc, nullptr, &m_depthStencilBuffer);
+    result = m_device->CreateTexture2D(&depthBufferDesc, NULL, &m_depthStencilBuffer);
     PROJECTENGINE_ASSERT(result >= 0);
 
     // Initialize the description of the stencil state.
@@ -222,7 +225,7 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
 
     // Set up the depth stencil view description.
     depthStencilViewDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-    depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+    depthStencilViewDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2DMS;	//Your dimension for the DSV needs to be D3D11_DSV_DIMENSION_TEXTURE2DMS if the Texture2D was created with multisampling.
     depthStencilViewDesc.Texture2D.MipSlice = 0;
 
     // Create the depth stencil view.
@@ -240,7 +243,7 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     rasterDesc.DepthClipEnable = true;
     rasterDesc.FillMode = D3D11_FILL_SOLID;
     rasterDesc.FrontCounterClockwise = false;
-    rasterDesc.MultisampleEnable = false;
+    rasterDesc.MultisampleEnable = true;
     rasterDesc.ScissorEnable = false;
     rasterDesc.SlopeScaledDepthBias = 0.0f;
 
@@ -260,6 +263,12 @@ int GraphicsManagerD3D11::InitializeWithWindow(HWND hWnd) noexcept
     viewport.TopLeftY = 0.0f;
     // Create the viewport.
     m_deviceContext->RSSetViewports(1, &viewport);
+
+    LoadShaders();
+
+    SAVE_RELEASE_DXOBJ(adapterOutput);
+    SAVE_RELEASE_DXOBJ(adapter);
+    SAVE_RELEASE_DXOBJ(factory);
     return 0;
 }
 
@@ -267,7 +276,7 @@ void GraphicsManagerD3D11::Finalize() noexcept
 {
     if (m_swapChain)
     {
-        m_swapChain->SetFullscreenState(false, NULL);
+        m_swapChain->SetFullscreenState(false, nullptr);
     }
     SAVE_RELEASE_DXOBJ(m_rasterState);
     SAVE_RELEASE_DXOBJ(m_depthStencilView);
@@ -296,73 +305,55 @@ void GraphicsManagerD3D11::ClearRenderTarget(float r, float g, float b, float a)
 
 std::shared_ptr<VertexBuffer> GraphicsManagerD3D11::CreateVertexBuffer(void * data, int count, VertexFormat vf) noexcept
 {
-    auto ptr = std::make_shared<VertexBufferD3D11>(count, vf);
-
-    D3D11_BUFFER_DESC vertexBufferDesc;
-    D3D11_SUBRESOURCE_DATA vertexData;
-
-    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDesc.ByteWidth = ptr->GetVertexSize(vf) * count;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = 0;
-    vertexBufferDesc.MiscFlags = 0;
-    vertexBufferDesc.StructureByteStride = 0;
-
-    vertexData.pSysMem = data;
-    vertexData.SysMemPitch = 0;
-    vertexData.SysMemSlicePitch = 0;
-
-    auto result = m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &(ptr->mVertexBuffer));
+    auto ptr = std::make_shared<VertexBufferD3D11>(data, count, vf);
     return ptr;
 }
 
-void GraphicsManagerD3D11::DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept
+std::shared_ptr<IndexBuffer> GraphicsManagerD3D11::CreateIndexBuffer(void * data, int count, IndexFormat iformat) noexcept
 {
-    auto ptr = static_pointer_cast<VertexBufferD3D11>(vb);
-    if (ptr->mVertexBuffer) {
-        ptr->mVertexBuffer->Release();
-    }
-    ptr->mVertexBuffer = nullptr;
+    auto ptr = std::make_shared<IndexBufferD3D11>(data, count, iformat);
+    return ptr;
 }
 
 std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMesh(aiMesh * mesh) noexcept
 {
-    auto ptr = std::make_shared<RenderMesh>();
-    auto count = mesh->mNumVertices;
-    if (mesh->HasPositions()) {
-        ptr->mPositions = CreateVertexBuffer(mesh->mVertices, count, VertexFormat::VF_P3F);
-    }
-
-    if (mesh->HasNormals()) {
-        ptr->mNormals = CreateVertexBuffer(mesh->mNormals, count, VertexFormat::VF_N3F);
-    }
-
-    if (mesh->HasTextureCoords(0)) {
-        float *texCoords = (float *)malloc(sizeof(float) * 2 * mesh->mNumVertices);
-        for (unsigned int k = 0; k < mesh->mNumVertices; ++k) {
-            texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
-            texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
-        }
-        ptr->mTexCoords = CreateVertexBuffer(texCoords, count, VertexFormat::VF_T2F);
-        delete texCoords;
-    }
+    auto ptr = std::make_shared<RenderMeshD3D11>(mesh);
     return ptr;
 }
 
-void GraphicsManagerD3D11::DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept
+std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept
 {
-    if (mesh->mPositions) {
-        DeleteVertexBuffer(mesh->mPositions);
-        mesh->mPositions = nullptr;
+    auto ptr = std::make_shared<RenderMeshD3D11>(vb);
+    return ptr;
+}
+
+
+void GraphicsManagerD3D11::LoadShaders() noexcept
+{
+    std::string debugShaderVS = "Asset/Shaders/debug.vs";
+    std::string debugShaderPS = "Asset/Shaders/debug.ps";
+    auto debugShader = std::make_shared<ShaderD3D11>(debugShaderVS, debugShaderPS);
+    mShaders["debug"] = debugShader;
+}
+
+std::shared_ptr<Shader> GraphicsManagerD3D11::UseShader(const std::string & shaderName) noexcept
+{
+    auto shader = mShaders[shaderName];
+    if (!shader) {
+        PROJECTENGINE_ASSERT(false);
     }
-    if (mesh->mNormals) {
-        DeleteVertexBuffer(mesh->mNormals);
-        mesh->mNormals = nullptr;
-    }
-    if (mesh->mTexCoords) {
-        DeleteVertexBuffer(mesh->mTexCoords);
-        mesh->mTexCoords = nullptr;
-    }
+    shader->Use();
+    return shader;
+}
+
+void GraphicsManagerD3D11::Draw(unsigned int vcount, unsigned int start) noexcept
+{
+    m_deviceContext->Draw(vcount, start);
+}
+
+void GraphicsManagerD3D11::DrawIndexed(unsigned int icount, unsigned int start, int baseLoc) noexcept
+{
+    m_deviceContext->DrawIndexed(icount, start, baseLoc);
 }
 
 void GraphicsManagerD3D11::Present() noexcept

@@ -9,7 +9,11 @@ namespace ProjectEngine
     class VertexBufferD3D11 : public VertexBuffer
     {
     public:
-        VertexBufferD3D11(unsigned int count, VertexFormat vf);
+
+        VertexBufferD3D11(void* data, unsigned int count, VertexFormat vf);
+        virtual ~VertexBufferD3D11();
+        virtual void Initialize(void* data, unsigned int count, VertexFormat vf) noexcept;
+        virtual void Finialize() noexcept;
 
     public:
         ID3D11Buffer* mVertexBuffer;

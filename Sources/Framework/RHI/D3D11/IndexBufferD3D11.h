@@ -1,0 +1,14 @@
+//
+// Created by qiuso on 2022/2/14.
+//
+
+#ifndef PROJECTENGINE_INDEXBUFFERD3D11_H
+#define PROJECTENGINE_INDEXBUFFERD3D11_H
+
+
+class IndexBufferD3D11 {
+
+};
+
+
+#endif //PROJECTENGINE_INDEXBUFFERD3D11_H
