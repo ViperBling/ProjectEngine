@@ -7,12 +7,11 @@ namespace ProjectEngine
     class VertexBuffer : public IVertexBuffer
     {
     public:
-        VertexBuffer(unsigned int count, VertexFormat vertexFormat)
-            : mCount(count), mVertexFormat(VertexFormat::None) {}
+        virtual void Initialize(void* data, unsigned int count, VertexFormat vf) noexcept;
+        virtual void Finialize() noexcept;
+        virtual unsigned int GetVertexSize(VertexFormat vf) noexcept;
 
-        virtual size_t GetVertexSize(VertexFormat vertexFormat) noexcept;
-
-    private:
+    public:
         unsigned int mCount;
         VertexFormat mVertexFormat;
     };

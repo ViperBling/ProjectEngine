@@ -15,6 +15,7 @@ namespace ProjectEngine
 
         bool IsVisible() { return mVisible; }
         void SetVisible(bool visible) { mVisible = visible; }
+
     private:
         std::string mName;
         bool mVisible;

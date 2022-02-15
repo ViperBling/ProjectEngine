@@ -30,7 +30,3 @@ void MeshRenderComponent::Finalize() noexcept
         }
     }
 }
-
-void MeshRenderComponent::Render()
-{
-}
