@@ -22,7 +22,7 @@ namespace ProjectEngine
         virtual void		Initialize(std::shared_ptr<VertexBuffer> vb) noexcept;
         virtual void		Render(World* world, const Matrix4f& worldMatrix) noexcept;
         virtual int			GetVaildVertexBufferCount() noexcept;
-        virtual void		Finialize() noexcept = 0;
+        virtual void		Finalize() noexcept = 0;
 
     public:
         shared_ptr<VertexBuffer>	mPositions;

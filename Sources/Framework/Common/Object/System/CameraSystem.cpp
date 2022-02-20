@@ -1,5 +1,28 @@
-//
-// Created by qiuso on 2022/2/14.
-//
-
 #include "CameraSystem.h"
+
+using namespace ProjectEngine;
+
+CameraSystem::CameraSystem(ProjectEngine::World *world) :
+    mWorld(world)
+{
+}
+
+int CameraSystem::Initialize() noexcept
+{
+    return 0;
+}
+
+void CameraSystem::Finalize() noexcept
+{
+    mMainCamera = nullptr;
+}
+
+std::shared_ptr<Entity> CameraSystem::GetMainCamera()
+{
+    return mMainCamera;
+}
+
+void CameraSystem::SetMainCamera(std::shared_ptr<Entity> camera)
+{
+    mMainCamera = camera;
+}

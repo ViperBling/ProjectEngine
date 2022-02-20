@@ -39,13 +39,13 @@ namespace ProjectEngine
     {
         virtual void Initialize(void* data, unsigned int count, VertexFormat vf) noexcept = 0;
         virtual unsigned int GetVertexSize(VertexFormat vf) noexcept = 0;
-        virtual void Finialize() noexcept = 0;
+        virtual void Finalize() noexcept = 0;
     };
 
     class IIndexBuffer : public IRenderResource
     {
         virtual void Initialize(void* data, unsigned int count, IndexFormat iformat) noexcept = 0;
-        virtual void Finialize() noexcept = 0;
+        virtual void Finalize() noexcept = 0;
     };
 
     class IMesh : public IRenderResource
@@ -54,6 +54,6 @@ namespace ProjectEngine
         virtual void		Initialize(aiMesh* mesh) noexcept = 0;
         virtual int			GetVaildVertexBufferCount() noexcept = 0;
         virtual void		Render(World* world, const Matrix4f& worldMatrix) noexcept = 0;
-        virtual void		Finialize() noexcept = 0;
+        virtual void		Finalize() noexcept = 0;
     };
 }

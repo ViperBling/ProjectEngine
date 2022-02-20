@@ -15,14 +15,14 @@ VertexBufferD3D11::VertexBufferD3D11(void * data, unsigned int count, VertexForm
 
 VertexBufferD3D11::~VertexBufferD3D11()
 {
-    Finialize();
+    Finalize();
 }
 
 void VertexBufferD3D11::Initialize(void * data, unsigned int count, VertexFormat vf) noexcept
 {
     VertexBuffer::Initialize(data, count, vf);
 
-    auto mgrd11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
+    auto mgrd3d11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
     D3D11_BUFFER_DESC vertexBufferDesc;
     D3D11_SUBRESOURCE_DATA vertexData;
 
@@ -37,10 +37,10 @@ void VertexBufferD3D11::Initialize(void * data, unsigned int count, VertexFormat
     vertexData.SysMemPitch = 0;
     vertexData.SysMemSlicePitch = 0;
 
-    auto result = mgrd11->m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &(this->mVertexBuffer));
+    auto result = mgrd3d11->m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &(this->mVertexBuffer));
 }
 
-void VertexBufferD3D11::Finialize() noexcept
+void VertexBufferD3D11::Finalize() noexcept
 {
     if (mVertexBuffer) {
         mVertexBuffer->Release();

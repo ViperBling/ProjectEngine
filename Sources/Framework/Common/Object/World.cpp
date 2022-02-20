@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "Platform/Assert.h"
+#include "Application/Application.h"
 #include "World.h"
 #include "Components/MeshRenderComponent.h"
 
@@ -11,13 +12,23 @@
 using namespace std;
 using namespace ProjectEngine;
 
-World::World(Application *app) : mApp(app), mMeshRenderSystem(nullptr)
+World::World(Application *app) :
+    mApp(app),
+    mMeshRenderSystem(nullptr),
+    mCameraSystem(nullptr),
+    mRenderDebugSystem(nullptr)
 {}
 
 int World::Initialize() noexcept
 {
     mMeshRenderSystem = new MeshRenderSystem(this);
     mMeshRenderSystem->Initialize();
+
+    mCameraSystem = new CameraSystem(this);
+    mCameraSystem->Initialize();
+
+    mRenderDebugSystem = new RenderDebugSystem(this);
+    mRenderDebugSystem->Initialize();
 
     return 0;
 }
@@ -26,6 +37,8 @@ void World::Finalize() noexcept
 {
     mEntities.clear();
     mMeshRenderSystem->Finalize();
+    mCameraSystem->Finalize();
+//    mRenderDebugSystem->Finalize();
 }
 
 void World::Tick() noexcept
@@ -35,7 +48,11 @@ void World::Tick() noexcept
 
 void World::Render() noexcept
 {
+    mApp->mGraphicsManager->ClearRenderTarget(0.2f, 0.4f, 0.6f, 1.0f);
+
     mMeshRenderSystem->Render();
+    mRenderDebugSystem->Render();
+    mApp->mGraphicsManager->Present();
 }
 
 std::shared_ptr<Entity> World::CreateEntity()
@@ -46,7 +63,7 @@ std::shared_ptr<Entity> World::CreateEntity()
     return entity;
 }
 
-std::shared_ptr<Entity> World::CreateEntity(const Guid &guid)
+std::shared_ptr<Entity> World::CreateEntity(const boost::uuids::uuid &guid)
 {
     if (mEntities[guid]) return nullptr;
 
@@ -56,7 +73,7 @@ std::shared_ptr<Entity> World::CreateEntity(const Guid &guid)
     return entity;
 }
 
-void World::DeleteEntity(const Guid &guid)
+void World::DeleteEntity(const boost::uuids::uuid &guid)
 {
     auto entity = mEntities[guid];
     if (entity)
@@ -66,7 +83,7 @@ void World::DeleteEntity(const Guid &guid)
     }
 }
 
-std::shared_ptr<Entity> World::GetEntity(const Guid &guid)
+std::shared_ptr<Entity> World::GetEntity(const boost::uuids::uuid &guid)
 {
     if (!mEntities[guid]) return nullptr;
     return mEntities[guid];
@@ -93,6 +110,12 @@ void World::LoadScene(const string &scenePath)
         auto mesh = scene->mMeshes[i];
         mMeshRenderSystem->LoadMesh(mesh);
     }
+
+    // build main camera
+    auto camera = CreateEntity();
+    camera->AddComponent<CameraComponent>();
+    mCameraSystem->SetMainCamera(camera);
+
 
     for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i)
     {

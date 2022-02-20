@@ -1,14 +1,26 @@
-//
-// Created by qiuso on 2022/2/14.
-//
+#pragma once
 
-#ifndef PROJECTENGINE_CAMERASYSTEM_H
-#define PROJECTENGINE_CAMERASYSTEM_H
+#include <memory>
+#include "Object/Entity.h"
+#include "ISystem.h"
 
+namespace ProjectEngine
+{
+    class World;
 
-class CameraSystem {
+    class CameraSystem : public IModule
+    {
+    public:
+        CameraSystem(World* world);
+        virtual int Initialize() noexcept;
+        virtual void Finalize() noexcept;
 
-};
+    public:
+        std::shared_ptr<Entity> GetMainCamera();
+        void SetMainCamera(std::shared_ptr<Entity> camera);
 
-
-#endif //PROJECTENGINE_CAMERASYSTEM_H
+    private:
+        World* mWorld;
+        std::shared_ptr<Entity> mMainCamera;
+    };
+}

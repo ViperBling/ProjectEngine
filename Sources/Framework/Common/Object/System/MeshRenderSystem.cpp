@@ -15,9 +15,7 @@ int ProjectEngine::MeshRenderSystem::Initialize() noexcept
 
 void ProjectEngine::MeshRenderSystem::Finalize() noexcept
 {
-    for (auto mesh : mMeshes) {
-        mGraphicsManager->DeleteRenderMesh(mesh);
-    }
+    mMeshes.clear();
 }
 
 void ProjectEngine::MeshRenderSystem::Tick() noexcept
@@ -40,17 +38,22 @@ void ProjectEngine::MeshRenderSystem::Render()
     if (!IsActive())
         return;
 
-    mGraphicsManager->ClearRenderTarget(0.2f, 0.4f, 0.6f, 1.0f);
-
     for (auto comp : mComponents)
     {
         if (comp->IsVisible())
         {
-            comp->Render();
+            auto tranform = comp->GetMaster()->GetComponent<TransformComponent>();
+
+            for (auto mid : comp->mMeshIdx)
+            {
+                auto mesh = mMeshes[mid];
+                if (mesh)
+                {
+                    mesh->Render(mWorld, tranform->GetWorldMatrix());
+                }
+            }
         }
     }
-
-    mGraphicsManager->Present();
 }
 
 void ProjectEngine::MeshRenderSystem::LoadMesh(aiMesh *mesh)

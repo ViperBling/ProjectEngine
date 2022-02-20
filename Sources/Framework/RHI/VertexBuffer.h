@@ -8,7 +8,7 @@ namespace ProjectEngine
     {
     public:
         virtual void Initialize(void* data, unsigned int count, VertexFormat vf) noexcept;
-        virtual void Finialize() noexcept;
+        virtual void Finalize() noexcept;
         virtual unsigned int GetVertexSize(VertexFormat vf) noexcept;
 
     public:

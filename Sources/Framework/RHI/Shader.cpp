@@ -12,7 +12,7 @@ void Shader::Use() noexcept
 
 }
 
-void Shader::Finialize() noexcept
+void Shader::Finalize() noexcept
 {
 
 }

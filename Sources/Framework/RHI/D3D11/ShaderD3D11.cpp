@@ -16,7 +16,7 @@ ShaderD3D11::ShaderD3D11(const string &vsPath, const string &psPath)
 
 ShaderD3D11::~ShaderD3D11()
 {
-    Finialize();
+    Finalize();
 }
 
 bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPath) noexcept
@@ -37,8 +37,8 @@ bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPat
 
     result = D3DCompileFromFile(
             _vsPath.c_str(),
-            NULL,
-            NULL,
+            nullptr,
+            nullptr,
             "main",
             "vs_5_0",
             dwShaderFlags,
@@ -55,8 +55,8 @@ bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPat
 
     result = D3DCompileFromFile(
             _psPath.c_str(),
-            NULL,
-            NULL,
+            nullptr,
+            nullptr,
             "main",
             "ps_5_0",
             dwShaderFlags,
@@ -73,7 +73,7 @@ bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPat
     result = mgrd3d11->m_device->CreateVertexShader(
             vertexShaderBuffer->GetBufferPointer(),
             vertexShaderBuffer->GetBufferSize(),
-            NULL,
+            nullptr,
             &m_vertexShader);
 
     if (FAILED(result))
@@ -85,7 +85,7 @@ bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPat
     result = mgrd3d11->m_device->CreatePixelShader(
             pixelShaderBuffer->GetBufferPointer(),
             pixelShaderBuffer->GetBufferSize(),
-            NULL,
+            nullptr,
             &m_pixelShader);
 
     if (FAILED(result))
@@ -141,7 +141,7 @@ bool ShaderD3D11::InitializeFromFile(const string & vsPath, const string & psPat
     // Create the constant buffer pointer so we can access the vertex shader constant buffer from within this class.
     result = mgrd3d11->m_device->CreateBuffer(
             &matrixBufferDesc,
-            NULL,
+            nullptr,
             &m_matrixBuffer);
     if (FAILED(result))
     {
@@ -168,7 +168,7 @@ void ShaderD3D11::Use() noexcept
     mgrd3d11->m_deviceContext->PSSetShader(m_pixelShader, NULL, 0);
 }
 
-void ShaderD3D11::Finialize() noexcept
+void ShaderD3D11::Finalize() noexcept
 {
     // Release the matrix constant buffer.
     if (m_matrixBuffer)

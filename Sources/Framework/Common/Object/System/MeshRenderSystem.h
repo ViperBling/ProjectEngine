@@ -32,10 +32,10 @@ namespace ProjectEngine
 
     public:
         std::vector<shared_ptr<RenderMesh>>	mMeshes;
+
     private:
         World* mWorld;
         GraphicsManager* mGraphicsManager;
         std::set< MeshRenderComponent*> mComponents;
-
     };
 }

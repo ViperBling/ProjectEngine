@@ -37,8 +37,8 @@ const Matrix4f& CameraComponent::GetViewMatrix()
 
 const Matrix4f& CameraComponent::GetPerspectiveMatrix()
 {
-    float width = 1024.0f;
-    float height = 768.0f;
+    float width = 1280.0f;
+    float height = 720.0f;
 
     if (mProjectionDirty)
     {

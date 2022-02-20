@@ -28,6 +28,7 @@ int main()
     CHECK_APPLICATION_INIT(GApp->Initialize());
     GApp->mWorld->LoadScene("E:\\Program\\ProjectEngine\\Asset\\Scene\\aili_cycle.fbx");
     GApp->mWorld->DumpEntities();
+    GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
 
     GApp->Run();
     GApp->Finalize();

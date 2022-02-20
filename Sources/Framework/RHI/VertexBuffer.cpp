@@ -28,6 +28,6 @@ unsigned int VertexBuffer::GetVertexSize(VertexFormat vf) noexcept
     }
 }
 
-void VertexBuffer::Finialize() noexcept
+void VertexBuffer::Finalize() noexcept
 {
 }

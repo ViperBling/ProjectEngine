@@ -22,15 +22,18 @@ void Entity::Finalize() noexcept
     mParent = nullptr;
 }
 
-Entity::Entity()
+Entity::Entity() :
+    mMeshRender(nullptr),
+    mCamera(nullptr),
+    mTransform(nullptr)
 {
-    mGuid = xg::newGuid();
+
 }
 
-Entity::Entity(const Guid& guid) :
-    mGuid(guid),
+Entity::Entity(const boost::uuids::uuid& guid) :
     mParent(nullptr),
-    mTransform(nullptr)
+    mTransform(nullptr),
+    mGuid(guid)
 {}
 
 Entity::~Entity()
@@ -38,12 +41,12 @@ Entity::~Entity()
     std::cout << "Destructor of entity: " << mGuid << std::endl;
 }
 
-Guid Entity::GetGuid() const noexcept
+boost::uuids::uuid Entity::GetGuid() const noexcept
 {
     return mGuid;
 }
 
-void Entity::SetGuid(const Guid &guid) noexcept
+void Entity::SetGuid(const boost::uuids::uuid& guid) noexcept
 {
     mGuid = guid;
 }

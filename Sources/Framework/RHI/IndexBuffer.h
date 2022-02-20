@@ -8,7 +8,7 @@ namespace ProjectEngine
     {
     public:
         virtual void Initialize(void* data, unsigned int count, IndexFormat iformat) noexcept;
-        virtual void Finialize() noexcept;
+        virtual void Finalize() noexcept;
 
     public:
         unsigned int	mCount;

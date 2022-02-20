@@ -8,6 +8,6 @@ void IndexBuffer::Initialize(void * data, unsigned int count, IndexFormat iforma
     mIndexFormat = iformat;
 }
 
-void IndexBuffer::Finialize() noexcept
+void IndexBuffer::Finalize() noexcept
 {
 }

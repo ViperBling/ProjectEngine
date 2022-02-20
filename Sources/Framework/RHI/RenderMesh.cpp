@@ -37,4 +37,4 @@ int RenderMesh::GetVaildVertexBufferCount() noexcept
     return result;
 }
 
-void RenderMesh::Finialize() noexcept {}
+void RenderMesh::Finalize() noexcept {}

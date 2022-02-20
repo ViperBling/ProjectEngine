@@ -16,7 +16,7 @@ namespace ProjectEngine
         virtual void		Initialize(aiMesh* mesh) noexcept;
         virtual void		Initialize(std::shared_ptr<VertexBuffer> vb) noexcept;
         virtual void		Render(World* world, const Matrix4f& worldMatrix) noexcept;
-        virtual void		Finialize() noexcept;
+        virtual void		Finalize() noexcept;
 
     private:
         unsigned int*		stride;

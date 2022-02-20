@@ -20,7 +20,7 @@ RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb)
 
 RenderMeshD3D11::~RenderMeshD3D11()
 {
-    Finialize();
+    Finalize();
 }
 
 void RenderMeshD3D11::Initialize(aiMesh * mesh) noexcept
@@ -28,15 +28,15 @@ void RenderMeshD3D11::Initialize(aiMesh * mesh) noexcept
     if (!mesh) {
         return;
     }
-    auto mgrd11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
+    auto mgrd3d11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
 
     auto count = mesh->mNumVertices;
     if (mesh->HasPositions()) {
-        mPositions = mgrd11->CreateVertexBuffer(mesh->mVertices, count, VertexFormat::VF_P3F);
+        mPositions = mgrd3d11->CreateVertexBuffer(mesh->mVertices, count, VertexFormat::VF_P3F);
     }
 
     if (mesh->HasNormals()) {
-        mNormals = mgrd11->CreateVertexBuffer(mesh->mNormals, count, VertexFormat::VF_N3F);
+        mNormals = mgrd3d11->CreateVertexBuffer(mesh->mNormals, count, VertexFormat::VF_N3F);
     }
 
     if (mesh->HasTextureCoords(0)) {
@@ -45,7 +45,7 @@ void RenderMeshD3D11::Initialize(aiMesh * mesh) noexcept
             texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
             texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
         }
-        mTexCoords = mgrd11->CreateVertexBuffer(texCoords, count, VertexFormat::VF_T2F);
+        mTexCoords = mgrd3d11->CreateVertexBuffer(texCoords, count, VertexFormat::VF_T2F);
         delete texCoords;
     }
 
@@ -58,7 +58,7 @@ void RenderMeshD3D11::Initialize(aiMesh * mesh) noexcept
             idata[i * 3 + 1] = face.mIndices[1];
             idata[i * 3 + 2] = face.mIndices[2];
         }
-        mIndexes = mgrd11->CreateIndexBuffer(idata, count, IndexFormat::IF_UINT32);
+        mIndexes = mgrd3d11->CreateIndexBuffer(idata, count, IndexFormat::IF_UINT32);
         delete idata;
     }
 
@@ -107,7 +107,7 @@ void RenderMeshD3D11::Initialize(aiMesh * mesh) noexcept
 
 void RenderMeshD3D11::Initialize(std::shared_ptr<VertexBuffer> vb) noexcept
 {
-    auto mgrd11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
+    auto mgrd3d11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
     mPositions = vb;
     mType = PrimitiveType::PT_LINE;
     vbcount = GetVaildVertexBufferCount();
@@ -127,27 +127,27 @@ void RenderMeshD3D11::Initialize(std::shared_ptr<VertexBuffer> vb) noexcept
 
 void RenderMeshD3D11::Render(World* world, const Matrix4f& worldMatrix) noexcept
 {
-    auto mgrd11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
-    mgrd11->m_deviceContext->IASetVertexBuffers(0, vbcount, vbuffers, stride, offset);
+    auto mgrd3d11 = (GraphicsManagerD3D11*)GApp->mGraphicsManager;
+    mgrd3d11->m_deviceContext->IASetVertexBuffers(0, vbcount, vbuffers, stride, offset);
 
     // Set the index buffer to active in the input assembler so it can be rendered.
     if (mIndexes) {
         auto indexBuffer = static_pointer_cast<IndexBufferD3D11>(mIndexes);
-        mgrd11->m_deviceContext->IASetIndexBuffer(indexBuffer->mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+        mgrd3d11->m_deviceContext->IASetIndexBuffer(indexBuffer->mIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
     }
 
     // Set the type of primitive that should be rendered from this vertex buffer, in this case triangles.
     if (mType == PrimitiveType::PT_LINE) {
-        mgrd11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
+        mgrd3d11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST);
     }
     else if (mType == PrimitiveType::PT_POINT) {
-        mgrd11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
+        mgrd3d11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
     }
     else if (mType == PrimitiveType::PT_TRIANGLE) {
-        mgrd11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        mgrd3d11->m_deviceContext->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-    auto shader = mgrd11->UseShader("debug");
+    auto shader = mgrd3d11->UseShader("debug");
     auto camera = world->GetCameraSystem()->GetMainCamera()->GetComponent<CameraComponent>();
 
     ConstantBuffer cb;
@@ -157,15 +157,15 @@ void RenderMeshD3D11::Render(World* world, const Matrix4f& worldMatrix) noexcept
     shader->SetConstantBuffer(cb);
 
     if (mIndexes) {
-        mgrd11->DrawIndexed(mIndexes->mCount, 0, 0);
+        mgrd3d11->DrawIndexed(mIndexes->mCount, 0, 0);
     }
     else {
-        mgrd11->Draw(mPositions->mCount, 0);
+        mgrd3d11->Draw(mPositions->mCount, 0);
     }
 
 }
 
-void RenderMeshD3D11::Finialize() noexcept
+void RenderMeshD3D11::Finalize() noexcept
 {
     mPositions = nullptr;
     mNormals = nullptr;
