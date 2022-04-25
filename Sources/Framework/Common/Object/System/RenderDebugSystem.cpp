@@ -33,7 +33,7 @@ void RenderDebugSystem::CreateDebugMesh() noexcept
     auto manager = mWorld->mApp->mGraphicsManager;
 
     unsigned int pointCount = 84;
-    float* data = new float[3 * pointCount];
+    auto data = new float[3 * pointCount];
 
     int p = 0;
     for (int x = -10; x <= 10; ++x) {
