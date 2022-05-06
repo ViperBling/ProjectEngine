@@ -1,5 +1,4 @@
-#include <cstdlib>
-#include <string>
+﻿#include <string>
 #include "Allocator.h"
 #include "Platform/Assert.h"
 
@@ -55,7 +54,7 @@ void* ProjectEngine::Allocator::Allocate()
     if (!m_pFreeList)
     {
         // allocate a new page
-        PageHeader* pNewPage = reinterpret_cast<PageHeader*>(new uint8_t[m_szPageSize]);
+        auto pNewPage = reinterpret_cast<PageHeader*>(new uint8_t[m_szPageSize]);
         pNewPage->pNext = nullptr;
         ++m_nPages;
         m_nBlocks += m_nBlocksPerPage;
@@ -98,7 +97,7 @@ void* ProjectEngine::Allocator::Allocate()
 
 void ProjectEngine::Allocator::Free(void* p)
 {
-    BlockHeader* block = reinterpret_cast<BlockHeader*>(p);
+    auto block = reinterpret_cast<BlockHeader*>(p);
 
 #if defined(PROJECTENGINE_DEBUG)
     DebugFillFreeBlock(block);

@@ -330,8 +330,8 @@ std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::sha
 
 void GraphicsManagerD3D11::LoadShaders() noexcept
 {
-    std::string debugShaderVS = "Asset/Shaders/debug.vs";
-    std::string debugShaderPS = "Asset/Shaders/debug.ps";
+    std::string debugShaderVS = "E:\\Program\\CG\\ProjectEngine\\Asset\\Shaders\\debug.vs";
+    std::string debugShaderPS = "E:\\Program\\CG\\ProjectEngine\\Asset\\Shaders\\debug.ps";
     auto debugShader = std::make_shared<ShaderD3D11>(debugShaderVS, debugShaderPS);
     mShaders["debug"] = debugShader;
 }
