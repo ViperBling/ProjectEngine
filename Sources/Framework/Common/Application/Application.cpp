@@ -4,6 +4,8 @@ using namespace ProjectEngine;
 
 int Application::Initialize() noexcept {
     mQuit = false;
+    mMemoryManager = nullptr;
+    mGraphicsManager = nullptr;
     return 0;
 }
 

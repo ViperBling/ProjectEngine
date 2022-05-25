@@ -2,6 +2,7 @@
 
 #include <Windows.h>
 #include "Application.h"
+#include "Singleton.h"
 
 namespace ProjectEngine
 {
@@ -19,9 +20,14 @@ namespace ProjectEngine
         static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
     private:
+        WindowsApplication() = default;
         void CreateMainWindow();
 
     private:
         HWND mHWND;
+
+        friend class Singleton<WindowsApplication>;
     };
+
+    typedef Singleton<WindowsApplication> GWindowsApplication;
 }

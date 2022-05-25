@@ -8,6 +8,11 @@
 #include "Application/WindowsApplication.h"
 
 using namespace std;
+using namespace ProjectEngine;
+
+#if defined(PROJECTENGINE_WINDOWS)
+extern Application* GApp = GWindowsApplication::GetInstance();
+#endif
 
 int main()
 {
@@ -21,10 +26,9 @@ int main()
 #if defined(PROJECTENGINE_WINDOWS)
 
     cout << "Creating Windows..." << endl;
-    ProjectEngine::WindowsApplication WinApp;
-    CHECK_APPLICATION_INIT(WinApp.Initialize());
-    WinApp.Run();
-    WinApp.Finalize();
+    CHECK_APPLICATION_INIT(GApp->Initialize());
+    GApp->Run();
+    GApp->Finalize();
 
 #endif
 

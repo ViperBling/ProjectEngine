@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-    auto pModule = GMemoryManager::GetInstance();
+    auto pModule = new MemoryManager();
     pModule->Initialize();
 
     auto pData1 = (unsigned char*)pModule->Allocate(19);

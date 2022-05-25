@@ -1,4 +1,5 @@
 #include "WindowsApplication.h"
+#include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
 
 using namespace ProjectEngine;
 
@@ -6,11 +7,21 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
 {
     CHECK_APPLICATION_INIT(Application::Initialize());
     CreateMainWindow();
+
+    mMemoryManager = new MemoryManager();
+    mMemoryManager->Initialize();
+
+    mGraphicsManager = new GraphicsManagerD3D11();
+    auto mgr = (GraphicsManagerD3D11*)mGraphicsManager;
+    mgr->InitializeWithWindow(mHWND);
+
     return 0;
 }
 
 void ProjectEngine::WindowsApplication::Finalize() noexcept
 {
+    mGraphicsManager->Finalize();
+    mMemoryManager->Finalize();
 }
 
 void ProjectEngine::WindowsApplication::Tick() noexcept
@@ -27,7 +38,7 @@ void ProjectEngine::WindowsApplication::Tick() noexcept
 
 void ProjectEngine::WindowsApplication::Render() noexcept
 {
-
+    mGraphicsManager->Render();
 }
 
 HWND ProjectEngine::WindowsApplication::GetWindowsHandler() noexcept

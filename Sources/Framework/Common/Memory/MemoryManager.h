@@ -23,6 +23,7 @@ namespace ProjectEngine
         }
 
     public:
+        MemoryManager() = default;
         virtual ~MemoryManager() = default;
 
         virtual int Initialize() noexcept;
@@ -35,15 +36,11 @@ namespace ProjectEngine
         static size_t*        m_pBlockSizeLookup;
         static Allocator*     m_pAllocators;
 
-        friend class Singleton<MemoryManager>;
-
     private:
-        MemoryManager() = default;
         MemoryManager(const MemoryManager& manager) = default;
         MemoryManager& operator=(const MemoryManager&) = default;
 
         static Allocator* LookUpAllocator(size_t size);
     };
 
-    typedef Singleton<MemoryManager> GMemoryManager;
 }
