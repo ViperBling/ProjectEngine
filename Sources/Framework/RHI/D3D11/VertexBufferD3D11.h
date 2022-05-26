@@ -6,10 +6,15 @@
 
 namespace ProjectEngine
 {
+    class GraphicsManager;
+
     class VertexBufferD3D11 : public VertexBuffer
     {
     public:
-        VertexBufferD3D11(unsigned int count, VertexFormat vf);
+        virtual void Initialize(
+            GraphicsManager* graphicsManager,
+            void* data,
+            unsigned int count, VertexFormat vf) noexcept;
 
     public:
         ID3D11Buffer* mVertexBuffer;

@@ -4,6 +4,7 @@
 #include "Framework/Common/Object/Entity.h"
 
 #include "Framework/Common/Object/System/MeshRenderSystem.h"
+#include "Framework/Common/Object/System/CameraSystem.h"
 #include "Guid.hpp"
 
 #include <memory>
@@ -44,5 +45,6 @@ namespace ProjectEngine
         std::unordered_map<xg::Guid, std::shared_ptr<ProjectEngine::Entity>> mEntities;
 
         MeshRenderSystem* mMeshRenderSystem;
+        CameraSystem* mCameraSystem;
     };
 }

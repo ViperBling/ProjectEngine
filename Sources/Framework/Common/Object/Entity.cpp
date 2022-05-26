@@ -20,7 +20,11 @@ void Entity::Finalize() noexcept {
     mParent = nullptr;
 }
 
-Entity::Entity() {
+Entity::Entity() :
+    mMeshRender(nullptr),
+    mCamera(nullptr),
+    mTransform(nullptr)
+{
     mGuid = xg::newGuid();
 }
 

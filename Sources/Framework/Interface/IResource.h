@@ -4,6 +4,7 @@
 
 namespace ProjectEngine
 {
+    class GraphicsManager;
     class IRenderResource{};
 
     enum VertexFormat
@@ -15,7 +16,16 @@ namespace ProjectEngine
         VF_C4B,
     };
 
-    class IVertexBuffer : public IRenderResource {};
+    class IVertexBuffer : public IRenderResource
+    {
+    public:
+
+        virtual void Initialize(
+            GraphicsManager* graphicsManager,
+            void* data, unsigned int count, VertexFormat vf) noexcept = 0;
+
+        virtual size_t GetVertexSize(VertexFormat vf) noexcept = 0;
+    };
 
     class IMesh : public IRenderResource{};
 }

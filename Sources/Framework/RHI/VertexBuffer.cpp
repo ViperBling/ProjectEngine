@@ -15,3 +15,12 @@ size_t ProjectEngine::VertexBuffer::GetVertexSize(VertexFormat vf) noexcept
         return 0;
     }
 }
+
+void ProjectEngine::VertexBuffer::Initialize(
+    ProjectEngine::GraphicsManager *graphicsManager,
+    void* data,
+    unsigned int count,
+    ProjectEngine::VertexFormat vf) noexcept
+{
+
+}

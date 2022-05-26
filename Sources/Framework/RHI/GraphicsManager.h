@@ -6,6 +6,7 @@
 #include "Framework/Interface/IResource.h"
 #include "Framework/RHI/VertexBuffer.h"
 #include "Framework/RHI/RenderMesh.h"
+#include "Framework/RHI/Shader.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -27,5 +28,12 @@ namespace ProjectEngine {
 
         virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh) noexcept = 0;
         virtual void DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept = 0;
+
+        virtual void LoadShaders() noexcept = 0;
+        virtual void UseShader(const std::string& shaderName) noexcept = 0;
+
+    protected:
+
+        std::shared_ptr<Shader> mShaders;
     };
 }

@@ -28,6 +28,11 @@ namespace ProjectEngine
         virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh) noexcept;
         virtual void DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept;
 
+        virtual void LoadShaders() noexcept;
+        virtual void UseShader(const std::string& shaderName) noexcept;
+
+        ID3D11Device* GetDevice() const { return m_device; }
+
     protected:
         HWND m_hwnd;
 

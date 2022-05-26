@@ -4,13 +4,15 @@
 
 namespace ProjectEngine
 {
+    class GraphicsManager;
+
     class VertexBuffer : public IVertexBuffer
     {
     public:
-        VertexBuffer(unsigned int count, VertexFormat vf) : mCount(count)
-        {
-            mVertexFormat = VertexFormat::None;
-        }
+        virtual void Initialize(
+            GraphicsManager* graphicsManager,
+            void* data,
+            unsigned int count, VertexFormat vf) noexcept;
 
         virtual size_t GetVertexSize(VertexFormat vf) noexcept;
 

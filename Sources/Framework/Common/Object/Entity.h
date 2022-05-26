@@ -4,6 +4,7 @@
 #include "Framework/Interface/IModule.h"
 #include "Framework/Common/Object/Components/TransformComponent.h"
 #include "Framework/Common/Object/Components/MeshRenderComponent.h"
+#include "Framework/Common/Object/Components/CameraComponent.h"
 
 #include <vector>
 
@@ -50,6 +51,7 @@ namespace ProjectEngine
 
         TransformComponent* mTransform;
         MeshRenderComponent* mMeshRender;
+        CameraComponent* mCamera;
     };
 
 
@@ -69,6 +71,13 @@ namespace ProjectEngine
             mMeshRender->Initialize();
             comp = mMeshRender;
         }
+        else if (std::is_same<T, CameraComponent>::value) {
+            mCamera = new CameraComponent();
+            mCamera->SetMaster(this);
+            mCamera->Initialize();
+            comp = mCamera;
+        }
+
         return (T*)comp;
     }
 
@@ -78,8 +87,12 @@ namespace ProjectEngine
         void* ret = nullptr;
         if (std::is_same<T, TransformComponent>::value) {
             ret = mTransform;
-        } else if (std::is_same<T, MeshRenderComponent>::value) {
+        }
+        else if (std::is_same<T, MeshRenderComponent>::value) {
             ret = mMeshRender;
+        }
+        else if (std::is_same<T, CameraComponent>::value) {
+            ret = mCamera;
         }
 
         return (T*)ret;
@@ -95,6 +108,10 @@ namespace ProjectEngine
         else if (std::is_same<T, MeshRenderComponent>::value) {
             delete mMeshRender;
             mMeshRender = nullptr;
+        }
+        else if (std::is_same<T, CameraComponent>::value) {
+            delete mCamera;
+            mCamera = nullptr;
         }
     }
 

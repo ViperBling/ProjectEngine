@@ -2,6 +2,7 @@
 #include "Platform/Assert.h"
 
 #include "Framework/Common/Object/Components/MeshRenderComponent.h"
+#include "Framework/Common/Object/Components/CameraComponent.h"
 
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
@@ -13,8 +14,12 @@ using namespace ProjectEngine;
 
 
 int ProjectEngine::World::Initialize() noexcept {
+
     mMeshRenderSystem = new MeshRenderSystem(this);
     mMeshRenderSystem->Initialize();
+
+    mCameraSystem = new CameraSystem(this);
+    mCameraSystem->Initialize();
 
     return 0;
 }
@@ -22,7 +27,9 @@ int ProjectEngine::World::Initialize() noexcept {
 void ProjectEngine::World::Finalize() noexcept {
 
     mEntities.clear();
+
     mMeshRenderSystem->Finalize();
+    mCameraSystem->Finalize();
 }
 
 void ProjectEngine::World::Tick() noexcept {
@@ -95,6 +102,11 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
         mMeshRenderSystem->LoadMesh(mesh);
     }
 
+    // build camera
+    auto camera = CreateEntity();
+    camera->AddComponent<CameraComponent>();
+    mCameraSystem->SetMainCamera(camera);
+
     for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i) {
         auto child = scene->mRootNode->mChildren[i];
         if (child->mNumMeshes <= 0) continue;
@@ -134,7 +146,7 @@ void World::DumpEntities() {
         auto meshRender = entity->GetComponent<MeshRenderComponent>();
         if (meshRender) {
             cout << "MeshRenderComponent: " << endl;
-            cout << "MeshIndex:";
+            cout << "MeshIndex: ";
             for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
                 cout << meshRender->mMeshIdx[i] << " ";
             }
@@ -146,6 +158,19 @@ void World::DumpEntities() {
             }
             cout << endl;
         }
+
+        auto cameraComponent = entity->GetComponent<CameraComponent>();
+        if (cameraComponent) {
+            cout << "Camera Type: " << cameraComponent->mCamType << endl;
+            cout << "Position: " << cameraComponent->mPosition.x() << "," <<cameraComponent->mPosition.y() << "," << cameraComponent->mPosition.z() << endl;
+            cout << "Lookat: " << cameraComponent->mLookAt.x() << "," << cameraComponent->mLookAt.y() << "," << cameraComponent->mLookAt.z() << endl;
+            cout << "Up: " << cameraComponent->mUp.x() << "," << cameraComponent->mUp.y() << "," << cameraComponent->mUp.z() << endl;
+            cout << "Near and Far: " << cameraComponent->mNearClip << "," << cameraComponent->mFarClip << endl;
+            cout << "Fov: " << cameraComponent->mFov << endl;
+            cout << cameraComponent->GetViewMatrix();
+            cout << cameraComponent->GetPerspectiveMatrix();
+        }
+
         cout << endl;
     }
 }

@@ -5,6 +5,7 @@
 using namespace ProjectEngine;
 
 int ProjectEngine::MeshRenderComponent::Initialize() noexcept {
+
     auto master = GetMaster();
     if (master) {
         auto world = master->GetWorld();
@@ -17,6 +18,7 @@ int ProjectEngine::MeshRenderComponent::Initialize() noexcept {
 }
 
 void ProjectEngine::MeshRenderComponent::Finalize() noexcept {
+
     auto master = GetMaster();
     if (master) {
         auto world = master->GetWorld();

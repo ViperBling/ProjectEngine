@@ -8,5 +8,5 @@ install(DIRECTORY "${PROJECT_SOURCE_DIR}/Asset" DESTINATION "${PROJECT_SOURCE_DI
 
 add_custom_command(TARGET ProjectEngine POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${PROJECT_SOURCE_DIR}/Asset/Scene
-        ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/Asset/Scene)
+        ${PROJECT_SOURCE_DIR}/Asset
+        ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/Asset)

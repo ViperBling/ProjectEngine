@@ -2,6 +2,7 @@
 
 #include "GraphicsManagerD3D11.h"
 #include "Framework/RHI/D3D11/VertexBufferD3D11.h"
+#include "Framework/RHI/D3D11/ShaderD3D11.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
@@ -36,7 +37,7 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
     D3D11_RASTERIZER_DESC rasterDesc;
     D3D11_VIEWPORT viewport;
-    float fieldOfView, screenAspect;
+    // float fieldOfView, screenAspect;
 
     // 使用工厂模式创建adapter
     hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -231,6 +232,8 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     // Create the viewport.
     m_deviceContext->RSSetViewports(1, &viewport);
 
+    LoadShaders();
+
     return 0;
 }
 
@@ -269,23 +272,9 @@ void ProjectEngine::GraphicsManagerD3D11::ClearRenderTarget(float r, float g, fl
 
 std::shared_ptr<VertexBuffer> ProjectEngine::GraphicsManagerD3D11::CreateVertexBuffer(void *data, unsigned int count, ProjectEngine::VertexFormat vf) noexcept
 {
-    auto ptr = std::make_shared<VertexBufferD3D11>(count, vf);
+    auto ptr = std::make_shared<VertexBufferD3D11>();
 
-    D3D11_BUFFER_DESC vertexBufferDesc;
-    D3D11_SUBRESOURCE_DATA vertexData;
-
-    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-    vertexBufferDesc.ByteWidth = ptr->GetVertexSize(vf) * count;
-    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    vertexBufferDesc.CPUAccessFlags = 0;
-    vertexBufferDesc.MiscFlags = 0;
-    vertexBufferDesc.StructureByteStride = 0;
-
-    vertexData.pSysMem = data;
-    vertexData.SysMemPitch = 0;
-    vertexData.SysMemSlicePitch = 0;
-
-    m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &(ptr->mVertexBuffer));
+    ptr->Initialize(this, data, count, vf);
 
     return ptr;
 }
@@ -338,6 +327,19 @@ void ProjectEngine::GraphicsManagerD3D11::DeleteRenderMesh(std::shared_ptr<Rende
         DeleteVertexBuffer(mesh->mTexCoords);
         mesh->mTexCoords = nullptr;
     }
+}
+
+void GraphicsManagerD3D11::LoadShaders() noexcept {
+
+    std::string debugShaderVS = "Asset/Shaders/debug_vs.hlsl";
+    std::string debugShaderPS = "Asset/Shaders/debug_ps.hlsl";
+
+    auto debugShader = std::make_shared<ShaderD3D11>();
+    debugShader->InitializeFromFile(this, debugShaderVS, debugShaderPS);
+}
+
+void GraphicsManagerD3D11::UseShader(const std::string &shaderName) noexcept {
+
 }
 
 
