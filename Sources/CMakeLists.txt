@@ -6,7 +6,9 @@ set(SourcesPath ${PROJECT_SOURCE_DIR}/Sources)
 IF(${WIN32})
     set(PlatformOnlySources
             ${SourcesPath}/Framework/Common/Application/WindowsApplication.cpp
+
             ${SourcesPath}/Framework/RHI/D3D11/GraphicsManagerD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/VertexBufferD3D11.cpp
             )
 ELSEIF(${UNIX})
     IF(${APPLE})
@@ -29,6 +31,8 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/Common/Object/System/MeshRenderSystem.cpp
 
         ${SourcesPath}/Framework/RHI/RenderObject.cpp
+        ${SourcesPath}/Framework/RHI/RenderMesh.cpp
+        ${SourcesPath}/Framework/RHI/VertexBuffer.cpp
 
         ${PlatformOnlySources}
         )

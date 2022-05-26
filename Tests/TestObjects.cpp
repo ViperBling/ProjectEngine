@@ -3,10 +3,16 @@
 #include "Framework/Common/Object/Components/MeshRenderComponent.h"
 #include <iostream>
 
+#include "Framework/Common/Application/Application.h"
+
+namespace ProjectEngine
+{
+    extern Application* GApp;
+}
 
 int main()
 {
-    auto world = new ProjectEngine::World();
+    auto world = new ProjectEngine::World(ProjectEngine::GApp);
     world->Initialize();
     auto entity = world->CreateEntity();
     std::cout << entity->GetGuid() << std::endl;

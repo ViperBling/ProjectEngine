@@ -2,7 +2,7 @@
 
 #include <string>
 
-using namespace std;
+//using namespace std;
 
 namespace ProjectEngine
 {
@@ -14,11 +14,11 @@ namespace ProjectEngine
         bool IsVisible() const { return mVisible; }
         void SetVisible(bool visible) { mVisible = visible; }
 
-        string GetName() { return mName; }
-        void SetName(string&& name) { mName = name; }
+        std::string GetName() { return mName; }
+        void SetName(std::string&& name) { mName = name; }
 
     private:
         bool mVisible = false;
-        string mName;
+        std::string mName;
     };
 }

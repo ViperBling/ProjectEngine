@@ -10,17 +10,19 @@
 #include <iostream>
 
 using namespace ProjectEngine;
-using namespace std;
+
 
 int ProjectEngine::World::Initialize() noexcept {
-    mMeshRenderSystem = new MeshRenderSystem();
+    mMeshRenderSystem = new MeshRenderSystem(this);
     mMeshRenderSystem->Initialize();
 
     return 0;
 }
 
 void ProjectEngine::World::Finalize() noexcept {
+
     mEntities.clear();
+    mMeshRenderSystem->Finalize();
 }
 
 void ProjectEngine::World::Tick() noexcept {
@@ -31,7 +33,8 @@ void ProjectEngine::World::Render() noexcept {
     mMeshRenderSystem->Render();
 }
 
-ProjectEngine::World::World() :
+ProjectEngine::World::World(Application* app) :
+    mApp(app),
     mMeshRenderSystem(nullptr)
 {
 
@@ -87,23 +90,35 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
 
     PROJECTENGINE_ASSERT(scene);
 
+    for (unsigned int j = 0; j < scene->mNumMeshes; ++j) {
+        auto mesh = scene->mMeshes[j];
+        mMeshRenderSystem->LoadMesh(mesh);
+    }
+
     for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i) {
         auto child = scene->mRootNode->mChildren[i];
         if (child->mNumMeshes <= 0) continue;
 
         auto entity = CreateEntity();
-        auto meshRenderComp = entity->AddComponent<MeshRenderComponent>();
+        aiVector3D scaling, rotation, position;
+        child->mTransformation.Decompose(scaling, rotation, position);
+
+        auto transformation = entity->GetComponent<TransformComponent>();
+        transformation->SetPosition(Vector3f(position.x, position.y, position.z));
+        transformation->SetRotation(Vector3f(rotation.x, rotation.y, rotation.z));
+        transformation->SetScale(Vector3f(scaling.x, scaling.y, scaling.z));
+
+        auto comp = entity->AddComponent<MeshRenderComponent>();
 
         for (unsigned int j = 0; j < child->mNumMeshes; ++j) {
             auto mIdx = child->mMeshes[j];
-            auto mesh = scene->mMeshes[mIdx];
-            auto robj = meshRenderComp->AddRenderObject();
-            robj->SetName(mesh->mName.C_Str());
+            comp->mMeshIdx.emplace_back(mIdx);
         }
     }
 }
 
 void World::DumpEntities() {
+    using namespace std;
 
     cout << "Dump Entities: " << endl;
 
@@ -119,10 +134,17 @@ void World::DumpEntities() {
         auto meshRender = entity->GetComponent<MeshRenderComponent>();
         if (meshRender) {
             cout << "MeshRenderComponent: " << endl;
-            for (int i = 0; i < meshRender->GetRenderObjectCount(); ++i) {
-                auto robj = meshRender->GetRenderObject(i);
-                cout << "RenderObject: " << robj->GetName() << endl;
+            cout << "MeshIndex:";
+            for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
+                cout << meshRender->mMeshIdx[i] << " ";
             }
+            cout << endl;
+            cout << "Mesh name:";
+            for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
+                auto idx = meshRender->mMeshIdx[i];
+                auto mesh = mMeshRenderSystem->mMeshes[idx];
+            }
+            cout << endl;
         }
         cout << endl;
     }

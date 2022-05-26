@@ -1,5 +1,6 @@
 #include "WindowsApplication.h"
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
+#include "Framework/Common/Object/World.h"
 
 using namespace ProjectEngine;
 
@@ -15,7 +16,7 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
     auto mgr = (GraphicsManagerD3D11*)mGraphicsManager;
     mgr->InitializeWithWindow(mHWND);
 
-    mWorld = new World();
+    mWorld = new World(this);
     mWorld->Initialize();
 
     return 0;
@@ -23,6 +24,8 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
 
 void ProjectEngine::WindowsApplication::Finalize() noexcept
 {
+    mWorld->Finalize();
+
     mGraphicsManager->Finalize();
     mMemoryManager->Finalize();
 }
@@ -41,7 +44,7 @@ void ProjectEngine::WindowsApplication::Tick() noexcept
 
 void ProjectEngine::WindowsApplication::Render() noexcept
 {
-    mGraphicsManager->Render();
+    mWorld->Render();
 }
 
 HWND ProjectEngine::WindowsApplication::GetWindowsHandler() noexcept

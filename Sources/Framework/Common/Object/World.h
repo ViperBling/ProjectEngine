@@ -14,6 +14,7 @@
 namespace ProjectEngine
 {
     class Entity;
+    class Application;
 
     class World : public ITickableModule
     {
@@ -23,7 +24,7 @@ namespace ProjectEngine
         void Tick() noexcept override;
         virtual void Render() noexcept;
 
-        World();
+        World(Application* app);
 
         std::shared_ptr<ProjectEngine::Entity> CreateEntity();
         std::shared_ptr<ProjectEngine::Entity> CreateEntity(const xg::Guid& guid);
@@ -35,6 +36,9 @@ namespace ProjectEngine
         void DumpEntities();
 
         MeshRenderSystem* GetMeshRenderSystem() { return mMeshRenderSystem; }
+
+    public:
+        Application* mApp;
 
     private:
         std::unordered_map<xg::Guid, std::shared_ptr<ProjectEngine::Entity>> mEntities;

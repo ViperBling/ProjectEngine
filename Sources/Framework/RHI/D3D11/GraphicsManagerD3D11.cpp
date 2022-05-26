@@ -1,7 +1,11 @@
-﻿#include "GraphicsManagerD3D11.h"
+﻿#include <iostream>
+
+#include "GraphicsManagerD3D11.h"
+#include "Framework/RHI/D3D11/VertexBufferD3D11.h"
 #include "Platform/Assert.h"
 
-#include <iostream>
+using namespace ProjectEngine;
+
 
 int ProjectEngine::GraphicsManagerD3D11::Initialize() noexcept {
     PROJECTENGINE_ASSERT(false);
@@ -10,41 +14,16 @@ int ProjectEngine::GraphicsManagerD3D11::Initialize() noexcept {
 
 int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcept {
     m_hwnd = hwnd;
-    CreateDeviceContext();
-    return 0;
-}
 
-void ProjectEngine::GraphicsManagerD3D11::Finalize() noexcept {
-
-}
-
-void ProjectEngine::GraphicsManagerD3D11::Tick() noexcept {
-
-}
-
-void ProjectEngine::GraphicsManagerD3D11::Render() noexcept {
-
-    ClearRenderTarget(0.2f, 0.2f, 0.2f, 1.0f);
-    m_swapChain->Present(0, 0);
-}
-
-void ProjectEngine::GraphicsManagerD3D11::ClearRenderTarget(float r, float g, float b, float a) noexcept {
-    float color[4] = {r, g, b, a};
-    m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
-
-    m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
-
-void ProjectEngine::GraphicsManagerD3D11::CreateDeviceContext() noexcept {
-    int error;
     unsigned int numModes, i, numerator, denominator;
+    size_t stringLength;
+    int error;
 
     HRESULT hr;
     IDXGIFactory* factory;
     IDXGIAdapter* adapter;
     IDXGIOutput* adapterOutput;
 
-    size_t stringLength;
     DXGI_MODE_DESC* displayModeList;
     DXGI_ADAPTER_DESC adapterDesc;
 
@@ -97,6 +76,7 @@ void ProjectEngine::GraphicsManagerD3D11::CreateDeviceContext() noexcept {
     error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
     PROJECTENGINE_ASSERT(error == 0);
     std::cout << "Video card: " << m_videoCardDescription << std::endl;
+    std::cout << "Video card memory: " << m_videoCardMemory << std::endl;
 
     delete[] displayModeList;
     displayModeList = nullptr;
@@ -250,9 +230,11 @@ void ProjectEngine::GraphicsManagerD3D11::CreateDeviceContext() noexcept {
     viewport.TopLeftY = 0.0f;
     // Create the viewport.
     m_deviceContext->RSSetViewports(1, &viewport);
+
+    return 0;
 }
 
-void ProjectEngine::GraphicsManagerD3D11::ReleaseDeviceContext() noexcept {
+void ProjectEngine::GraphicsManagerD3D11::Finalize() noexcept {
 
     if (m_swapChain) {
         m_swapChain->SetFullscreenState(false, nullptr);
@@ -267,3 +249,95 @@ void ProjectEngine::GraphicsManagerD3D11::ReleaseDeviceContext() noexcept {
     SAFE_RELEASE_DXOBJ(m_device);
     SAFE_RELEASE_DXOBJ(m_swapChain);
 }
+
+void ProjectEngine::GraphicsManagerD3D11::Tick() noexcept {
+
+}
+
+void ProjectEngine::GraphicsManagerD3D11::Present() noexcept {
+
+    m_swapChain->Present(0, 0);
+}
+
+void ProjectEngine::GraphicsManagerD3D11::ClearRenderTarget(float r, float g, float b, float a) noexcept {
+
+    float color[4] = {r, g, b, a};
+    m_deviceContext->ClearRenderTargetView(m_renderTargetView, color);
+
+    m_deviceContext->ClearDepthStencilView(m_depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+}
+
+std::shared_ptr<VertexBuffer> ProjectEngine::GraphicsManagerD3D11::CreateVertexBuffer(void *data, unsigned int count, ProjectEngine::VertexFormat vf) noexcept
+{
+    auto ptr = std::make_shared<VertexBufferD3D11>(count, vf);
+
+    D3D11_BUFFER_DESC vertexBufferDesc;
+    D3D11_SUBRESOURCE_DATA vertexData;
+
+    vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    vertexBufferDesc.ByteWidth = ptr->GetVertexSize(vf) * count;
+    vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vertexBufferDesc.CPUAccessFlags = 0;
+    vertexBufferDesc.MiscFlags = 0;
+    vertexBufferDesc.StructureByteStride = 0;
+
+    vertexData.pSysMem = data;
+    vertexData.SysMemPitch = 0;
+    vertexData.SysMemSlicePitch = 0;
+
+    m_device->CreateBuffer(&vertexBufferDesc, &vertexData, &(ptr->mVertexBuffer));
+
+    return ptr;
+}
+
+void ProjectEngine::GraphicsManagerD3D11::DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept {
+
+    auto ptr = std::static_pointer_cast<VertexBufferD3D11>(vb);
+    if (ptr->mVertexBuffer) {
+        ptr->mVertexBuffer->Release();
+    }
+    ptr->mVertexBuffer = nullptr;
+}
+
+std::shared_ptr<RenderMesh> ProjectEngine::GraphicsManagerD3D11::CreateRenderMesh(aiMesh *mesh) noexcept {
+
+    auto ptr = std::make_shared<RenderMesh>();
+    auto count = mesh->mNumVertices;
+
+    if (mesh->HasPositions()) {
+        ptr->mPositions = CreateVertexBuffer(mesh->mVertices, count, VertexFormat::VF_P3F);
+    }
+
+    if (mesh->HasNormals()) {
+        ptr->mNormals = CreateVertexBuffer(mesh->mNormals, count, VertexFormat::VF_N3F);
+    }
+
+    if (mesh->HasTextureCoords(0)) {
+        float *texCoords = (float*)malloc(sizeof(float) * 2 * mesh->mNumVertices);
+        for (unsigned int k = 0; k < mesh->mNumVertices; ++k) {
+            texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
+            texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
+        }
+        ptr->mTexCoords = CreateVertexBuffer(texCoords, count, VertexFormat::VF_T2F);
+        delete texCoords;
+    }
+    return ptr;
+}
+
+void ProjectEngine::GraphicsManagerD3D11::DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept {
+
+    if (mesh->mPositions) {
+        DeleteVertexBuffer(mesh->mPositions);
+        mesh->mPositions = nullptr;
+    }
+    if (mesh->mNormals) {
+        DeleteVertexBuffer(mesh->mNormals);
+        mesh->mNormals = nullptr;
+    }
+    if (mesh->mTexCoords) {
+        DeleteVertexBuffer(mesh->mTexCoords);
+        mesh->mTexCoords = nullptr;
+    }
+}
+
+

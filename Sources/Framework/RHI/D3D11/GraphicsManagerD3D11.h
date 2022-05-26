@@ -14,15 +14,19 @@ namespace ProjectEngine
     class GraphicsManagerD3D11 : public GraphicsManager
     {
     public:
-        int Initialize() noexcept override;
+        virtual int Initialize() noexcept;
         virtual int InitializeWithWindow(HWND hwnd) noexcept;
-        void Finalize() noexcept override;
-        void Tick() noexcept override;
+        virtual void Finalize() noexcept;
+        virtual void Tick() noexcept;
 
-        void Render() noexcept override;
-        void ClearRenderTarget(float r, float g, float b, float a) noexcept override;
-        void CreateDeviceContext() noexcept override;
-        void ReleaseDeviceContext() noexcept override;
+        virtual void Present() noexcept;
+        virtual void ClearRenderTarget(float r, float g, float b, float a) noexcept;
+
+        virtual std::shared_ptr<VertexBuffer> CreateVertexBuffer(void* data, unsigned int count, VertexFormat vf) noexcept;
+        virtual void DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept;
+
+        virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh) noexcept;
+        virtual void DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept;
 
     protected:
         HWND m_hwnd;
@@ -38,6 +42,5 @@ namespace ProjectEngine
         ID3D11DepthStencilState*    m_depthStencilState;
         ID3D11DepthStencilView*     m_depthStencilView;
         ID3D11RasterizerState*      m_rasterState;
-
     };
 }

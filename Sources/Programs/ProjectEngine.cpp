@@ -10,9 +10,13 @@
 using namespace std;
 using namespace ProjectEngine;
 
+namespace ProjectEngine
+{
 #if defined(PROJECTENGINE_WINDOWS)
-extern Application* GApp = GWindowsApplication::GetInstance();
+    extern Application* GApp = GWindowsApplication::GetInstance();
 #endif
+}
+
 
 int main()
 {
