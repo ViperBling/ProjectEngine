@@ -25,8 +25,10 @@ int main()
 
 #if defined(PROJECTENGINE_WINDOWS)
 
-    cout << "Creating Windows..." << endl;
     CHECK_APPLICATION_INIT(GApp->Initialize());
+    GApp->mWorld->LoadScene("Asset/Scene/aili_cycle.fbx");
+    GApp->mWorld->DumpEntities();
+
     GApp->Run();
     GApp->Finalize();
 

@@ -12,13 +12,15 @@ namespace ProjectEngine
     class MeshRenderComponent : public IComponent
     {
     public:
-        virtual int Initialize() noexcept;
-        virtual void Finalize() noexcept;
+        int Initialize() noexcept override;
+        void Finalize() noexcept override;
         virtual void Render();
 
         void SetVisible(bool visible) { mVisible = visible; }
         bool IsVisible() const { return mVisible; }
-        void AddRenderObject(std::string resourePath);
+        std::shared_ptr<RenderObject> AddRenderObject();
+        std::shared_ptr<RenderObject> GetRenderObject(int idx);
+        size_t GetRenderObjectCount();
 
     private:
         bool mVisible;

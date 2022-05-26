@@ -34,7 +34,7 @@ namespace ProjectEngine
         World* GetWorld() { return mWorld; }
 
         template<typename T>
-        void AddComponent();
+        T* AddComponent();
 
         template<typename T>
         T* GetComponent();
@@ -54,18 +54,22 @@ namespace ProjectEngine
 
 
     template<typename T>
-    void Entity::AddComponent()
+    T* Entity::AddComponent()
     {
+        void* comp = nullptr;
         if (std::is_same<T, TransformComponent>::value) {
             mTransform = new TransformComponent();
             mTransform->SetMaster(this);
             mTransform->Initialize();
+            comp = mTransform;
         }
         else if (std::is_same<T, MeshRenderComponent>::value) {
             mMeshRender = new MeshRenderComponent();
             mMeshRender->SetMaster(this);
             mMeshRender->Initialize();
+            comp = mMeshRender;
         }
+        return (T*)comp;
     }
 
     template<typename T>

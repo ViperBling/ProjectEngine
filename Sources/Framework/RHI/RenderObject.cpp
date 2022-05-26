@@ -4,5 +4,5 @@
 
 void ProjectEngine::RenderObject::Render()
 {
-    std::cout << "Render Object " << std::endl;
+
 }

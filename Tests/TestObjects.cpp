@@ -7,6 +7,7 @@
 int main()
 {
     auto world = new ProjectEngine::World();
+    world->Initialize();
     auto entity = world->CreateEntity();
     std::cout << entity->GetGuid() << std::endl;
 

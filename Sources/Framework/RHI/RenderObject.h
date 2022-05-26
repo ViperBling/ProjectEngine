@@ -1,5 +1,9 @@
 #pragma once
 
+#include <string>
+
+using namespace std;
+
 namespace ProjectEngine
 {
     class RenderObject
@@ -10,7 +14,11 @@ namespace ProjectEngine
         bool IsVisible() const { return mVisible; }
         void SetVisible(bool visible) { mVisible = visible; }
 
+        string GetName() { return mName; }
+        void SetName(string&& name) { mName = name; }
+
     private:
         bool mVisible = false;
+        string mName;
     };
 }
