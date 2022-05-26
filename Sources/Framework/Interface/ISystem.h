@@ -1,10 +1,6 @@
 #pragma once
 
-<<<<<<< HEAD
-#include "IModule.h"
-=======
 #include "Framework/Interface/IModule.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 namespace ProjectEngine
 {

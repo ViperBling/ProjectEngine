@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-﻿#include <iostream>
-#include "MemoryManager.h"
-=======
 ﻿#include "MemoryManager.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 extern "C" void* malloc(size_t size);
 extern "C" void  free(void* p);
@@ -36,8 +31,8 @@ namespace ProjectEngine
     static const uint32_t kMaxBlockSize =
             kBlockSizes[kNumBlockSizes - 1];
 
-    size_t*        MemoryManager::m_pBlockSizeLookup = nullptr;
-    Allocator*     MemoryManager::m_pAllocators = nullptr;
+    size_t*        MemoryManager::m_pBlockSizeLookup;
+    Allocator*     MemoryManager::m_pAllocators;
 }
 
 int MemoryManager::Initialize() noexcept

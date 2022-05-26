@@ -1,39 +1,13 @@
 #pragma once
 
-<<<<<<< HEAD
-#include "IComponent.h"
-#include "Math/MathLib.h"
-=======
 #include "Framework/Interface/IComponent.h"
 #include "Framework/Common/Math/MathLib.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 namespace ProjectEngine
 {
     class TransformComponent : public IComponent
     {
     public:
-<<<<<<< HEAD
-        virtual int Initialize() noexcept;
-        virtual void Finalize() noexcept;
-
-    public:
-        TransformComponent();
-        Vector3f GetPosition() noexcept { return mPosition; }
-        Vector3f GetRotation() noexcept { return mRotation; }
-        Vector3f GetScale() noexcept { return mScale; }
-        void     SetPosition(Vector3f position) noexcept { mPosition = position; }
-        void     SetRotation(Vector3f rotation) noexcept { mRotation = rotation; }
-        void     SetScale(Vector3f scale) noexcept { mScale = scale; }
-        Matrix4f GetWorldMatrix();
-
-    private:
-        bool		mWorldMatrixDirty;
-        Matrix4f	mWorldMatrix;
-        Vector3f    mPosition;
-        Vector3f    mRotation;
-        Vector3f    mScale;
-=======
         int Initialize() noexcept override;
         void Finalize() noexcept override;
 
@@ -49,6 +23,5 @@ namespace ProjectEngine
         Vector3f mPosition;
         Vector3f mRotation;
         Vector3f mScale;
->>>>>>> remotes/origin/Branch_Rebase
     };
 }

@@ -1,15 +1,9 @@
 #pragma once
 
 #include "IApplication.h"
-<<<<<<< HEAD
-#include "Memory/MemoryManager.h"
-#include "GraphicsManager.h"
-#include "Object/World.h"
-=======
 #include "Framework/Common/Memory/MemoryManager.h"
 #include "Framework/RHI/GraphicsManager.h"
 #include "Framework/Common/Object/World.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 namespace ProjectEngine
 {
@@ -33,6 +27,4 @@ namespace ProjectEngine
     private:
         bool mQuit = false;
     };
-
-    extern Application* GApp;
 }

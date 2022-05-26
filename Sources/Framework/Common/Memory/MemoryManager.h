@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Allocator.h"
-#include "IModule.h"
-#include "Singleton.h"
+#include "Framework/Interface/IModule.h"
+#include "Framework/Common/Singleton.h"
 
 namespace ProjectEngine
 {
@@ -37,18 +37,10 @@ namespace ProjectEngine
         static Allocator*     m_pAllocators;
 
     private:
-<<<<<<< HEAD
-         MemoryManager(const MemoryManager& manager) = default;
-         MemoryManager& operator=(const MemoryManager&) = default;
-
-        static Allocator* LookUpAllocator(size_t size);
-    };
-=======
         MemoryManager(const MemoryManager& manager) = default;
         MemoryManager& operator=(const MemoryManager&) = default;
 
         static Allocator* LookUpAllocator(size_t size);
     };
 
->>>>>>> remotes/origin/Branch_Rebase
 }

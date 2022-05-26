@@ -1,10 +1,6 @@
 #pragma once
 
-<<<<<<< HEAD
-#include "IModule.h"
-=======
 #include "Framework/Interface/IModule.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 namespace ProjectEngine
 {
@@ -19,11 +15,7 @@ namespace ProjectEngine
     public:
         IComponent() : mMaster(nullptr), mIsActive(true) {}
 
-<<<<<<< HEAD
-        bool IsActive() { return mIsActive; }
-=======
         bool IsActive() const { return mIsActive; }
->>>>>>> remotes/origin/Branch_Rebase
         void SetActive(bool active) { mIsActive = active; }
 
         Entity* GetMaster() { return mMaster; }

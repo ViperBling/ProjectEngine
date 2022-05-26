@@ -28,9 +28,6 @@ namespace ProjectEngine
 
         friend class Singleton<WindowsApplication>;
     };
-<<<<<<< HEAD
-=======
 
->>>>>>> remotes/origin/Branch_Rebase
     typedef Singleton<WindowsApplication> GWindowsApplication;
 }
