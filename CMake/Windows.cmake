@@ -4,21 +4,17 @@ if( CMAKE_BUILD_TYPE STREQUAL "Release" )
 
     find_library(ASSIMP_LIBRARY assimp-vc141-mt PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Release_x64/lib)
     find_library(IRRXML_LIBRARY IrrXML PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Release_x64/lib)
-    find_library(ZLIB_LIBRARY   zlibstatic PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Release_x64/lib)
+    find_library(ZLIB_LIBRARY zlibstatic PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Release_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Release_x64/include")
-
-    include_directories("${PROJECT_SOURCE_DIR}/External/Boost/include")
 
 else( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     find_library(XG_LIBRARY xg PATHS ${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Debug_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Debug_x64/include")
 
     find_library(ASSIMP_LIBRARY assimp-vc141-mtd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
-    find_library(IRRXML_LIBRARY IrrXMLd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
-    find_library(ZLIB_LIBRARY   zlibstaticd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
+    find_library(IRRXML_LIBRARY IrrXML PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
+    find_library(ZLIB_LIBRARY zlibstatic PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/include")
-
-    include_directories("${PROJECT_SOURCE_DIR}/External/Boost/include")
 
 endif( CMAKE_BUILD_TYPE STREQUAL "Release")
 

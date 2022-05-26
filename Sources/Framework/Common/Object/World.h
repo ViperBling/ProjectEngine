@@ -81,7 +81,8 @@ namespace ProjectEngine
         void DeleteEntity(const xg::Guid& guid);
         size_t GetEntityCount();
 
-        void LoadScene(std::string scenePath);
+        void LoadScene(const std::string& scenePath);
+        void DumpEntities();
 
         MeshRenderSystem* GetMeshRenderSystem() { return mMeshRenderSystem; }
 

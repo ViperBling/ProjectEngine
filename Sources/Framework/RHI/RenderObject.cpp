@@ -12,6 +12,6 @@ void RenderObject::Render() {}
 
 void ProjectEngine::RenderObject::Render()
 {
-    std::cout << "Render Object " << std::endl;
+
 }
 >>>>>>> remotes/origin/Branch_Rebase

@@ -1,10 +1,5 @@
 #include "WindowsApplication.h"
-<<<<<<< HEAD
-#include "D3D11/GraphicsManagerD3D11.h"
-#include "Object/World.h"
-=======
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
->>>>>>> remotes/origin/Branch_Rebase
 
 using namespace ProjectEngine;
 
@@ -17,35 +12,17 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
     mMemoryManager->Initialize();
 
     mGraphicsManager = new GraphicsManagerD3D11();
-<<<<<<< HEAD
-    auto manager = dynamic_cast<GraphicsManagerD3D11*>(mGraphicsManager);
-    manager->InitializeWithWindow(mHWND);
-
-    mWorld = new World(this);
-    mWorld->Initialize();
-=======
     auto mgr = (GraphicsManagerD3D11*)mGraphicsManager;
     mgr->InitializeWithWindow(mHWND);
 
     mWorld = new World();
     mWorld->Initialize();
-    mWorld->LoadScene("scene");
->>>>>>> remotes/origin/Branch_Rebase
-
-    mWorld = new World();
-    mWorld->Initialize();
-    mWorld->LoadScene("scene");
 
     return 0;
 }
 
 void ProjectEngine::WindowsApplication::Finalize() noexcept
 {
-<<<<<<< HEAD
-    mWorld->Finalize();
-
-=======
->>>>>>> remotes/origin/Branch_Rebase
     mGraphicsManager->Finalize();
     mMemoryManager->Finalize();
 }
@@ -59,17 +36,12 @@ void ProjectEngine::WindowsApplication::Tick() noexcept
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    mWorld->Tick();
     Render();
 }
 
 void ProjectEngine::WindowsApplication::Render() noexcept
 {
-<<<<<<< HEAD
-    mWorld->Render();
-=======
     mGraphicsManager->Render();
->>>>>>> remotes/origin/Branch_Rebase
 }
 
 HWND ProjectEngine::WindowsApplication::GetWindowsHandler() noexcept
