@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 ﻿#include <iostream>
 #include "MemoryManager.h"
+=======
+﻿#include "MemoryManager.h"
+>>>>>>> remotes/origin/Branch_Rebase
 
 extern "C" void* malloc(size_t size);
 extern "C" void  free(void* p);

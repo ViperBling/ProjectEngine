@@ -1,5 +1,6 @@
 #pragma once
 
+<<<<<<< HEAD
 #include <set>
 
 #include "Guid.hpp"
@@ -20,10 +21,24 @@ namespace ProjectEngine
     public:
         MeshRenderSystem(World* world);
 
+=======
+#include "Guid.hpp"
+#include "Framework/Interface/ISystem.h"
+#include "Framework/Common/Object/Components/MeshRenderComponent.h"
+
+#include <set>
+
+namespace ProjectEngine
+{
+    class MeshRenderSystem : public ITickableSystem
+    {
+    public:
+>>>>>>> remotes/origin/Branch_Rebase
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
         virtual void Tick() noexcept;
 
+<<<<<<< HEAD
         virtual void AddComponent(MeshRenderComponent* comp);
         virtual void DeleteComponent(MeshRenderComponent* comp);
         virtual void Render();
@@ -37,5 +52,14 @@ namespace ProjectEngine
         World* mWorld;
         GraphicsManager* mGraphicsManager;
         std::set< MeshRenderComponent*> mComponents;
+=======
+    public:
+        virtual void AddComponent(MeshRenderComponent* meshRenderComp);
+        virtual void DeleteComponent(MeshRenderComponent* meshRenderComp);
+        virtual void Render();
+
+    private:
+        std::set<MeshRenderComponent*> mMeshRenderComps;
+>>>>>>> remotes/origin/Branch_Rebase
     };
 }
