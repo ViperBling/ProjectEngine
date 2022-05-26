@@ -14,6 +14,13 @@ namespace ProjectEngine
 
 using namespace std;
 using namespace ProjectEngine;
+<<<<<<< HEAD
+=======
+
+#if defined(PROJECTENGINE_WINDOWS)
+extern Application* GApp = GWindowsApplication::GetInstance();
+#endif
+>>>>>>> remotes/origin/Branch_Rebase
 
 int main()
 {
@@ -25,10 +32,17 @@ int main()
     cout << "EngineBuildType: " << BUILD_TYPE << endl;
 
 
+<<<<<<< HEAD
     CHECK_APPLICATION_INIT(GApp->Initialize());
     GApp->mWorld->LoadScene("E:\\Program\\CG\\ProjectEngine\\Asset\\Scene\\Teapot.fbx");
     GApp->mWorld->DumpEntities();
     GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
+=======
+    cout << "Creating Windows..." << endl;
+    CHECK_APPLICATION_INIT(GApp->Initialize());
+    GApp->Run();
+    GApp->Finalize();
+>>>>>>> remotes/origin/Branch_Rebase
 
     GApp->Run();
     GApp->Finalize();

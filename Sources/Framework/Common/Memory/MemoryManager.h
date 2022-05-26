@@ -37,9 +37,18 @@ namespace ProjectEngine
         static Allocator*     m_pAllocators;
 
     private:
+<<<<<<< HEAD
          MemoryManager(const MemoryManager& manager) = default;
          MemoryManager& operator=(const MemoryManager&) = default;
 
         static Allocator* LookUpAllocator(size_t size);
     };
+=======
+        MemoryManager(const MemoryManager& manager) = default;
+        MemoryManager& operator=(const MemoryManager&) = default;
+
+        static Allocator* LookUpAllocator(size_t size);
+    };
+
+>>>>>>> remotes/origin/Branch_Rebase
 }

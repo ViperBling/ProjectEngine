@@ -14,3 +14,7 @@ add_test(NAME TestGuid COMMAND TestGuid)
 add_executable(TestGMemoryManager TestGMemoryManager.cpp)
 target_link_libraries(TestGMemoryManager ProjectEngineLib)
 add_test(NAME TestGMemoryManager COMMAND TestGMemoryManager)
+
+add_executable(TestObjects TestObjects.cpp)
+target_link_libraries(TestObjects ProjectEngineLib)
+add_test(NAME TestObjects COMMAND TestObjects)

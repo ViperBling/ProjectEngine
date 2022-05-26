@@ -1,5 +1,6 @@
 #pragma once
 
+<<<<<<< HEAD
 #include <vector>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -12,6 +13,14 @@
 #include "Components/CameraComponent.h"
 
 using namespace xg;
+=======
+#include "Guid.hpp"
+#include "Framework/Interface/IModule.h"
+#include "Framework/Common/Object/Components/TransformComponent.h"
+#include "Framework/Common/Object/Components/MeshRenderComponent.h"
+
+#include <vector>
+>>>>>>> remotes/origin/Branch_Rebase
 
 namespace ProjectEngine
 {
@@ -20,6 +29,7 @@ namespace ProjectEngine
     class Entity : public IModule
     {
     public:
+<<<<<<< HEAD
         virtual int Initialize() noexcept;
         virtual int Initialize(World* world) noexcept;
         virtual void Finalize() noexcept;
@@ -84,6 +94,60 @@ namespace ProjectEngine
         }
 
         return (T*)component;
+=======
+        int Initialize() noexcept override;
+        virtual int Initialize(World* world) noexcept;
+        void Finalize() noexcept override;
+
+        Entity();
+        Entity(const xg::Guid& guid);
+        virtual ~Entity();
+        xg::Guid GetGuid() const noexcept;
+        void SetGuid(const xg::Guid& guid) noexcept;
+
+        void AddChild(std::shared_ptr<Entity> child);
+        void RemoveChild(std::shared_ptr<Entity> child);
+        Entity* GetParent();
+        void SetParent(Entity* parent);
+        bool IsChild(std::shared_ptr<Entity> child);
+        size_t GetChildrenCount();
+
+        World* GetWorld() { return mWorld; }
+
+        template<typename T>
+        void AddComponent();
+
+        template<typename T>
+        T* GetComponent();
+
+        template<typename T>
+        void RemoveComponent();
+
+    protected:
+        xg::Guid mGuid;
+        Entity* mParent;
+        World* mWorld;
+        std::vector<std::shared_ptr<Entity>> mChildren;
+
+        TransformComponent* mTransform;
+        MeshRenderComponent* mMeshRender;
+    };
+
+
+    template<typename T>
+    void Entity::AddComponent()
+    {
+        if (std::is_same<T, TransformComponent>::value) {
+            mTransform = new TransformComponent();
+            mTransform->SetMaster(this);
+            mTransform->Initialize();
+        }
+        else if (std::is_same<T, MeshRenderComponent>::value) {
+            mMeshRender = new MeshRenderComponent();
+            mMeshRender->SetMaster(this);
+            mMeshRender->Initialize();
+        }
+>>>>>>> remotes/origin/Branch_Rebase
     }
 
     template<typename T>
@@ -92,6 +156,7 @@ namespace ProjectEngine
         void* ret = nullptr;
         if (std::is_same<T, TransformComponent>::value) {
             ret = mTransform;
+<<<<<<< HEAD
         }
         else if (std::is_same<T, MeshRenderComponent>::value) {
             ret = mMeshRender;
@@ -99,6 +164,12 @@ namespace ProjectEngine
         else if (std::is_same<T, CameraComponent>::value) {
             ret = mCamera;
         }
+=======
+        } else if (std::is_same<T, MeshRenderComponent>::value) {
+            ret = mMeshRender;
+        }
+
+>>>>>>> remotes/origin/Branch_Rebase
         return (T*)ret;
     }
 
@@ -109,6 +180,7 @@ namespace ProjectEngine
             delete mTransform;
             mTransform = nullptr;
         }
+<<<<<<< HEAD
         if (std::is_same<T, MeshRenderComponent>::value) {
             delete mMeshRender;
             mMeshRender = nullptr;
@@ -118,4 +190,13 @@ namespace ProjectEngine
             mCamera = nullptr;
         }
     }
+=======
+        else if (std::is_same<T, MeshRenderComponent>::value) {
+            delete mMeshRender;
+            mMeshRender = nullptr;
+        }
+    }
+
+
+>>>>>>> remotes/origin/Branch_Rebase
 }
