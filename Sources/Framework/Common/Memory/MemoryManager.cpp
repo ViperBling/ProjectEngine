@@ -1,5 +1,4 @@
-#include <iostream>
-#include "MemoryManager.h"
+﻿#include "MemoryManager.h"
 
 extern "C" void* malloc(size_t size);
 extern "C" void  free(void* p);

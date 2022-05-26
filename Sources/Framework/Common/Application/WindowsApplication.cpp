@@ -15,6 +15,10 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
     auto mgr = (GraphicsManagerD3D11*)mGraphicsManager;
     mgr->InitializeWithWindow(mHWND);
 
+    mWorld = new World();
+    mWorld->Initialize();
+    mWorld->LoadScene("scene");
+
     return 0;
 }
 

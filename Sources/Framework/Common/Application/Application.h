@@ -3,6 +3,7 @@
 #include "IApplication.h"
 #include "Framework/Common/Memory/MemoryManager.h"
 #include "Framework/RHI/GraphicsManager.h"
+#include "Framework/Common/Object/World.h"
 
 namespace ProjectEngine
 {
@@ -20,6 +21,8 @@ namespace ProjectEngine
     public:
         MemoryManager* mMemoryManager;
         GraphicsManager* mGraphicsManager;
+
+        World* mWorld;
 
     private:
         bool mQuit = false;

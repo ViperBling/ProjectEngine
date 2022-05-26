@@ -1,5 +1,7 @@
-#include "GraphicsManagerD3D11.h"
+﻿#include "GraphicsManagerD3D11.h"
 #include "Platform/Assert.h"
+
+#include <iostream>
 
 int ProjectEngine::GraphicsManagerD3D11::Initialize() noexcept {
     PROJECTENGINE_ASSERT(false);
@@ -78,7 +80,7 @@ void ProjectEngine::GraphicsManagerD3D11::CreateDeviceContext() noexcept {
     hr = adapterOutput->GetDisplayModeList(DXGI_FORMAT_R8G8B8A8_UNORM, DXGI_ENUM_MODES_INTERLACED, &numModes, displayModeList);
     PROJECTENGINE_ASSERT(hr >= 0);
 
-    for (int i = 0; i < numModes; i++) {
+    for (i = 0; i < numModes; i++) {
         if (displayModeList[i].Width == (unsigned int)1280) {
             if (displayModeList[i].Height == (unsigned int) 720) {
                 numerator = displayModeList[i].RefreshRate.Numerator;
@@ -94,6 +96,7 @@ void ProjectEngine::GraphicsManagerD3D11::CreateDeviceContext() noexcept {
 
     error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
     PROJECTENGINE_ASSERT(error == 0);
+    std::cout << "Video card: " << m_videoCardDescription << std::endl;
 
     delete[] displayModeList;
     displayModeList = nullptr;
