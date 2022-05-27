@@ -6,13 +6,13 @@ using namespace ProjectEngine;
 using namespace DirectX;
 
 CameraComponent::CameraComponent() :
-    mPosition(Vector3f(10, 10, 20)),
-    mLookAt(Vector3f(0, 1, 0)),
+    mPosition(Vector3f(100, 100, 200)),
+    mLookAt(Vector3f(0, 100, 0)),
     mUp(Vector3f(0, 1, 0)),
     mCamType(CameraType::Perspective),
     mNearClip(0.01f),
     mFarClip(1000.0f),
-    mFov(PI / 2)
+    mFov(PI / 3)
 {
 
 }

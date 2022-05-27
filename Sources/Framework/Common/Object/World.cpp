@@ -44,7 +44,7 @@ void ProjectEngine::World::Render() noexcept {
 
     mApp->mGraphicsManager->ClearRenderTarget(0.2f, 0.2f, 0.2f, 1.0f);
     mMeshRenderSystem->Render();
-    mRenderDebugSystem->Render();
+//    mRenderDebugSystem->Render();
     mApp->mGraphicsManager->Present();
 }
 
@@ -122,7 +122,6 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
         auto entity = CreateEntity();
         aiVector3D scaling, rotation, position;
         child->mTransformation.Decompose(scaling, rotation, position);
-
         auto transformation = entity->GetComponent<TransformComponent>();
         transformation->SetPosition(Vector3f(position.x, position.y, position.z));
         transformation->SetRotation(Vector3f(rotation.x, rotation.y, rotation.z));

@@ -30,7 +30,7 @@ int main()
 #if defined(PROJECTENGINE_WINDOWS)
 
     CHECK_APPLICATION_INIT(GApp->Initialize());
-    GApp->mWorld->LoadScene("Asset/Scene/aili_cycle.fbx");
+    GApp->mWorld->LoadScene("Asset/Scene/Rosalia.fbx");
     GApp->mWorld->DumpEntities();
 
     GApp->Run();
