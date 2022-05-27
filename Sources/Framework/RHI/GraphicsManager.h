@@ -26,14 +26,11 @@ namespace ProjectEngine {
         virtual void ClearRenderTarget(float r, float g, float b, float a) noexcept = 0;
 
         virtual std::shared_ptr<VertexBuffer> CreateVertexBuffer(void* data, unsigned int count, VertexFormat vf) noexcept = 0;
-        virtual void DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept = 0;
 
         virtual std::shared_ptr<IndexBuffer> CreateIndexBuffer(void* data, unsigned int count, IndexFormat iFormat) noexcept = 0;
-        virtual void DeleteIndexBuffer(std::shared_ptr<IndexBuffer> ib) noexcept = 0;
 
         virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh) noexcept = 0;
         virtual	std::shared_ptr<RenderMesh>	CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept = 0;
-        virtual void DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept = 0;
 
         virtual void LoadShaders() noexcept = 0;
         virtual std::shared_ptr<Shader> UseShader(const std::string& shaderName) noexcept = 0;

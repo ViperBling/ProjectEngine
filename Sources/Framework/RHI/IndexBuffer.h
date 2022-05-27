@@ -4,12 +4,12 @@
 
 namespace ProjectEngine
 {
-    class GraphicsManager;
 
     class IndexBuffer : public IIndexBuffer
     {
     public:
-        virtual void Initialize(GraphicsManager* gfxManager, void* data, unsigned int count, IndexFormat iFormat) noexcept;
+        virtual void Initialize(void* data, unsigned int count, IndexFormat iFormat) noexcept;
+        virtual void Finalize() noexcept;
 
         unsigned int GetCount() { return mCount; }
         IndexFormat GetIndexBufferFormat() { return mIndexFormat; }

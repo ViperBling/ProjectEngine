@@ -63,7 +63,7 @@ std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::CreateEntity() {
     return entity;
 }
 
-std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::CreateEntity(const xg::Guid &guid) {
+std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::CreateEntity(const boost::uuids::uuid &guid) {
 
     if (mEntities[guid]) return nullptr;
 
@@ -74,13 +74,13 @@ std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::CreateEntity(const 
     return entity;
 }
 
-std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::GetEntity(const xg::Guid &guid) {
+std::shared_ptr<ProjectEngine::Entity> ProjectEngine::World::GetEntity(const boost::uuids::uuid &guid) {
 
     if (!mEntities[guid]) return nullptr;
     return mEntities[guid];
 }
 
-void ProjectEngine::World::DeleteEntity(const xg::Guid &guid) {
+void ProjectEngine::World::DeleteEntity(const boost::uuids::uuid &guid) {
 
     auto entity = mEntities[guid];
     if (entity) {
@@ -154,27 +154,24 @@ void World::DumpEntities() {
         if (meshRender) {
             cout << "MeshRenderComponent: " << endl;
             cout << "MeshIndex: ";
-            for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
+            for (auto i : meshRender->mMeshIdx) {
                 cout << meshRender->mMeshIdx[i] << " ";
             }
-            cout << endl;
-            cout << "Mesh name:";
-            for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
-                auto idx = meshRender->mMeshIdx[i];
-                auto mesh = mMeshRenderSystem->mMeshes[idx];
-            }
+
+            // cout << endl;
+            // cout << "Mesh name:";
+            // for (int i = 0; i < meshRender->mMeshIdx.size(); ++i) {
+            //     auto idx = meshRender->mMeshIdx[i];
+            //     auto mesh = mMeshRenderSystem->mMeshes[idx];
+            // }
             cout << endl;
         }
 
         auto cameraComponent = entity->GetComponent<CameraComponent>();
         if (cameraComponent) {
-            cout << "Camera Type: " << cameraComponent->mCamType << endl;
-            cout << "Position: " << cameraComponent->mPosition.x() << "," <<cameraComponent->mPosition.y() << "," << cameraComponent->mPosition.z() << endl;
-            cout << "Lookat: " << cameraComponent->mLookAt.x() << "," << cameraComponent->mLookAt.y() << "," << cameraComponent->mLookAt.z() << endl;
-            cout << "Up: " << cameraComponent->mUp.x() << "," << cameraComponent->mUp.y() << "," << cameraComponent->mUp.z() << endl;
-            cout << "Near and Far: " << cameraComponent->mNearClip << "," << cameraComponent->mFarClip << endl;
-            cout << "Fov: " << cameraComponent->mFov << endl;
-            cout << cameraComponent->GetViewMatrix();
+            cout << "Camera Type: " << cameraComponent->GetType() << endl;
+
+            cout << cameraComponent->GetViewMatrix() << endl;
             cout << cameraComponent->GetPerspectiveMatrix();
         }
 

@@ -9,8 +9,6 @@ using namespace DirectX;
 
 namespace ProjectEngine
 {
-    class GraphicsManager;
-
     struct ConstantBuffer
     {
         Matrix4f world;
@@ -22,13 +20,12 @@ namespace ProjectEngine
     {
     public:
         virtual bool InitializeFromFile(
-            GraphicsManager* graphicsManager,
             const std::string& vsPath,
             const std::string& psPath) noexcept = 0;
 
-        virtual void Use(GraphicsManager* graphicsManager) noexcept = 0;
+        virtual void Use() noexcept = 0;
 
-        virtual void Finalize(GraphicsManager* graphicsManager) noexcept = 0;
-        virtual void SetConstantBuffer(GraphicsManager* graphicsManager, const ConstantBuffer& cbuffer) noexcept = 0;
+        virtual void Finalize() noexcept = 0;
+        virtual void SetConstantBuffer(const ConstantBuffer& cbuffer) noexcept = 0;
     };
 }

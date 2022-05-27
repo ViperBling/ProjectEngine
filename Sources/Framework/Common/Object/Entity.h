@@ -6,6 +6,10 @@
 #include "Framework/Common/Object/Components/MeshRenderComponent.h"
 #include "Framework/Common/Object/Components/CameraComponent.h"
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include <vector>
 
 namespace ProjectEngine
@@ -20,10 +24,10 @@ namespace ProjectEngine
         void Finalize() noexcept override;
 
         Entity();
-        Entity(const xg::Guid& guid);
+        Entity(const boost::uuids::uuid& guid);
         virtual ~Entity();
-        xg::Guid GetGuid() const noexcept;
-        void SetGuid(const xg::Guid& guid) noexcept;
+        boost::uuids::uuid GetGuid() const noexcept;
+        void SetGuid(const boost::uuids::uuid& guid) noexcept;
 
         void AddChild(std::shared_ptr<Entity> child);
         void RemoveChild(std::shared_ptr<Entity> child);
@@ -44,7 +48,7 @@ namespace ProjectEngine
         void RemoveComponent();
 
     protected:
-        xg::Guid mGuid;
+        boost::uuids::uuid mGuid;
         Entity* mParent;
         World* mWorld;
         std::vector<std::shared_ptr<Entity>> mChildren;

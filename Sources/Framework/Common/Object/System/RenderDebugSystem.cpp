@@ -5,7 +5,7 @@
 ProjectEngine::RenderDebugSystem::RenderDebugSystem(ProjectEngine::World *world) :
     mWorld(world)
 {
-    CreateDebugMesh();
+
 }
 
 int ProjectEngine::RenderDebugSystem::Initialize() noexcept {
@@ -24,7 +24,7 @@ void ProjectEngine::RenderDebugSystem::Render() noexcept {
     for (auto & pair : mMeshes) {
         auto mesh = pair.second;
         auto worldMatrix = Matrix4f::Identity();
-        mesh->Render(gfxMgr, mWorld, worldMatrix);
+        mesh->Render(mWorld, worldMatrix);
     }
 }
 
@@ -69,7 +69,6 @@ void ProjectEngine::RenderDebugSystem::DeleteDebugMesh() noexcept {
 
     auto mesh = mMeshes["mesh"];
     if (mesh) {
-        gfxMgr->DeleteRenderMesh(mesh);
         mMeshes.erase("mesh");
     }
 }

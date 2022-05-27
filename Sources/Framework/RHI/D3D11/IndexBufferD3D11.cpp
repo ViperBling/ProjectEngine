@@ -1,20 +1,18 @@
 #include "IndexBufferD3D11.h"
+#include "Framework/Common/Application/Application.h"
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
 
-void IndexBufferD3D11::Initialize(
-    GraphicsManager *gfxManager,
-    void *data, unsigned int count,
-    IndexFormat iFormat) noexcept
-{
 
-    IndexBuffer::Initialize(gfxManager, data, count, iFormat);
+IndexBufferD3D11::IndexBufferD3D11(void *data, unsigned int count, IndexFormat iFormat) {
+
+    IndexBuffer::Initialize(data, count, iFormat);
 
     HRESULT hr;
 
-    auto gfxD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+    auto gfxD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
     D3D11_BUFFER_DESC idxBufferDesc;
     D3D11_SUBRESOURCE_DATA idxData;
 
@@ -33,6 +31,23 @@ void IndexBufferD3D11::Initialize(
 
     hr = gfxD3D11->GetDevice()->CreateBuffer(
         &idxBufferDesc, &idxData, &mIndexBuffer
-        );
+    );
     if (FAILED(hr)) PROJECTENGINE_ASSERT(false);
+}
+
+IndexBufferD3D11::~IndexBufferD3D11() {
+
+    if (mIndexBuffer) {
+        mIndexBuffer->Release();
+    }
+}
+
+
+void IndexBufferD3D11::Initialize(void *data, unsigned int count, IndexFormat iFormat) noexcept{
+
+}
+
+
+void IndexBufferD3D11::Finalize() noexcept {
+
 }

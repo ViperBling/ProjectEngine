@@ -19,16 +19,37 @@ namespace ProjectEngine
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
 
-        Matrix4f	GetViewMatrix();
-        Matrix4f	GetPerspectiveMatrix();
+        const Matrix4f&	GetViewMatrix();
+        const Matrix4f&	GetPerspectiveMatrix();
 
-    public:
+        CameraType GetType() const { return mCamType; }
+        void SetType(CameraType type) { mCamType = type; }
 
+        Vector3f GetPosition() const { return mPosition; }
+        Vector3f GetLookAt() const { return mLookAt; }
+        Vector3f GetUp() const { return mUp; }
+        void SetPosition(const Vector3f& position) { mPosition = position; mViewDirty = true; }
+        void SetLookAt(const Vector3f& lookAt) { mLookAt = lookAt; mViewDirty = true; }
+        void SetUp(const Vector3f& up) { mUp = up; mViewDirty = true; }
+
+        float GetNearClip() const { return mNearClip; }
+        float GetFarClip() const { return mFarClip; }
+        float GetFov() const { return mFov; }
+        void SetNearClip(float n) { mNearClip = n; mProjectionDirty = true; }
+        void SetFarClip(float f) { mFarClip= f; mProjectionDirty = true; }
+        void SetFov(float fov) { mFov = fov; mProjectionDirty = true; }
+
+    private:
+        CameraType mCamType;
+
+        bool mViewDirty;
+        Matrix4f mViewMatrix;
         Vector3f mPosition;
         Vector3f mLookAt;
         Vector3f mUp;
 
-        CameraType mCamType;
+        bool mProjectionDirty;
+        Matrix4f mProjectionMatrix;
         float mNearClip;
         float mFarClip;
         float mFov;

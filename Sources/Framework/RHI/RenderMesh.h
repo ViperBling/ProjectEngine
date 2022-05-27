@@ -13,7 +13,6 @@
 
 namespace ProjectEngine
 {
-    class GraphicsManager;
 
     class RenderMesh : public IMesh
     {
@@ -21,10 +20,10 @@ namespace ProjectEngine
         RenderMesh();
         virtual ~RenderMesh();
 
-        virtual void Initialize(GraphicsManager* gfxManager, aiMesh* mesh) noexcept;
-        virtual void Initialize(GraphicsManager* gfxManager, std::shared_ptr<VertexBuffer> vb) noexcept;
-        virtual void Render(GraphicsManager* gfxManager, World* world, const Matrix4f& worldMatrix) noexcept;
+        virtual void Initialize(std::shared_ptr<VertexBuffer> vb) noexcept;
+        virtual void Render(World* world, const Matrix4f& worldMatrix) noexcept;
         virtual int GetValidVertexBufferCount() noexcept;
+        virtual void Finalize() noexcept;
 
     public:
         std::shared_ptr<VertexBuffer>    mPositions;
@@ -32,5 +31,6 @@ namespace ProjectEngine
         std::shared_ptr<VertexBuffer>    mTexCoords;
         std::shared_ptr<IndexBuffer>     mIndexes;
         PrimitiveType                    mType;
+        std::string                      mMeshName;
     };
 }

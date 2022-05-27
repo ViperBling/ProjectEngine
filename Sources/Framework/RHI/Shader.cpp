@@ -2,23 +2,20 @@
 
 using namespace ProjectEngine;
 
-bool Shader::InitializeFromFile(
-    GraphicsManager *gfxManager,
-    const std::string &vsPath,
-    const std::string &psPath) noexcept
+bool Shader::InitializeFromFile(const std::string &vsPath, const std::string &psPath) noexcept
 {
     return true;
 }
 
-void Shader::Use(ProjectEngine::GraphicsManager *gfxManager) noexcept {
+void Shader::Use() noexcept {
 
 }
 
-void Shader::Finalize(GraphicsManager *gfxManager) noexcept {
+void Shader::Finalize() noexcept {
 
 }
 
-void Shader::SetConstantBuffer(GraphicsManager *gfxManager, const ConstantBuffer &cbuffer) noexcept {
+void Shader::SetConstantBuffer(const ConstantBuffer &cbuffer) noexcept {
 
 }
 

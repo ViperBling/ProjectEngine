@@ -7,7 +7,9 @@
 #include "Framework/Common/Object/System/CameraSystem.h"
 #include "Framework/Common/Object/System/RenderDebugSystem.h"
 
-#include "Guid.hpp"
+#include <boost/functional/hash.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 #include <memory>
 #include <unordered_map>
@@ -30,9 +32,9 @@ namespace ProjectEngine
         World(Application* app);
 
         std::shared_ptr<ProjectEngine::Entity> CreateEntity();
-        std::shared_ptr<ProjectEngine::Entity> CreateEntity(const xg::Guid& guid);
-        std::shared_ptr<ProjectEngine::Entity> GetEntity(const xg::Guid& guid);
-        void DeleteEntity(const xg::Guid& guid);
+        std::shared_ptr<ProjectEngine::Entity> CreateEntity(const boost::uuids::uuid& guid);
+        std::shared_ptr<ProjectEngine::Entity> GetEntity(const boost::uuids::uuid& guid);
+        void DeleteEntity(const boost::uuids::uuid& guid);
         size_t GetEntityCount();
 
         void LoadScene(const std::string& scenePath);
@@ -40,12 +42,13 @@ namespace ProjectEngine
 
         MeshRenderSystem* GetMeshRenderSystem() { return mMeshRenderSystem; }
         CameraSystem* GetCameraSystem() { return mCameraSystem; }
+        RenderDebugSystem* GetRenderDebugSystem() { return mRenderDebugSystem; }
 
     public:
         Application* mApp;
 
     private:
-        std::unordered_map<xg::Guid, std::shared_ptr<ProjectEngine::Entity>> mEntities;
+        std::unordered_map<boost::uuids::uuid, std::shared_ptr<Entity>, boost::hash<boost::uuids::uuid>> mEntities;
 
         MeshRenderSystem* mMeshRenderSystem;
         CameraSystem* mCameraSystem;

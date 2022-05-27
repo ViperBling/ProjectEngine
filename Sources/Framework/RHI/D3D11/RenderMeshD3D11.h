@@ -9,9 +9,14 @@ namespace ProjectEngine
     class RenderMeshD3D11 : public RenderMesh
     {
     public:
-        virtual void Initialize(GraphicsManager* gfxManager, aiMesh* mesh) noexcept;
-        virtual void Initialize(GraphicsManager* gfxManager, std::shared_ptr<VertexBuffer> vb) noexcept;
-        virtual void Render(GraphicsManager* gfxManager, World* world, const Matrix4f& worldMatrix) noexcept;
+        RenderMeshD3D11(aiMesh* mesh);
+        RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb);
+        virtual ~RenderMeshD3D11();
+
+        virtual void Initialize(aiMesh* mesh) noexcept;
+        virtual void Initialize(std::shared_ptr<VertexBuffer> vb) noexcept;
+        virtual void Render(World* world, const Matrix4f& worldMatrix) noexcept;
+        virtual void Finalize() noexcept;
 
     private:
         std::vector<unsigned int>  stride;

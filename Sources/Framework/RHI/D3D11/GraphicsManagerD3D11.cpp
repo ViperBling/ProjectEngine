@@ -85,9 +85,7 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     delete[] displayModeList;
     displayModeList = nullptr;
 
-    SAFE_RELEASE_DXOBJ(adapterOutput);
-    SAFE_RELEASE_DXOBJ(adapter);
-    SAFE_RELEASE_DXOBJ(factory);
+
 
     // 初始化swapChain
     ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
@@ -237,6 +235,10 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
 
     LoadShaders();
 
+    SAFE_RELEASE_DXOBJ(adapterOutput);
+    SAFE_RELEASE_DXOBJ(adapter);
+    SAFE_RELEASE_DXOBJ(factory);
+
     return 0;
 }
 
@@ -275,84 +277,43 @@ void ProjectEngine::GraphicsManagerD3D11::ClearRenderTarget(float r, float g, fl
 
 std::shared_ptr<VertexBuffer> ProjectEngine::GraphicsManagerD3D11::CreateVertexBuffer(void *data, unsigned int count, ProjectEngine::VertexFormat vf) noexcept
 {
-    auto ptr = std::make_shared<VertexBufferD3D11>();
-
-    ptr->Initialize(this, data, count, vf);
+    auto ptr = std::make_shared<VertexBufferD3D11>(data, count, vf);
 
     return ptr;
 }
 
-void ProjectEngine::GraphicsManagerD3D11::DeleteVertexBuffer(std::shared_ptr<VertexBuffer> vb) noexcept {
-
-    auto ptr = std::static_pointer_cast<VertexBufferD3D11>(vb);
-    if (ptr->mVertexBuffer) {
-        ptr->mVertexBuffer->Release();
-    }
-    ptr->mVertexBuffer = nullptr;
-}
 
 
 std::shared_ptr<IndexBuffer> GraphicsManagerD3D11::CreateIndexBuffer(void *data, unsigned int count, IndexFormat iFormat) noexcept {
 
-    auto ptr = std::make_shared<IndexBufferD3D11>();
-
-    ptr->Initialize(this, data, count, iFormat);
+    auto ptr = std::make_shared<IndexBufferD3D11>(data, count, iFormat);
 
     return ptr;
 }
 
-void GraphicsManagerD3D11::DeleteIndexBuffer(std::shared_ptr<IndexBuffer> ib) noexcept {
-
-    auto ptr = std::static_pointer_cast<IndexBufferD3D11>(ib);
-
-    if (ptr->GetIndexBuffer()) {
-        ptr->ReleaseBuffer();
-    }
-}
 
 std::shared_ptr<RenderMesh> ProjectEngine::GraphicsManagerD3D11::CreateRenderMesh(aiMesh *mesh) noexcept {
 
-    auto ptr = std::make_shared<RenderMeshD3D11>();
-    ptr->Initialize(this, mesh);
+    auto ptr = std::make_shared<RenderMeshD3D11>(mesh);
 
     return ptr;
 }
 
 std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept {
 
-    auto ptr = std::make_shared<RenderMeshD3D11>();
-    ptr->Initialize(this, vb);
+    auto ptr = std::make_shared<RenderMeshD3D11>(vb);
 
     return ptr;
 }
 
-void ProjectEngine::GraphicsManagerD3D11::DeleteRenderMesh(std::shared_ptr<RenderMesh> mesh) noexcept {
-
-    if (mesh->mPositions) {
-        DeleteVertexBuffer(mesh->mPositions);
-        mesh->mPositions = nullptr;
-    }
-    if (mesh->mNormals) {
-        DeleteVertexBuffer(mesh->mNormals);
-        mesh->mNormals = nullptr;
-    }
-    if (mesh->mTexCoords) {
-        DeleteVertexBuffer(mesh->mTexCoords);
-        mesh->mTexCoords = nullptr;
-    }
-    if (mesh->mIndexes) {
-        DeleteIndexBuffer(mesh->mIndexes);
-        mesh->mIndexes = nullptr;
-    }
-}
 
 void GraphicsManagerD3D11::LoadShaders() noexcept {
 
     std::string debugShaderVS = "Asset/Shaders/debug_vs.hlsl";
     std::string debugShaderPS = "Asset/Shaders/debug_ps.hlsl";
 
-    auto debugShader = std::make_shared<ShaderD3D11>();
-    debugShader->InitializeFromFile(this, debugShaderVS, debugShaderPS);
+    auto debugShader = std::make_shared<ShaderD3D11>(debugShaderVS, debugShaderPS);
+
     mShaders["debug"] = debugShader;
 }
 
@@ -362,7 +323,7 @@ std::shared_ptr<Shader> GraphicsManagerD3D11::UseShader(const std::string &shade
     if (!shader) {
         PROJECTENGINE_ASSERT(false);
     }
-    shader->Use(this);
+    shader->Use();
     return shader;
 }
 

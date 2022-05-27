@@ -11,8 +11,11 @@ namespace ProjectEngine
     class IndexBufferD3D11 : public IndexBuffer
     {
     public:
+        IndexBufferD3D11(void* data, unsigned int count, IndexFormat iFormat);
+        virtual ~IndexBufferD3D11();
 
-        virtual void Initialize(GraphicsManager* gfxManager, void* data, unsigned int count, IndexFormat iFormat) noexcept;
+        virtual void Initialize(void* data, unsigned int count, IndexFormat iFormat) noexcept;
+        virtual void Finalize() noexcept;
 
         ID3D11Buffer* GetIndexBuffer() { return mIndexBuffer; }
         void ReleaseBuffer() { mIndexBuffer->Release(); mIndexBuffer = nullptr; }

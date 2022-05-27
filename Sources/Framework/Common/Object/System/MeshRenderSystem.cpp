@@ -18,9 +18,7 @@ int ProjectEngine::MeshRenderSystem::Initialize() noexcept {
 
 void ProjectEngine::MeshRenderSystem::Finalize() noexcept {
 
-    for (auto mesh : mMeshes) {
-        mGraphicsManager->DeleteRenderMesh(mesh);
-    }
+    mMeshes.clear();
 }
 
 void ProjectEngine::MeshRenderSystem::Tick() noexcept {
@@ -45,21 +43,11 @@ void ProjectEngine::MeshRenderSystem::Render() {
         if (comp->IsVisible()) {
 
             auto transform = comp->GetMaster()->GetComponent<TransformComponent>();
-            auto position = transform->GetPosition();
-            auto scale = transform->GetScale();
-            auto rotation = transform->GetRotation();
-            auto translation = BuildTranslationMatrix(position);
-            auto scaling = BuildScaleMatrix(scale);
-            auto rx = BuildRotationMatrix(Vector3f(1, 0, 0), rotation.x());
-            auto ry = BuildRotationMatrix(Vector3f(0, 1, 0), rotation.y());
-            auto rz = BuildRotationMatrix(Vector3f(0, 0, 1), rotation.z());
-
-            auto worldMatrix = translation * rz * ry * rx * scaling; // make sure translation matrix go first.
 
             for (auto mId : comp->mMeshIdx) {
                 auto mesh = mMeshes[mId];
                 if (mesh) {
-                    mesh->Render(mGraphicsManager, mWorld, worldMatrix);
+                    mesh->Render(mWorld, transform->GetWorldMatrix());
                 }
             }
         }

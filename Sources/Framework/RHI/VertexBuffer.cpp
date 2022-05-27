@@ -1,17 +1,15 @@
 #include "VertexBuffer.h"
 
-void ProjectEngine::VertexBuffer::Initialize(
-    ProjectEngine::GraphicsManager *graphicsManager,
-    void* data,
-    unsigned int count,
-    ProjectEngine::VertexFormat vf) noexcept
-{
+using namespace ProjectEngine;
+
+void VertexBuffer::Initialize(void *data, unsigned int count, VertexFormat vf) noexcept {
+
     mCount = count;
     mVertexFormat = vf;
 }
 
 
-unsigned int ProjectEngine::VertexBuffer::GetVertexSize(VertexFormat vf) noexcept
+unsigned int VertexBuffer::GetVertexSize(VertexFormat vf) noexcept
 {
     if (vf == VertexFormat::VF_P3F || vf == VertexFormat::VF_N3F) {
         return sizeof(float) * 3;
@@ -25,4 +23,8 @@ unsigned int ProjectEngine::VertexBuffer::GetVertexSize(VertexFormat vf) noexcep
     else {
         return 0;
     }
+}
+
+void ProjectEngine::VertexBuffer::Finalize() noexcept {
+
 }

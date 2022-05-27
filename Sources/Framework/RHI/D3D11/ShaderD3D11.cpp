@@ -2,18 +2,19 @@
 #include <iostream>
 
 #include "ShaderD3D11.h"
+#include "Framework/Common/Application/Application.h"
 #include "Framework/RHI/GraphicsManager.h"
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
 #include "Platform/Assert.h"
 
-
 using namespace ProjectEngine;
 
-bool ShaderD3D11::InitializeFromFile(
-    GraphicsManager *gfxManager,
-    const std::string &vsPath, const std::string &psPath) noexcept
-{
-    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+
+ShaderD3D11::ShaderD3D11(const std::string &vsPath, const std::string &psPath) {
+
+//    InitializeFromFile(vsPath, psPath);
+
+    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
     HRESULT hr;
 
@@ -76,7 +77,7 @@ bool ShaderD3D11::InitializeFromFile(
         (UINT)elementDesc.size(),
         vsBuffer->GetBufferPointer(),
         vsBuffer->GetBufferSize(), &mLayout
-        );
+    );
     if (FAILED(hr)) PROJECTENGINE_ASSERT(false);
 
     D3D11_BUFFER_DESC matrixBufferDesc;
@@ -96,21 +97,10 @@ bool ShaderD3D11::InitializeFromFile(
 
     psBuffer->Release();
     psBuffer = nullptr;
-
-    return true;
 }
 
-void ShaderD3D11::Use(GraphicsManager *gfxManager) noexcept {
-
-    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
-
-    gfxManagerD3D11->GetDeviceContext()->IASetInputLayout(mLayout);
-    gfxManagerD3D11->GetDeviceContext()->VSSetShader(mVertexShader, nullptr, 0);
-    gfxManagerD3D11->GetDeviceContext()->PSSetShader(mPixelShader, nullptr, 0);
-}
-
-void ShaderD3D11::Finalize(GraphicsManager *gfxManager) noexcept {
-
+ShaderD3D11::~ShaderD3D11() {
+//    Finalize();
     if (mMatrixBuffer) {
         SAFE_RELEASE_DXOBJ(mMatrixBuffer);
     }
@@ -125,9 +115,31 @@ void ShaderD3D11::Finalize(GraphicsManager *gfxManager) noexcept {
     }
 }
 
-void ShaderD3D11::SetConstantBuffer(GraphicsManager *gfxManager, const ConstantBuffer &cbuffer) noexcept {
 
-    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+bool ShaderD3D11::InitializeFromFile(const std::string &vsPath, const std::string &psPath) noexcept
+{
+
+
+    return true;
+}
+
+void ShaderD3D11::Use() noexcept {
+
+    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
+
+    gfxManagerD3D11->GetDeviceContext()->IASetInputLayout(mLayout);
+    gfxManagerD3D11->GetDeviceContext()->VSSetShader(mVertexShader, nullptr, 0);
+    gfxManagerD3D11->GetDeviceContext()->PSSetShader(mPixelShader, nullptr, 0);
+}
+
+void ShaderD3D11::Finalize() noexcept {
+
+
+}
+
+void ShaderD3D11::SetConstantBuffer(const ConstantBuffer &cbuffer) noexcept {
+
+    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
     HRESULT hr;
 
@@ -154,3 +166,4 @@ void ShaderD3D11::SetConstantBuffer(GraphicsManager *gfxManager, const ConstantB
     bufferNumber = 0;
     gfxManagerD3D11->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &mMatrixBuffer);
 }
+

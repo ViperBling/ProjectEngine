@@ -6,10 +6,12 @@ using namespace ProjectEngine;
 using namespace DirectX;
 
 CameraComponent::CameraComponent() :
+    mCamType(CameraType::Perspective),
+    mViewDirty(true),
     mPosition(Vector3f(100, 100, 200)),
     mLookAt(Vector3f(0, 100, 0)),
     mUp(Vector3f(0, 1, 0)),
-    mCamType(CameraType::Perspective),
+    mProjectionDirty(true),
     mNearClip(0.01f),
     mFarClip(1000.0f),
     mFov(PI / 3)
@@ -26,20 +28,29 @@ void CameraComponent::Finalize() noexcept {
 
 }
 
-Matrix4f CameraComponent::GetViewMatrix() {
+const Matrix4f& CameraComponent::GetViewMatrix() {
 
-    return BuildViewLookatLH(mPosition, mLookAt, mUp);
+    if (mViewDirty) {
+        mViewMatrix = BuildViewLookatLH(mPosition, mLookAt, mUp);
+        mViewDirty = false;
+    }
+    return mViewMatrix;
 }
 
-Matrix4f CameraComponent::GetPerspectiveMatrix() {
+const Matrix4f& CameraComponent::GetPerspectiveMatrix() {
 
     float width = 1280.0f;
     float height = 720.0f;
 
-    if (mCamType == CameraType::Orth) {
-        return BuildOrthoLH(width, height, mNearClip, mFarClip);
+    if (mProjectionDirty) {
+        if (mCamType == CameraType::Orth) {
+            mProjectionMatrix = BuildOrthoLH(width, height, mNearClip, mFarClip);
+        }
+        else {
+            mProjectionMatrix = BuildPerspectiveFovLH(mFov, width / height, mNearClip, mFarClip);
+        }
+//        mProjectionDirty = false;
     }
-    else {
-        return BuildPerspectiveFovLH(mFov, width / height, mNearClip, mFarClip);
-    }
+
+    return mProjectionMatrix;
 }

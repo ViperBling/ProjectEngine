@@ -1,11 +1,13 @@
 #include "IndexBuffer.h"
 
+using namespace ProjectEngine;
 
-void ProjectEngine::IndexBuffer::Initialize(
-    ProjectEngine::GraphicsManager *gfxManager,
-    void *data, unsigned int count,
-    ProjectEngine::IndexFormat iFormat) noexcept
+void IndexBuffer::Initialize(void* data, unsigned int count, IndexFormat iFormat) noexcept
 {
     mCount = count;
     mIndexFormat = iFormat;
+}
+
+void IndexBuffer::Finalize() noexcept {
+
 }

@@ -1,4 +1,5 @@
 #include "RenderMeshD3D11.h"
+#include "Framework/Common/Application/Application.h"
 #include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/VertexBufferD3D11.h"
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
@@ -6,20 +7,19 @@
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
-//using namespace DirectX;
 
-void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, aiMesh *mesh) noexcept {
+RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh) {
 
     if (!mesh) return;
 
-    auto gfxMgrD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+    auto gfxMgrD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
     auto count = mesh->mNumVertices;
 
     if (mesh->HasPositions()) {
         mPositions = gfxMgrD3D11->CreateVertexBuffer(
             mesh->mVertices, count, VertexFormat::VF_P3F
-            );
+        );
     }
     if (mesh->HasNormals()) {
         mNormals = gfxMgrD3D11->CreateVertexBuffer(
@@ -37,7 +37,7 @@ void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, aiMesh *mesh) noex
     if (mesh->HasFaces()) {
         unsigned int iCount = 3 * mesh->mNumFaces;
         std::vector<unsigned int> iData(iCount);
-        for (int i = 0; i < mesh->mNumFaces; i++) {
+        for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
             auto face = mesh->mFaces[i];
             iData[i * 3] = face.mIndices[0];
             iData[i * 3 + 1] = face.mIndices[1];
@@ -59,7 +59,7 @@ void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, aiMesh *mesh) noex
         PROJECTENGINE_ASSERT(false);
     }
 
-    vbcount = GetValidVertexBufferCount();
+    vbcount = this->GetValidVertexBufferCount();
     stride.resize(vbcount);
     offset.resize(vbcount);
     vBuffers.resize(vbcount);
@@ -99,13 +99,11 @@ void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, aiMesh *mesh) noex
 
 }
 
-void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, std::shared_ptr<VertexBuffer> vb) noexcept {
-
-//    auto gfxMgrD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
 
     mPositions = vb;
     mType = PrimitiveType::PT_LINE;
-    vbcount = GetValidVertexBufferCount();
+    vbcount = this->GetValidVertexBufferCount();
 
     stride.resize(vbcount);
     offset.resize(vbcount);
@@ -123,11 +121,28 @@ void RenderMeshD3D11::Initialize(GraphicsManager *gfxManager, std::shared_ptr<Ve
 
         idx++;
     }
+
 }
 
-void RenderMeshD3D11::Render(GraphicsManager *gfxManager, World *world, const Matrix4f& worldMatrix) noexcept {
+RenderMeshD3D11::~RenderMeshD3D11() {
 
-    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(gfxManager);
+    mPositions = nullptr;
+    mNormals = nullptr;
+    mTexCoords = nullptr;
+    mIndexes = nullptr;
+}
+
+void RenderMeshD3D11::Initialize(aiMesh *mesh) noexcept {
+
+}
+
+void RenderMeshD3D11::Initialize(std::shared_ptr<VertexBuffer> vb) noexcept {
+
+}
+
+void RenderMeshD3D11::Render(World *world, const Matrix4f& worldMatrix) noexcept {
+
+    auto gfxManagerD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
     gfxManagerD3D11->GetDeviceContext()->IASetVertexBuffers(0, vbcount, vBuffers.data(), stride.data(), offset.data());
 
@@ -154,7 +169,7 @@ void RenderMeshD3D11::Render(GraphicsManager *gfxManager, World *world, const Ma
     cb.world = worldMatrix.transpose();
     cb.view = camera->GetViewMatrix().transpose();
     cb.projection = camera->GetPerspectiveMatrix().transpose();
-    shader->SetConstantBuffer(gfxManagerD3D11, cb);
+    shader->SetConstantBuffer(cb);
 
     if (mIndexes) {
         gfxManagerD3D11->DrawIndexed(mIndexes->GetCount(), 0, 0);
@@ -163,5 +178,12 @@ void RenderMeshD3D11::Render(GraphicsManager *gfxManager, World *world, const Ma
         gfxManagerD3D11->Draw(mPositions->GetCount(), 0);
     }
 }
+
+
+
+void RenderMeshD3D11::Finalize() noexcept {
+
+}
+
 
 

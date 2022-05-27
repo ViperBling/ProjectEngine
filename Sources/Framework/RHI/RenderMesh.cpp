@@ -1,6 +1,5 @@
 #include "RenderMesh.h"
 #include "Framework/Common/Object/World.h"
-#include "Framework/RHI/GraphicsManager.h"
 
 using namespace ProjectEngine;
 
@@ -19,18 +18,14 @@ RenderMesh::~RenderMesh()
 
 }
 
-void RenderMesh::Initialize(GraphicsManager *gfxManager, aiMesh *mesh) noexcept {
 
-}
-
-
-void RenderMesh::Initialize(GraphicsManager *gfxManager, std::shared_ptr<VertexBuffer> vb) noexcept
+void RenderMesh::Initialize(std::shared_ptr<VertexBuffer> vb) noexcept
 {
 
 }
 
 
-void RenderMesh::Render(GraphicsManager *gfxManager, World *world, const Matrix4f& worldMatrix) noexcept
+void RenderMesh::Render(World *world, const Matrix4f& worldMatrix) noexcept
 {
 
 }
@@ -49,5 +44,9 @@ int RenderMesh::GetValidVertexBufferCount() noexcept {
         result++;
     }
     return result;
+}
+
+void RenderMesh::Finalize() noexcept {
+
 }
 
