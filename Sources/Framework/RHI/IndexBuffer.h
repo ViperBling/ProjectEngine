@@ -1,0 +1,21 @@
+#pragma once
+
+#include "Framework/Interface/IResource.h"
+
+namespace ProjectEngine
+{
+    class GraphicsManager;
+
+    class IndexBuffer : public IIndexBuffer
+    {
+    public:
+        virtual void Initialize(GraphicsManager* gfxManager, void* data, unsigned int count, IndexFormat iFormat) noexcept;
+
+        unsigned int GetCount() { return mCount; }
+        IndexFormat GetIndexBufferFormat() { return mIndexFormat; }
+
+    private:
+        unsigned int mCount;
+        IndexFormat mIndexFormat;
+    };
+}

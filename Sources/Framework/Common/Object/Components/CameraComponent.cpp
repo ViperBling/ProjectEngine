@@ -1,13 +1,16 @@
+#include <DirectXMath.h>
+
 #include "CameraComponent.h"
 
 using namespace ProjectEngine;
+using namespace DirectX;
 
 CameraComponent::CameraComponent() :
-    mPosition(Vector3f(0, 100, -100)),
-    mLookAt(Vector3f(0, 0, 0)),
+    mPosition(Vector3f(10, 10, 20)),
+    mLookAt(Vector3f(0, 1, 0)),
     mUp(Vector3f(0, 1, 0)),
     mCamType(CameraType::Perspective),
-    mNearClip(1.0f),
+    mNearClip(0.01f),
     mFarClip(1000.0f),
     mFov(PI / 2)
 {
@@ -25,7 +28,7 @@ void CameraComponent::Finalize() noexcept {
 
 Matrix4f CameraComponent::GetViewMatrix() {
 
-    return BuildViewLookatRH(mPosition, mLookAt, mUp);
+    return BuildViewLookatLH(mPosition, mLookAt, mUp);
 }
 
 Matrix4f CameraComponent::GetPerspectiveMatrix() {
@@ -34,9 +37,9 @@ Matrix4f CameraComponent::GetPerspectiveMatrix() {
     float height = 720.0f;
 
     if (mCamType == CameraType::Orth) {
-        return BuildOrthoRH(width, height, mNearClip, mFarClip);
+        return BuildOrthoLH(width, height, mNearClip, mFarClip);
     }
     else {
-        return BuildPerspectiveFovRH(mFov, width / height, mNearClip, mFarClip);
+        return BuildPerspectiveFovLH(mFov, width / height, mNearClip, mFarClip);
     }
 }

@@ -12,9 +12,10 @@ namespace ProjectEngine
     class MeshRenderComponent : public IComponent
     {
     public:
+        MeshRenderComponent() : mVisible(true) {}
+
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
-        virtual void Render();
 
         void SetVisible(bool visible) { mVisible = visible; }
         bool IsVisible() const { return mVisible; }

@@ -10,6 +10,8 @@ IF(${WIN32})
             ${SourcesPath}/Framework/RHI/D3D11/GraphicsManagerD3D11.cpp
             ${SourcesPath}/Framework/RHI/D3D11/VertexBufferD3D11.cpp
             ${SourcesPath}/Framework/RHI/D3D11/ShaderD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/IndexBufferD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/RenderMeshD3D11.cpp
             )
 ELSEIF(${UNIX})
     IF(${APPLE})
@@ -38,6 +40,7 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/RHI/RenderMesh.cpp
         ${SourcesPath}/Framework/RHI/VertexBuffer.cpp
         ${SourcesPath}/Framework/RHI/Shader.cpp
+        ${SourcesPath}/Framework/RHI/IndexBuffer.cpp
 
         ${PlatformOnlySources}
         )

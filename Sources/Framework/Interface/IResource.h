@@ -1,10 +1,14 @@
 #pragma once
 
 #include "Framework/Interface/IModule.h"
+#include "Framework/Common/Math/MathLib.h"
+#include "assimp/scene.h"
 
 namespace ProjectEngine
 {
     class GraphicsManager;
+    class World;
+
     class IRenderResource{};
 
     enum VertexFormat
@@ -24,8 +28,36 @@ namespace ProjectEngine
             GraphicsManager* graphicsManager,
             void* data, unsigned int count, VertexFormat vf) noexcept = 0;
 
-        virtual size_t GetVertexSize(VertexFormat vf) noexcept = 0;
+        virtual unsigned int GetVertexSize(VertexFormat vf) noexcept = 0;
     };
 
-    class IMesh : public IRenderResource{};
+    enum IndexFormat
+    {
+        IF_None = 0,
+        IF_UINT16,
+        IF_UINT32,
+    };
+
+    class IIndexBuffer : public IRenderResource
+    {
+    public:
+        virtual void Initialize(
+            GraphicsManager* graphicsManager,
+            void* data, unsigned int count, IndexFormat iformat) noexcept = 0;
+    };
+
+    enum PrimitiveType
+    {
+        PT_POINT = 1,
+        PT_LINE,
+        PT_TRIANGLE,
+    };
+
+    class IMesh : public IRenderResource
+    {
+    public:
+        virtual void Initialize(GraphicsManager* graphicsManager, aiMesh* mesh) noexcept = 0;
+        virtual void Render(GraphicsManager* graphicsManager, World* world, const Matrix4f& worldMatrix) noexcept = 0;
+        virtual int	 GetValidVertexBufferCount() noexcept = 0;
+    };
 }

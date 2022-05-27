@@ -1,10 +1,10 @@
 struct PSIn
 {
     float4 position : SV_POSITION;
-    float4 color : COLOR;
+    float4 color : Color;
 };
 
 float4 MainPS(PSIn psi) : SV_TARGET
 {
-    return psi.color;
+    return float4(frac(psi.color.x), frac(psi.color.y), frac(psi.color.z), 1.0);
 }

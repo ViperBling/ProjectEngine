@@ -14,7 +14,10 @@ namespace ProjectEngine
             void* data,
             unsigned int count, VertexFormat vf) noexcept;
 
-        virtual size_t GetVertexSize(VertexFormat vf) noexcept;
+        virtual unsigned int GetVertexSize(VertexFormat vf) noexcept;
+
+        unsigned int GetCount() { return mCount; }
+        VertexFormat GetVertexFormat() { return mVertexFormat; }
 
     private:
         unsigned int mCount;

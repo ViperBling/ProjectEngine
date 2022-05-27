@@ -1,6 +1,7 @@
 #include "World.h"
 #include "Platform/Assert.h"
 
+#include "Framework/Common/Application/Application.h"
 #include "Framework/Common/Object/Components/MeshRenderComponent.h"
 #include "Framework/Common/Object/Components/CameraComponent.h"
 
@@ -21,6 +22,9 @@ int ProjectEngine::World::Initialize() noexcept {
     mCameraSystem = new CameraSystem(this);
     mCameraSystem->Initialize();
 
+    mRenderDebugSystem = new RenderDebugSystem(this);
+    mRenderDebugSystem->Initialize();
+
     return 0;
 }
 
@@ -37,7 +41,11 @@ void ProjectEngine::World::Tick() noexcept {
 }
 
 void ProjectEngine::World::Render() noexcept {
+
+    mApp->mGraphicsManager->ClearRenderTarget(0.2f, 0.2f, 0.2f, 1.0f);
     mMeshRenderSystem->Render();
+    mRenderDebugSystem->Render();
+    mApp->mGraphicsManager->Present();
 }
 
 ProjectEngine::World::World(Application* app) :

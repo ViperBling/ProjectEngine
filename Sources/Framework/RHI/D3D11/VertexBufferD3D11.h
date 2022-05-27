@@ -12,7 +12,7 @@ namespace ProjectEngine
     {
     public:
         virtual void Initialize(
-            GraphicsManager* graphicsManager,
+            GraphicsManager* gfxManager,
             void* data,
             unsigned int count, VertexFormat vf) noexcept;
 

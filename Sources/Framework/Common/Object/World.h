@@ -5,6 +5,8 @@
 
 #include "Framework/Common/Object/System/MeshRenderSystem.h"
 #include "Framework/Common/Object/System/CameraSystem.h"
+#include "Framework/Common/Object/System/RenderDebugSystem.h"
+
 #include "Guid.hpp"
 
 #include <memory>
@@ -37,6 +39,7 @@ namespace ProjectEngine
         void DumpEntities();
 
         MeshRenderSystem* GetMeshRenderSystem() { return mMeshRenderSystem; }
+        CameraSystem* GetCameraSystem() { return mCameraSystem; }
 
     public:
         Application* mApp;
@@ -46,5 +49,6 @@ namespace ProjectEngine
 
         MeshRenderSystem* mMeshRenderSystem;
         CameraSystem* mCameraSystem;
+        RenderDebugSystem* mRenderDebugSystem;
     };
 }

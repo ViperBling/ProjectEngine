@@ -2,13 +2,16 @@
 
 #include "GraphicsManagerD3D11.h"
 #include "Framework/RHI/D3D11/VertexBufferD3D11.h"
+#include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/ShaderD3D11.h"
+#include "Framework/RHI/D3D11/RenderMeshD3D11.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
 
 
 int ProjectEngine::GraphicsManagerD3D11::Initialize() noexcept {
+
     PROJECTENGINE_ASSERT(false);
     return 0;
 }
@@ -37,7 +40,7 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
     D3D11_RASTERIZER_DESC rasterDesc;
     D3D11_VIEWPORT viewport;
-    // float fieldOfView, screenAspect;
+     float fieldOfView, screenAspect;
 
     // 使用工厂模式创建adapter
     hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -288,28 +291,38 @@ void ProjectEngine::GraphicsManagerD3D11::DeleteVertexBuffer(std::shared_ptr<Ver
     ptr->mVertexBuffer = nullptr;
 }
 
+
+std::shared_ptr<IndexBuffer> GraphicsManagerD3D11::CreateIndexBuffer(void *data, unsigned int count, IndexFormat iFormat) noexcept {
+
+    auto ptr = std::make_shared<IndexBufferD3D11>();
+
+    ptr->Initialize(this, data, count, iFormat);
+
+    return ptr;
+}
+
+void GraphicsManagerD3D11::DeleteIndexBuffer(std::shared_ptr<IndexBuffer> ib) noexcept {
+
+    auto ptr = std::static_pointer_cast<IndexBufferD3D11>(ib);
+
+    if (ptr->GetIndexBuffer()) {
+        ptr->ReleaseBuffer();
+    }
+}
+
 std::shared_ptr<RenderMesh> ProjectEngine::GraphicsManagerD3D11::CreateRenderMesh(aiMesh *mesh) noexcept {
 
-    auto ptr = std::make_shared<RenderMesh>();
-    auto count = mesh->mNumVertices;
+    auto ptr = std::make_shared<RenderMeshD3D11>();
+    ptr->Initialize(this, mesh);
 
-    if (mesh->HasPositions()) {
-        ptr->mPositions = CreateVertexBuffer(mesh->mVertices, count, VertexFormat::VF_P3F);
-    }
+    return ptr;
+}
 
-    if (mesh->HasNormals()) {
-        ptr->mNormals = CreateVertexBuffer(mesh->mNormals, count, VertexFormat::VF_N3F);
-    }
+std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept {
 
-    if (mesh->HasTextureCoords(0)) {
-        float *texCoords = (float*)malloc(sizeof(float) * 2 * mesh->mNumVertices);
-        for (unsigned int k = 0; k < mesh->mNumVertices; ++k) {
-            texCoords[k * 2] = mesh->mTextureCoords[0][k].x;
-            texCoords[k * 2 + 1] = mesh->mTextureCoords[0][k].y;
-        }
-        ptr->mTexCoords = CreateVertexBuffer(texCoords, count, VertexFormat::VF_T2F);
-        delete texCoords;
-    }
+    auto ptr = std::make_shared<RenderMeshD3D11>();
+    ptr->Initialize(this, vb);
+
     return ptr;
 }
 
@@ -327,6 +340,10 @@ void ProjectEngine::GraphicsManagerD3D11::DeleteRenderMesh(std::shared_ptr<Rende
         DeleteVertexBuffer(mesh->mTexCoords);
         mesh->mTexCoords = nullptr;
     }
+    if (mesh->mIndexes) {
+        DeleteIndexBuffer(mesh->mIndexes);
+        mesh->mIndexes = nullptr;
+    }
 }
 
 void GraphicsManagerD3D11::LoadShaders() noexcept {
@@ -336,10 +353,31 @@ void GraphicsManagerD3D11::LoadShaders() noexcept {
 
     auto debugShader = std::make_shared<ShaderD3D11>();
     debugShader->InitializeFromFile(this, debugShaderVS, debugShaderPS);
+    mShaders["debug"] = debugShader;
 }
 
-void GraphicsManagerD3D11::UseShader(const std::string &shaderName) noexcept {
+std::shared_ptr<Shader> GraphicsManagerD3D11::UseShader(const std::string &shaderName) noexcept {
 
+    auto shader = mShaders[shaderName];
+    if (!shader) {
+        PROJECTENGINE_ASSERT(false);
+    }
+    shader->Use(this);
+    return shader;
 }
+
+void GraphicsManagerD3D11::Draw(unsigned int vcount, unsigned int start) noexcept {
+
+    m_deviceContext->Draw(vcount, start);
+}
+
+void GraphicsManagerD3D11::DrawIndexed(unsigned int icount, unsigned int start, int baseLoc) noexcept {
+    m_deviceContext->DrawIndexed(icount, start, baseLoc);
+}
+
+
+
+
+
 
 

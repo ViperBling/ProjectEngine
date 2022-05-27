@@ -27,7 +27,3 @@ void ProjectEngine::MeshRenderComponent::Finalize() noexcept {
         }
     }
 }
-
-void ProjectEngine::MeshRenderComponent::Render() {
-
-}
