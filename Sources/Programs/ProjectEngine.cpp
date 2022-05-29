@@ -28,7 +28,7 @@ int main()
     cout << "EngineBuildType: " << BUILD_TYPE << endl;
 
 #if defined(PROJECTENGINE_WINDOWS)
-
+//    GApp->SetSize(1280, 720);
     CHECK_APPLICATION_INIT(GApp->Initialize());
     GApp->mWorld->LoadScene("Asset/Scene/Rosalia.fbx");
     GApp->mWorld->DumpEntities();

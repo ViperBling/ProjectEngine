@@ -34,6 +34,11 @@ bool Application::IsQuit() noexcept {
     return mQuit;
 }
 
+void Application::SetSize(int w, int h) noexcept {
+    width = w;
+    height = h;
+}
+
 void Application::Quit() noexcept {
     mQuit = true;
 }

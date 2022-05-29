@@ -1,9 +1,12 @@
 #pragma once
 
 #include "IApplication.h"
-#include "Framework/Common/Memory/MemoryManager.h"
+#include "Framework/Common/IO/Keyboard.h"
+#include "Framework/Common/IO/Mouse.h"
 #include "Framework/RHI/GraphicsManager.h"
 #include "Framework/Common/Object/World.h"
+#include "Framework/Common/Time/TimeManager.h"
+#include "Framework/Common/Memory/MemoryManager.h"
 
 namespace ProjectEngine
 {
@@ -18,11 +21,17 @@ namespace ProjectEngine
         virtual void Quit() noexcept;
         virtual bool IsQuit() noexcept;
 
-    public:
-        MemoryManager* mMemoryManager;
-        GraphicsManager* mGraphicsManager;
+        void SetSize(int width, int height) noexcept;
 
-        World* mWorld;
+    public:
+        MemoryManager* mMemoryManager{};
+        GraphicsManager* mGraphicsManager{};
+        TimeManager* mTimeManager{};
+        World* mWorld{};
+
+    protected:
+        int width{1280};
+        int height{720};
 
     private:
         bool mQuit = false;

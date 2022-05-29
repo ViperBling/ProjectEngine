@@ -2,6 +2,8 @@
 
 #include <Windows.h>
 #include "Application.h"
+#include "Framework/Common/IO/Keyboard.h"
+#include "Framework/Common/IO/Mouse.h"
 #include "Singleton.h"
 
 namespace ProjectEngine
@@ -16,15 +18,24 @@ namespace ProjectEngine
 
         HWND GetWindowsHandler() noexcept;
 
+        WindowsApplication() {}
+
     protected:
-        static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+        // static LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+        static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+        static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+        LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+
 
     private:
-        WindowsApplication() = default;
         void CreateMainWindow();
 
+    public:
+        KeyboardManager* mKbdManager;
+        MouseManager* mMouseManager;
+
     private:
-        HWND mHWND;
+        HWND mHWND{};
 
         friend class Singleton<WindowsApplication>;
     };

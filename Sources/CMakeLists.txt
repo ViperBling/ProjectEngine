@@ -25,6 +25,9 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/Common/Memory/MemoryManager.cpp
         ${SourcesPath}/Framework/Common/Application/Application.cpp
 
+        ${SourcesPath}/Framework/Common/IO/Keyboard.cpp
+        ${SourcesPath}/Framework/Common/IO/Mouse.cpp
+
         ${SourcesPath}/Framework/Common/Object/Entity.cpp
         ${SourcesPath}/Framework/Common/Object/World.cpp
 
@@ -35,6 +38,8 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/Common/Object/System/MeshRenderSystem.cpp
         ${SourcesPath}/Framework/Common/Object/System/CameraSystem.cpp
         ${SourcesPath}/Framework/Common/Object/System/RenderDebugSystem.cpp
+
+        ${SourcesPath}/Framework/Common/Time/TimeManager.cpp
 
         ${SourcesPath}/Framework/RHI/RenderObject.cpp
         ${SourcesPath}/Framework/RHI/RenderMesh.cpp
