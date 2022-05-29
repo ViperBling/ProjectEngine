@@ -7,6 +7,9 @@ int Application::Initialize() noexcept {
     mMemoryManager = nullptr;
     mGraphicsManager = nullptr;
     mWorld = nullptr;
+    mKbdManager = nullptr;
+    mMouseManager = nullptr;
+
     return 0;
 }
 

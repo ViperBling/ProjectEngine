@@ -2,8 +2,7 @@
 
 #include <Windows.h>
 #include "Application.h"
-#include "Framework/Common/IO/Keyboard.h"
-#include "Framework/Common/IO/Mouse.h"
+
 #include "Singleton.h"
 
 namespace ProjectEngine
@@ -26,13 +25,8 @@ namespace ProjectEngine
         static LRESULT CALLBACK HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
         LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 
-
     private:
         void CreateMainWindow();
-
-    public:
-        KeyboardManager* mKbdManager;
-        MouseManager* mMouseManager;
 
     private:
         HWND mHWND{};

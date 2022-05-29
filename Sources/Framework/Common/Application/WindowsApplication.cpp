@@ -134,8 +134,6 @@ LRESULT WindowsApplication::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
     WindowsApplication* pThis;
     pThis = reinterpret_cast<WindowsApplication*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 
-    static std::string title;
-
     switch (msg)
     {
         case WM_CREATE:
@@ -162,8 +160,6 @@ LRESULT WindowsApplication::HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
         {
             if (!(lParam & 0x40000000) || mKbdManager->AutoRepeatIsEnabled()) {
                 mKbdManager->OnKeyPressed(static_cast<unsigned char>(wParam));
-                title.push_back((char)wParam);
-                SetWindowText(hWnd, title.c_str());
             }
             break;
         }

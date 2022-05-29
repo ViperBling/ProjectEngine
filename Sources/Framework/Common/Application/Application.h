@@ -29,6 +29,9 @@ namespace ProjectEngine
         TimeManager* mTimeManager{};
         World* mWorld{};
 
+        KeyboardManager* mKbdManager{};
+        MouseManager* mMouseManager{};
+
     protected:
         int width{1280};
         int height{720};
