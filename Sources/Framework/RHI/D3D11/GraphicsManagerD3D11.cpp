@@ -41,7 +41,6 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
     D3D11_RASTERIZER_DESC rasterDesc;
     D3D11_VIEWPORT viewport;
-    // float fieldOfView, screenAspect;
 
     // 使用工厂模式创建adapter
     hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);
@@ -317,15 +316,19 @@ void GraphicsManagerD3D11::LoadShaders() noexcept {
     mShaders["debug"] = debugShader;
 }
 
-std::shared_ptr<Shader> GraphicsManagerD3D11::UseShader(const std::string &shaderName) noexcept {
+void GraphicsManagerD3D11::UseShader(std::shared_ptr<Shader> shader) noexcept {
 
-    auto shader = mShaders[shaderName];
     if (!shader) {
         PROJECTENGINE_ASSERT(false);
     }
     shader->Use();
-    return shader;
 }
+
+std::shared_ptr<Shader> GraphicsManagerD3D11::GetShader(const std::string& shaderName) noexcept {
+
+    return mShaders[shaderName];
+}
+
 
 void GraphicsManagerD3D11::Draw(unsigned int vcount, unsigned int start) noexcept {
 
@@ -335,6 +338,7 @@ void GraphicsManagerD3D11::Draw(unsigned int vcount, unsigned int start) noexcep
 void GraphicsManagerD3D11::DrawIndexed(unsigned int icount, unsigned int start, int baseLoc) noexcept {
     m_deviceContext->DrawIndexed(icount, start, baseLoc);
 }
+
 
 
 

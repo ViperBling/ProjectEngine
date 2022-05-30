@@ -44,7 +44,7 @@ void ProjectEngine::World::Render() noexcept {
 
     mApp->mGraphicsManager->ClearRenderTarget(0.2f, 0.2f, 0.2f, 1.0f);
     mMeshRenderSystem->Render();
-//    mRenderDebugSystem->Render();
+    mRenderDebugSystem->Render();
     mApp->mGraphicsManager->Present();
 }
 
@@ -113,8 +113,8 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
     // build camera
     auto camera = CreateEntity();
     camera->AddComponent<CameraComponent>();
-    camera->GetComponent<CameraComponent>()->SetViewWidth(mApp->width);
-    camera->GetComponent<CameraComponent>()->SetViewHeight(mApp->height);
+    camera->GetComponent<CameraComponent>()->SetViewWidth((float)mApp->width);
+    camera->GetComponent<CameraComponent>()->SetViewHeight((float)mApp->height);
     mCameraSystem->SetMainCamera(camera);
 
     for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i) {

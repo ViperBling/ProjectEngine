@@ -97,9 +97,14 @@ RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh) {
         idx++;
     }
 
+    mMaterial = std::make_shared<Material>();
+    auto shader = gfxMgrD3D11->GetShader("debug");
+    mMaterial->SetShader(shader);
 }
 
 RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
+
+    auto gfxMgrD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
     mPositions = vb;
     mType = PrimitiveType::PT_LINE;
@@ -122,6 +127,9 @@ RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
         idx++;
     }
 
+    mMaterial = std::make_shared<Material>();
+    auto shader = gfxMgrD3D11->GetShader("debug");
+    mMaterial->SetShader(shader);
 }
 
 RenderMeshD3D11::~RenderMeshD3D11() {
@@ -162,7 +170,9 @@ void RenderMeshD3D11::Render(World *world, const Matrix4f& worldMatrix) noexcept
         gfxManagerD3D11->GetDeviceContext()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-    auto shader = gfxManagerD3D11->UseShader("debug");
+    auto shader = mMaterial->GetShader();
+    shader->Use();
+
     auto camera = world->GetCameraSystem()->GetMainCamera()->GetComponent<CameraComponent>();
 
     ConstantBuffer cb;

@@ -46,6 +46,7 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/RHI/VertexBuffer.cpp
         ${SourcesPath}/Framework/RHI/Shader.cpp
         ${SourcesPath}/Framework/RHI/IndexBuffer.cpp
+        ${SourcesPath}/Framework/RHI/Material.cpp
 
         ${PlatformOnlySources}
         )

@@ -15,9 +15,9 @@ add_executable(TestGMemoryManager TestGMemoryManager.cpp)
 target_link_libraries(TestGMemoryManager ProjectEngineLib)
 add_test(NAME TestGMemoryManager COMMAND TestGMemoryManager)
 
-add_executable(TestObjects TestObjects.cpp)
-target_link_libraries(TestObjects ProjectEngineLib)
-add_test(NAME TestObjects COMMAND TestObjects)
+#add_executable(TestObjects TestObjects.cpp)
+#target_link_libraries(TestObjects ProjectEngineLib)
+#add_test(NAME TestObjects COMMAND TestObjects)
 
 add_executable(TestAssimp TestAssimp.cpp)
 target_link_libraries(TestAssimp ${ASSIMP_LIBRARY} ${IRRXML_LIBRARY} ${ZLIB_LIBRARY})

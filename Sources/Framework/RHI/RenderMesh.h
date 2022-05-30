@@ -6,6 +6,7 @@
 #include "Framework/Interface/IResource.h"
 #include "Framework/RHI/VertexBuffer.h"
 #include "Framework/RHI/IndexBuffer.h"
+#include "Framework/RHI/Material.h"
 
 #include <memory>
 
@@ -32,5 +33,6 @@ namespace ProjectEngine
         std::shared_ptr<IndexBuffer>     mIndexes;
         PrimitiveType                    mType;
         std::string                      mMeshName;
+        std::shared_ptr<Material>        mMaterial;
     };
 }
