@@ -1,11 +1,14 @@
 #include <iostream>
 
 #include "TimeManager.h"
+#include "Framework/Common/Utils/Logging.h"
 
 using namespace ProjectEngine;
 
 
 int ProjectEngine::TimeManager::Initialize() noexcept {
+
+    PROJECTENGINE_LOG(info) << "Time Manager Initialize OK.";
 
     mbFirstUpdate = true;
     mStartTime = mLastStatisticTime = std::chrono::high_resolution_clock::now();

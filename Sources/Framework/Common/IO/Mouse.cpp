@@ -1,9 +1,12 @@
 #include "Mouse.h"
+#include "Framework/Common/Utils/Logging.h"
 
 using namespace ProjectEngine;
 
 
 int MouseManager::Initialize() noexcept {
+
+    PROJECTENGINE_LOG(info) << "Mouse Manager Initialize OK.";
     return 0;
 }
 

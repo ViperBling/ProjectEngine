@@ -6,6 +6,7 @@
 #include "EngineConfig.h"
 
 #include "Application/WindowsApplication.h"
+#include "Framework/Common/Utils/Logging.h"
 
 using namespace std;
 using namespace ProjectEngine;
@@ -20,12 +21,10 @@ namespace ProjectEngine
 
 int main()
 {
-    cout << "EngineVersion: " << Engine_Version_Major <<
-    "."  << Engine_Version_Minor << endl;
-
-    cout << "EngineArch: " << PROJECTENGINE_ARCH << endl;
-    cout << "EngineTargetPlatform: " << PROJECTENGINE_PLATFORM << endl;
-    cout << "EngineBuildType: " << BUILD_TYPE << endl;
+    PROJECTENGINE_LOG(info) << "EngineVersion: " << Engine_Version_Major << "."  << Engine_Version_Minor;
+    PROJECTENGINE_LOG(info) << "EngineArch: " << PROJECTENGINE_ARCH;
+    PROJECTENGINE_LOG(info) << "EngineTargetPlatform: " << PROJECTENGINE_PLATFORM;
+    PROJECTENGINE_LOG(info) << "EngineBuildType: " << BUILD_TYPE;
 
 #if defined(PROJECTENGINE_WINDOWS)
 //    GApp->SetSize(1280, 720);

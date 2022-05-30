@@ -1,9 +1,11 @@
 #include "Keyboard.h"
+#include "Framework/Common/Utils/Logging.h"
 
 using namespace ProjectEngine;
 
 int KeyboardManager::Initialize() noexcept {
 
+    PROJECTENGINE_LOG(info) << "Keyboard Manager Initialize OK.";
     return 0;
 }
 

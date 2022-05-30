@@ -5,6 +5,7 @@
 #include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/ShaderD3D11.h"
 #include "Framework/RHI/D3D11/RenderMeshD3D11.h"
+#include "Framework/Common/Utils/Logging.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
@@ -79,12 +80,11 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
 
     error = wcstombs_s(&stringLength, m_videoCardDescription, 128, adapterDesc.Description, 128);
     PROJECTENGINE_ASSERT(error == 0);
-    std::cout << "Video card: " << m_videoCardDescription << std::endl;
-    std::cout << "Video card memory: " << m_videoCardMemory << std::endl;
+    PROJECTENGINE_LOG(info) << "Video card: " << m_videoCardDescription;
+    PROJECTENGINE_LOG(info) << "Video card memory: " << m_videoCardMemory;
 
     delete[] displayModeList;
     displayModeList = nullptr;
-
 
 
     // 初始化swapChain

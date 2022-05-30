@@ -2,7 +2,7 @@
 
 #include "Allocator.h"
 #include "Framework/Interface/IModule.h"
-#include "Framework/Common/Singleton.h"
+#include "Framework/Common/Utils/Singleton.h"
 
 namespace ProjectEngine
 {

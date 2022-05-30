@@ -2,7 +2,7 @@
 
 #include "Framework/RHI/GraphicsManager.h"
 #include "Framework/Common/Math/MathLib.h"
-#include "Framework/Common/Singleton.h"
+#include "Framework/Common/Utils/Singleton.h"
 
 #include <d3d11.h>
 #include <Windows.h>
