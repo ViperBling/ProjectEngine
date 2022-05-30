@@ -3,7 +3,6 @@ cbuffer MatrixBuffer
     matrix worldMatrix;
     matrix viewMatrix;
     matrix projectionMatrix;
-    float4 debugColor;
 };
 
 struct PSIn
@@ -14,5 +13,6 @@ struct PSIn
 
 float4 MainPS(PSIn psi) : SV_TARGET
 {
-    return debugColor;
+    return float4(frac(psi.color.x), frac(psi.color.y), frac(psi.color.z), 1.0);
+    // return float4(psi.color.xyz, 1.0f);
 }

@@ -3,7 +3,6 @@ cbuffer MatrixBuffer
     matrix worldMatrix;
     matrix viewMatrix;
     matrix projectionMatrix;
-    float4 debugColor;
 };
 
 struct VSIn
@@ -25,5 +24,6 @@ VSOut MainVS(VSIn vsi)
     vso.position = mul(vso.position, viewMatrix);
     vso.position = mul(vso.position, projectionMatrix);
     vso.color = float4(vsi.position, 1.0);
+    
     return vso;
 }

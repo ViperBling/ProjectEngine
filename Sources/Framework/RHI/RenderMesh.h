@@ -25,6 +25,7 @@ namespace ProjectEngine
         virtual void Render(World* world, const Matrix4f& worldMatrix) noexcept;
         virtual int GetValidVertexBufferCount() noexcept;
         virtual void Finalize() noexcept;
+        virtual std::shared_ptr<Material> GetMaterial() noexcept;
 
     public:
         std::shared_ptr<VertexBuffer>    mPositions;

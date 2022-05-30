@@ -50,3 +50,8 @@ void RenderMesh::Finalize() noexcept {
 
 }
 
+std::shared_ptr<Material> RenderMesh::GetMaterial() noexcept {
+
+    return mMaterial;
+}
+

@@ -4,18 +4,12 @@
 #include <DirectXMath.h>
 
 #include "Framework/Common/Math/MathLib.h"
+#include "Framework/Interface/IResource.h"
 
 using namespace DirectX;
 
 namespace ProjectEngine
 {
-    struct ConstantBuffer
-    {
-        Matrix4f world;
-        Matrix4f view;
-        Matrix4f projection;
-    };
-
     class IShader
     {
     public:

@@ -22,6 +22,9 @@ namespace ProjectEngine
         void CreateDebugMesh() noexcept;
         void DeleteDebugMesh() noexcept;
 
+        void CreateDebugAxis() noexcept;
+        void DeleteDebugAxis() noexcept;
+
     private:
         World* mWorld;
         std::unordered_map<std::string, std::shared_ptr<RenderMesh>> mMeshes;

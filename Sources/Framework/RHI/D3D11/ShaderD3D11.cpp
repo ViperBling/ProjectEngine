@@ -159,11 +159,13 @@ void ShaderD3D11::SetConstantBuffer(const ConstantBuffer &cbuffer) noexcept {
     dataPtr->world = cbuffer.world;
     dataPtr->view = cbuffer.view;
     dataPtr->projection = cbuffer.projection;
+    dataPtr->debugColor = cbuffer.debugColor;
 
     // Unlock the constant buffer.
     gfxManagerD3D11->GetDeviceContext()->Unmap(mMatrixBuffer, 0);
     // Set the position of the constant buffer in the vertex shader.
     bufferNumber = 0;
     gfxManagerD3D11->GetDeviceContext()->VSSetConstantBuffers(bufferNumber, 1, &mMatrixBuffer);
+    gfxManagerD3D11->GetDeviceContext()->PSSetConstantBuffers(bufferNumber, 1, &mMatrixBuffer);
 }
 

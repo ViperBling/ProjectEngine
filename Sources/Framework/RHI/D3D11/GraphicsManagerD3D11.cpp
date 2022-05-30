@@ -308,12 +308,17 @@ std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::sha
 
 void GraphicsManagerD3D11::LoadShaders() noexcept {
 
+    std::string pbrVS = "Asset/Shaders/pbr_vs.hlsl";
+    std::string pbrPS = "Asset/Shaders/pbr_ps.hlsl";
+
     std::string debugShaderVS = "Asset/Shaders/debug_vs.hlsl";
     std::string debugShaderPS = "Asset/Shaders/debug_ps.hlsl";
 
     auto debugShader = std::make_shared<ShaderD3D11>(debugShaderVS, debugShaderPS);
+    auto pbrShader = std::make_shared<ShaderD3D11>(pbrVS, pbrPS);
 
     mShaders["debug"] = debugShader;
+    mShaders["pbr"] = pbrShader;
 }
 
 void GraphicsManagerD3D11::UseShader(std::shared_ptr<Shader> shader) noexcept {

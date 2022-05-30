@@ -50,6 +50,14 @@ namespace ProjectEngine
         PT_TRIANGLE,
     };
 
+    struct ConstantBuffer
+    {
+        Matrix4f world;
+        Matrix4f view;
+        Matrix4f projection;
+        Vector4f debugColor;
+    };
+
     class IMesh : public IRenderResource
     {
     public:

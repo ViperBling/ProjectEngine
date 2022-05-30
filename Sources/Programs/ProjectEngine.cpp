@@ -32,6 +32,7 @@ int main()
     GApp->mWorld->LoadScene("Asset/Scene/Rosalia.fbx");
     GApp->mWorld->DumpEntities();
     GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
+    GApp->mWorld->GetRenderDebugSystem()->CreateDebugAxis();
 
     GApp->Run();
     GApp->Finalize();

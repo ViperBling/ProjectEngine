@@ -98,7 +98,7 @@ RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh) {
     }
 
     mMaterial = std::make_shared<Material>();
-    auto shader = gfxMgrD3D11->GetShader("debug");
+    auto shader = gfxMgrD3D11->GetShader("pbr");
     mMaterial->SetShader(shader);
 }
 
@@ -170,16 +170,13 @@ void RenderMeshD3D11::Render(World *world, const Matrix4f& worldMatrix) noexcept
         gfxManagerD3D11->GetDeviceContext()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     }
 
-    auto shader = mMaterial->GetShader();
-    shader->Use();
-
     auto camera = world->GetCameraSystem()->GetMainCamera()->GetComponent<CameraComponent>();
 
     ConstantBuffer cb;
     cb.world = worldMatrix.transpose();
     cb.view = camera->GetViewMatrix().transpose();
     cb.projection = camera->GetPerspectiveMatrix().transpose();
-    shader->SetConstantBuffer(cb);
+    mMaterial->Apply(cb);
 
     if (mIndexes) {
         gfxManagerD3D11->DrawIndexed(mIndexes->GetCount(), 0, 0);
