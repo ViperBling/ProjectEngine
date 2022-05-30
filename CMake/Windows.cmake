@@ -15,12 +15,14 @@ else( CMAKE_BUILD_TYPE STREQUAL "Debug" )
     include_directories("${PROJECT_SOURCE_DIR}/External/CrossGuid/Windows/Debug_x64/include")
 
     find_library(ASSIMP_LIBRARY assimp-vc141-mtd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
-    find_library(IRRXML_LIBRARY IrrXML PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
-    find_library(ZLIB_LIBRARY zlibstatic PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
+    find_library(IRRXML_LIBRARY IrrXMLd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
+    find_library(ZLIB_LIBRARY zlibstaticd PATHS ${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/lib)
     include_directories("${PROJECT_SOURCE_DIR}/External/Assimp/Windows/Debug_x64/include")
     include_directories("${PROJECT_SOURCE_DIR}/External/Boost/include")
 
     include_directories("${PROJECT_SOURCE_DIR}/External/Imgui")
+
+link_directories("${PROJECT_SOURCE_DIR}/External/Boost/libs")
 
 endif( CMAKE_BUILD_TYPE STREQUAL "Release")
 

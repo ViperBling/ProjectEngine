@@ -40,7 +40,7 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     D3D11_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc;
     D3D11_RASTERIZER_DESC rasterDesc;
     D3D11_VIEWPORT viewport;
-     float fieldOfView, screenAspect;
+    // float fieldOfView, screenAspect;
 
     // 使用工厂模式创建adapter
     hr = CreateDXGIFactory(__uuidof(IDXGIFactory), (void**)&factory);

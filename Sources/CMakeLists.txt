@@ -39,7 +39,7 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/Common/Object/System/CameraSystem.cpp
         ${SourcesPath}/Framework/Common/Object/System/RenderDebugSystem.cpp
 
-        ${SourcesPath}/Framework/Common/Time/TimeManager.cpp
+        ${SourcesPath}/Framework/Common/Utils/TimeManager.cpp
 
         ${SourcesPath}/Framework/RHI/RenderObject.cpp
         ${SourcesPath}/Framework/RHI/RenderMesh.cpp

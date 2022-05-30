@@ -37,10 +37,10 @@ void ProjectEngine::RenderDebugSystem::CreateDebugMesh() noexcept {
 
     int p = 0;
     for (int x = -10; x <= 10; ++x) {
-        data[p * 6] = x;
+        data[p * 6] = (float)x;
         data[p * 6 + 1] = 0;
         data[p * 6 + 2] = -10;
-        data[p * 6 + 3] = x;
+        data[p * 6 + 3] = (float)x;
         data[p * 6 + 4] = 0;
         data[p * 6 + 5] = 10;
         p += 1;
@@ -48,10 +48,10 @@ void ProjectEngine::RenderDebugSystem::CreateDebugMesh() noexcept {
     for (int z = -10; z <= 10; ++z) {
         data[p * 6] = -10;
         data[p * 6 + 1] = 0;
-        data[p * 6 + 2] = z;
+        data[p * 6 + 2] = (float)z;
         data[p * 6 + 3] = 10;
         data[p * 6 + 4] = 0;
-        data[p * 6 + 5] = z;
+        data[p * 6 + 5] = (float)z;
         p += 1;
     }
 
