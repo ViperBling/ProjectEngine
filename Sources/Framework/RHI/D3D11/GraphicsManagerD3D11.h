@@ -14,6 +14,8 @@ namespace ProjectEngine
     class GraphicsManagerD3D11 : public GraphicsManager
     {
     public:
+        GraphicsManagerD3D11(int w, int h) : width(w), height(h) {}
+
         virtual int Initialize() noexcept;
         virtual int InitializeWithWindow(HWND hwnd) noexcept;
         virtual void Finalize() noexcept;
@@ -52,5 +54,9 @@ namespace ProjectEngine
         ID3D11DepthStencilState*    m_depthStencilState;
         ID3D11DepthStencilView*     m_depthStencilView;
         ID3D11RasterizerState*      m_rasterState;
+
+    private:
+        int width;
+        int height;
     };
 }

@@ -14,7 +14,9 @@ CameraComponent::CameraComponent() :
     mProjectionDirty(true),
     mNearClip(0.01f),
     mFarClip(1000.0f),
-    mFov(PI / 3)
+    mFov(PI / 3),
+    mWidth(1280),
+    mHeight(720)
 {
 
 }
@@ -39,15 +41,12 @@ const Matrix4f& CameraComponent::GetViewMatrix() {
 
 const Matrix4f& CameraComponent::GetPerspectiveMatrix() {
 
-    float width = 1280.0f;
-    float height = 720.0f;
-
     if (mProjectionDirty) {
         if (mCamType == CameraType::Orth) {
-            mProjectionMatrix = BuildOrthoLH(width, height, mNearClip, mFarClip);
+            mProjectionMatrix = BuildOrthoLH(mWidth, mHeight, mNearClip, mFarClip);
         }
         else {
-            mProjectionMatrix = BuildPerspectiveFovLH(mFov, width / height, mNearClip, mFarClip);
+            mProjectionMatrix = BuildPerspectiveFovLH(mFov, mWidth / mHeight, mNearClip, mFarClip);
         }
 //        mProjectionDirty = false;
     }

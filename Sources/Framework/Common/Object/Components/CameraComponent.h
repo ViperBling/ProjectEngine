@@ -39,6 +39,11 @@ namespace ProjectEngine
         void SetFarClip(float f) { mFarClip= f; mProjectionDirty = true; }
         void SetFov(float fov) { mFov = fov; mProjectionDirty = true; }
 
+        float GetViewWidth() const { return mWidth; }
+        float GetViewHeight() const { return mHeight; }
+        void SetViewWidth(float w) { mWidth = w; }
+        void SetViewHeight(float h) { mHeight = h; }
+
     private:
         CameraType mCamType;
 
@@ -53,5 +58,8 @@ namespace ProjectEngine
         float mNearClip;
         float mFarClip;
         float mFov;
+
+        float mWidth;
+        float mHeight;
     };
 }

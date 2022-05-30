@@ -65,8 +65,8 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     PROJECTENGINE_ASSERT(hr >= 0);
 
     for (i = 0; i < numModes; i++) {
-        if (displayModeList[i].Width == (unsigned int)1280) {
-            if (displayModeList[i].Height == (unsigned int) 720) {
+        if (displayModeList[i].Width == (unsigned int)width) {
+            if (displayModeList[i].Height == (unsigned int)height) {
                 numerator = displayModeList[i].RefreshRate.Numerator;
                 denominator = displayModeList[i].RefreshRate.Denominator;
             }
@@ -93,8 +93,8 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     // 设置1个back buffer
     swapChainDesc.BufferCount = 1;
 
-    swapChainDesc.BufferDesc.Width = 1280;
-    swapChainDesc.BufferDesc.Height = 720;
+    swapChainDesc.BufferDesc.Width = width;
+    swapChainDesc.BufferDesc.Height = height;
 
     swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
@@ -146,8 +146,8 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     // 初始化深度缓冲
     ZeroMemory(&depthBufferDesc, sizeof(depthBufferDesc));
 
-    depthBufferDesc.Width = 1280;
-    depthBufferDesc.Height = 720;
+    depthBufferDesc.Width = width;
+    depthBufferDesc.Height = height;
     depthBufferDesc.MipLevels = 1;
     depthBufferDesc.ArraySize = 1;
     depthBufferDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
@@ -224,8 +224,8 @@ int ProjectEngine::GraphicsManagerD3D11::InitializeWithWindow(HWND hwnd) noexcep
     m_deviceContext->RSSetState(m_rasterState);
 
     // Setup the viewport for rendering.
-    viewport.Width = (float)1280;
-    viewport.Height = (float)720;
+    viewport.Width = (float)width;
+    viewport.Height = (float)height;
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
     viewport.TopLeftX = 0.0f;

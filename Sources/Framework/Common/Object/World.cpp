@@ -113,6 +113,8 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
     // build camera
     auto camera = CreateEntity();
     camera->AddComponent<CameraComponent>();
+    camera->GetComponent<CameraComponent>()->SetViewWidth(mApp->width);
+    camera->GetComponent<CameraComponent>()->SetViewHeight(mApp->height);
     mCameraSystem->SetMainCamera(camera);
 
     for (unsigned int i = 0; i < scene->mRootNode->mNumChildren; ++i) {

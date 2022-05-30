@@ -12,7 +12,7 @@ int ProjectEngine::WindowsApplication::Initialize() noexcept
     mMemoryManager = new MemoryManager();
     mMemoryManager->Initialize();
 
-    mGraphicsManager = new GraphicsManagerD3D11();
+    mGraphicsManager = new GraphicsManagerD3D11(width, height);
     auto mgr = (GraphicsManagerD3D11*)mGraphicsManager;
     mgr->InitializeWithWindow(mHWND);
 
