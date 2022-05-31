@@ -18,7 +18,7 @@ struct PSIn
 
 float4 MainPS(PSIn psi) : SV_TARGET
 {
-    float3 lightDir = normalize(float3(1, -1, -1));
+    float3 lightDir = normalize(float3(1, 1, -1));
     float lightPow = 0.8;
 
     float light = max(dot(lightDir, psi.normal), 0.0) * lightPow;

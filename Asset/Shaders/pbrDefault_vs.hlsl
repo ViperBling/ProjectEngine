@@ -29,7 +29,7 @@ VSOut MainVS(VSIn vsi)
     vso.position = mul(vso.position, projectionMatrix);
 
     float4 worldNormal = mul(float4(vsi.normal, 0.0), worldMatrix);
-    vso.normal = worldNormal.xyz;
+    vso.normal = normalize(worldNormal.xyz);
     vso.uv = vsi.uv;
     
     return vso;
