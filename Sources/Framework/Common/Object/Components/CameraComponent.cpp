@@ -8,8 +8,8 @@ using namespace DirectX;
 CameraComponent::CameraComponent() :
     mCamType(CameraType::Perspective),
     mViewDirty(true),
-    mPosition(Vector3f(100, 100, 200)),
-    mLookAt(Vector3f(0, 100, 0)),
+    mPosition(Vector3f(-10, 10, -20)),
+    mLookAt(Vector3f(0, 1, 0)),
     mUp(Vector3f(0, 1, 0)),
     mProjectionDirty(true),
     mNearClip(0.01f),

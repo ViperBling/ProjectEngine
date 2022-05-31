@@ -22,16 +22,19 @@ std::shared_ptr<Shader> Material::GetShader() {
 
 void Material::Apply(ConstantBuffer cb) noexcept {
 
-    mShader->Use();
-    for (auto pair : mParameters) {
-        if (pair.first == "color") {
-            cb.debugColor = pair.second;
-        }
-    }
-    mShader->SetConstantBuffer(cb);
 }
 
 void Material::SetShaderParameter(std::string&& name, Vector4f&& value) noexcept {
 
     mParameters[name] = value;
+}
+
+void Material::SetTexture(std::string &&name, std::shared_ptr<Texture> tex) noexcept {
+
+    mTexture[name] = tex;
+}
+
+void Material::SetSampler(std::string &&name, std::shared_ptr<SamplerState> sampler) noexcept {
+
+    mSamplerState[name] = sampler;
 }

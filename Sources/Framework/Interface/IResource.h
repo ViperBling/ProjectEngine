@@ -66,4 +66,25 @@ namespace ProjectEngine
         virtual int	 GetValidVertexBufferCount() noexcept = 0;
         virtual void Finalize() noexcept = 0;
     };
+
+    class IMaterial : public IRenderResource
+    {
+    public:
+        virtual void Initialize() noexcept = 0;
+        virtual void Finalize() noexcept = 0;
+    };
+
+    class ITexture : public IRenderResource
+    {
+    public:
+        virtual void Initialize(const std::string&) noexcept = 0;
+        virtual void Finalize() noexcept = 0;
+    };
+
+    class ISamplerState : public IRenderResource
+    {
+    public:
+        virtual void Initialize() noexcept = 0;
+        virtual void Finalize() noexcept = 0;
+    };
 }

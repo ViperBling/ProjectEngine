@@ -5,6 +5,8 @@
 #include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/ShaderD3D11.h"
 #include "Framework/RHI/D3D11/RenderMeshD3D11.h"
+#include "Framework/RHI/D3D11/TextureD3D11.h"
+#include "Framework/RHI/D3D11/SamplerStateD3D11.h"
 #include "Framework/Common/Utils/Logging.h"
 #include "Platform/Assert.h"
 
@@ -291,9 +293,9 @@ std::shared_ptr<IndexBuffer> GraphicsManagerD3D11::CreateIndexBuffer(void *data,
 }
 
 
-std::shared_ptr<RenderMesh> ProjectEngine::GraphicsManagerD3D11::CreateRenderMesh(aiMesh *mesh) noexcept {
+std::shared_ptr<RenderMesh> ProjectEngine::GraphicsManagerD3D11::CreateRenderMesh(aiMesh *mesh, const aiScene* world) noexcept {
 
-    auto ptr = std::make_shared<RenderMeshD3D11>(mesh);
+    auto ptr = std::make_shared<RenderMeshD3D11>(mesh, world);
 
     return ptr;
 }
@@ -305,20 +307,43 @@ std::shared_ptr<RenderMesh> GraphicsManagerD3D11::CreateRenderMeshDebug(std::sha
     return ptr;
 }
 
+std::shared_ptr<Texture> GraphicsManagerD3D11::CreateTexture2D(const std::string &path) noexcept {
+
+    if (mTextures[path]) {
+        return mTextures[path];
+    }
+    auto ptr = std::make_shared<TextureD3D11>(path);
+    mTextures[path] = ptr;
+    return ptr;
+}
+
+std::shared_ptr<SamplerState> GraphicsManagerD3D11::CreateSamplerState() noexcept {
+
+    auto ptr = std::make_shared<SamplerStateD3D11>();
+
+    return ptr;
+}
+
+
 
 void GraphicsManagerD3D11::LoadShaders() noexcept {
 
     std::string pbrVS = "Asset/Shaders/pbr_vs.hlsl";
     std::string pbrPS = "Asset/Shaders/pbr_ps.hlsl";
 
+    std::string pbrDefaultVS = "Asset/Shaders/pbrDefault_vs.hlsl";
+    std::string pbrDefaultPS = "Asset/Shaders/pbrDefault_ps.hlsl";
+
     std::string debugShaderVS = "Asset/Shaders/debug_vs.hlsl";
     std::string debugShaderPS = "Asset/Shaders/debug_ps.hlsl";
 
     auto debugShader = std::make_shared<ShaderD3D11>(debugShaderVS, debugShaderPS);
     auto pbrShader = std::make_shared<ShaderD3D11>(pbrVS, pbrPS);
+    auto pbrDefault = std::make_shared<ShaderD3D11>(pbrDefaultVS, pbrDefaultPS);
 
     mShaders["debug"] = debugShader;
     mShaders["pbr"] = pbrShader;
+    mShaders["pbrDefault"] = pbrDefault;
 }
 
 void GraphicsManagerD3D11::UseShader(std::shared_ptr<Shader> shader) noexcept {
@@ -343,6 +368,7 @@ void GraphicsManagerD3D11::Draw(unsigned int vcount, unsigned int start) noexcep
 void GraphicsManagerD3D11::DrawIndexed(unsigned int icount, unsigned int start, int baseLoc) noexcept {
     m_deviceContext->DrawIndexed(icount, start, baseLoc);
 }
+
 
 
 

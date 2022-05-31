@@ -29,10 +29,10 @@ int main()
 #if defined(PROJECTENGINE_WINDOWS)
     GApp->SetSize(1280, 720);
     CHECK_APPLICATION_INIT(GApp->Initialize());
-    GApp->mWorld->LoadScene("Asset/Scene/Rosalia.fbx");
+    GApp->mWorld->LoadScene("Asset/Scene/aili_cycle.fbx");
     GApp->mWorld->DumpEntities();
     GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
-    GApp->mWorld->GetRenderDebugSystem()->CreateDebugAxis();
+//    GApp->mWorld->GetRenderDebugSystem()->CreateDebugAxis();
 
     GApp->Run();
     GApp->Finalize();

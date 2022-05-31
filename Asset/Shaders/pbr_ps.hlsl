@@ -3,16 +3,29 @@ cbuffer MatrixBuffer
     matrix worldMatrix;
     matrix viewMatrix;
     matrix projectionMatrix;
+    float4 debugColor;
 };
+
+Texture2D tBaseMap;
+SamplerState tBaseSmp;
 
 struct PSIn
 {
     float4 position : SV_POSITION;
-    float4 color : Color;
+    float3 normal : NORMAL;
+    float2 uv : TEXCOORD;
 };
 
 float4 MainPS(PSIn psi) : SV_TARGET
 {
-    return float4(frac(psi.color.x), frac(psi.color.y), frac(psi.color.z), 1.0);
-    // return float4(psi.color.xyz, 1.0f);
+    float3 lightDir = normalize(float3(1, -1, -1));
+    float lightPow = 0.8;
+
+    float light = max(dot(lightDir, psi.normal), 0.0) * lightPow;
+
+    float4 color;
+
+    color = tBaseMap.Sample(tBaseSmp, psi.uv) * light;
+    
+    return color;
 }

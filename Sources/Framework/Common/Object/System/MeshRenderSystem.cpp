@@ -56,9 +56,9 @@ void ProjectEngine::MeshRenderSystem::Render() {
     mGraphicsManager->Present();
 }
 
-void ProjectEngine::MeshRenderSystem::LoadMesh(aiMesh *mesh) {
+void ProjectEngine::MeshRenderSystem::LoadMesh(aiMesh *mesh, const aiScene* world) {
 
-    auto _mesh = mGraphicsManager->CreateRenderMesh(mesh);
+    auto _mesh = mGraphicsManager->CreateRenderMesh(mesh, world);
     mMeshes.emplace_back(_mesh);
 }
 

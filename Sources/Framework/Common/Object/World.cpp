@@ -107,7 +107,7 @@ void ProjectEngine::World::LoadScene(const std::string& scenePath) {
 
     for (unsigned int j = 0; j < scene->mNumMeshes; ++j) {
         auto mesh = scene->mMeshes[j];
-        mMeshRenderSystem->LoadMesh(mesh);
+        mMeshRenderSystem->LoadMesh(mesh, scene);
     }
 
     // build camera
@@ -157,7 +157,7 @@ void World::DumpEntities() {
             cout << "MeshRenderComponent: " << endl;
             cout << "MeshIndex: ";
             for (auto i : meshRender->mMeshIdx) {
-                cout << meshRender->mMeshIdx[i] << " ";
+                cout << i << " ";
             }
 
             // cout << endl;

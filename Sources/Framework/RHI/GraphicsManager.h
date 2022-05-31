@@ -29,8 +29,11 @@ namespace ProjectEngine {
 
         virtual std::shared_ptr<IndexBuffer> CreateIndexBuffer(void* data, unsigned int count, IndexFormat iFormat) noexcept = 0;
 
-        virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh) noexcept = 0;
+        virtual std::shared_ptr<RenderMesh> CreateRenderMesh(aiMesh* mesh, const aiScene* world) noexcept = 0;
         virtual	std::shared_ptr<RenderMesh>	CreateRenderMeshDebug(std::shared_ptr<VertexBuffer> vb) noexcept = 0;
+
+        virtual std::shared_ptr<Texture> CreateTexture2D(const std::string& path) noexcept = 0;
+        virtual std::shared_ptr<SamplerState> CreateSamplerState() noexcept = 0;
 
         virtual void LoadShaders() noexcept = 0;
         virtual void UseShader(std::shared_ptr<Shader>) noexcept = 0;
@@ -42,5 +45,6 @@ namespace ProjectEngine {
     protected:
 
         std::unordered_map<std::string, std::shared_ptr<Shader>> mShaders;
+        std::unordered_map<std::string, std::shared_ptr<Texture>> mTextures;
     };
 }

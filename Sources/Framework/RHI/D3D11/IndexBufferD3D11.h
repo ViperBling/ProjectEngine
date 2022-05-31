@@ -6,8 +6,6 @@
 
 namespace ProjectEngine
 {
-    class GraphicsManager;
-
     class IndexBufferD3D11 : public IndexBuffer
     {
     public:

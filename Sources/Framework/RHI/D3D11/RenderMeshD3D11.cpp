@@ -3,12 +3,13 @@
 #include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/VertexBufferD3D11.h"
 #include "Framework/RHI/D3D11/GraphicsManagerD3D11.h"
+#include "Framework/RHI/D3D11/MaterialD3D11.h"
 #include "Framework/Common/Object/World.h"
 #include "Platform/Assert.h"
 
 using namespace ProjectEngine;
 
-RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh) {
+RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh, const aiScene* world) {
 
     if (!mesh) return;
 
@@ -97,9 +98,32 @@ RenderMeshD3D11::RenderMeshD3D11(aiMesh *mesh) {
         idx++;
     }
 
-    mMaterial = std::make_shared<Material>();
-    auto shader = gfxMgrD3D11->GetShader("pbr");
-    mMaterial->SetShader(shader);
+    auto material = world->mMaterials[mesh->mMaterialIndex];
+    aiString name;
+    aiGetMaterialString(material, AI_MATKEY_NAME, &name);
+
+    mMaterial = std::make_shared<MaterialD3D11>();
+    if (std::string(name.C_Str()) == "skirt_w") {
+        auto shader = gfxMgrD3D11->GetShader("pbr");
+        mMaterial->SetShader(shader);
+        auto tex = gfxMgrD3D11->CreateTexture2D(R"(Asset\Textures\Aili\w.jpg)");
+        auto smp = gfxMgrD3D11->CreateSamplerState();
+        mMaterial->SetSampler("tBaseMap", smp);
+    }
+    else if (std::string(name.C_Str()) == "skirt_b") {
+        auto shader = gfxMgrD3D11->GetShader("pbr");
+        mMaterial->SetShader(shader);
+        auto tex = gfxMgrD3D11->CreateTexture2D(R"(Asset\Textures\Aili\b.jpg)");
+        auto smp = gfxMgrD3D11->CreateSamplerState();
+        mMaterial->SetSampler("tBaseMap", smp);
+    }
+    else {
+        aiColor4D diffuse;
+        aiGetMaterialColor(material, AI_MATKEY_COLOR_DIFFUSE, &diffuse);
+        auto shader = gfxMgrD3D11->GetShader("pbrDefault");
+        mMaterial->SetShader(shader);
+        mMaterial->SetShaderParameter("color", Vector4f(diffuse.r, diffuse.g, diffuse.b, diffuse.a));
+    }
 }
 
 RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
@@ -127,7 +151,7 @@ RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
         idx++;
     }
 
-    mMaterial = std::make_shared<Material>();
+    mMaterial = std::make_shared<MaterialD3D11>();
     auto shader = gfxMgrD3D11->GetShader("debug");
     mMaterial->SetShader(shader);
 }

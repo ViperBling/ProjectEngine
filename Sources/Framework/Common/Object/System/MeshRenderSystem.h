@@ -27,7 +27,7 @@ namespace ProjectEngine
         virtual void DeleteComponent(MeshRenderComponent* meshRenderComp);
         virtual void Render();
 
-        virtual void LoadMesh(aiMesh* mesh);
+        virtual void LoadMesh(aiMesh* mesh, const aiScene* world);
 
     public:
         std::vector<std::shared_ptr<RenderMesh>> mMeshes;

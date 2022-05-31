@@ -9,7 +9,7 @@ namespace ProjectEngine
     class RenderMeshD3D11 : public RenderMesh
     {
     public:
-        RenderMeshD3D11(aiMesh* mesh);
+        RenderMeshD3D11(aiMesh* mesh, const aiScene* world);
         RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb);
         virtual ~RenderMeshD3D11();
 

@@ -8,10 +8,15 @@ IF(${WIN32})
             ${SourcesPath}/Framework/Common/Application/WindowsApplication.cpp
 
             ${SourcesPath}/Framework/RHI/D3D11/GraphicsManagerD3D11.cpp
-            ${SourcesPath}/Framework/RHI/D3D11/VertexBufferD3D11.cpp
-            ${SourcesPath}/Framework/RHI/D3D11/ShaderD3D11.cpp
             ${SourcesPath}/Framework/RHI/D3D11/IndexBufferD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/MaterialD3D11.cpp
             ${SourcesPath}/Framework/RHI/D3D11/RenderMeshD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/SamplerStateD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/ShaderD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/TextureD3D11.cpp
+            ${SourcesPath}/Framework/RHI/D3D11/VertexBufferD3D11.cpp
+
+
             )
 ELSEIF(${UNIX})
     IF(${APPLE})
@@ -47,6 +52,8 @@ add_library(ProjectEngineLib
         ${SourcesPath}/Framework/RHI/Shader.cpp
         ${SourcesPath}/Framework/RHI/IndexBuffer.cpp
         ${SourcesPath}/Framework/RHI/Material.cpp
+        ${SourcesPath}/Framework/RHI/Texture.cpp
+        ${SourcesPath}/Framework/RHI/SamplerState.cpp
 
         ${PlatformOnlySources}
         )
