@@ -28,7 +28,7 @@ void ProjectEngine::TimeManager::Tick() noexcept {
         mFPS = mFrameCount;
         mFrameCount = 0;
         mLastStatisticTime = mFrameStartTime;
-//        std::cout << mFPS << std::endl;
+        // std::cout << mFPS << std::endl;
     }
     else {
         mFrameCount++;
@@ -54,9 +54,9 @@ void ProjectEngine::TimeManager::PostTick() noexcept {
     long long interval = 16666666;
     long long sleep = interval - total.count() - 2000000;
 
-    if (sleep > 0) {
-        MicroSleep(sleep);
-    }
+    // if (sleep > 0) {
+    //     MicroSleep(sleep);
+    // }
 }
 
 void ProjectEngine::TimeManager::MicroSleep(unsigned long long int ns) noexcept {

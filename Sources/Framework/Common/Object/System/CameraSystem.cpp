@@ -1,5 +1,7 @@
 #include "CameraSystem.h"
 
+#include <utility>
+
 using namespace ProjectEngine;
 
 CameraSystem::CameraSystem(World *world) :
@@ -25,5 +27,10 @@ std::shared_ptr<Entity> CameraSystem::GetMainCamera() {
 
 void CameraSystem::SetMainCamera(std::shared_ptr<Entity> camera) {
 
-    mMainCamera = camera;
+    mMainCamera = std::move(camera);
+}
+
+void CameraSystem::Tick() noexcept {
+
+    auto camera = mMainCamera->GetComponent<CameraComponent>();
 }

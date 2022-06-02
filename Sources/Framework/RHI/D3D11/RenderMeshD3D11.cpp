@@ -1,4 +1,6 @@
 #include "RenderMeshD3D11.h"
+
+#include <utility>
 #include "Framework/Common/Application/Application.h"
 #include "Framework/RHI/D3D11/IndexBufferD3D11.h"
 #include "Framework/RHI/D3D11/VertexBufferD3D11.h"
@@ -130,7 +132,7 @@ RenderMeshD3D11::RenderMeshD3D11(std::shared_ptr<VertexBuffer> vb) {
 
     auto gfxMgrD3D11 = dynamic_cast<GraphicsManagerD3D11*>(GApp->mGraphicsManager);
 
-    mPositions = vb;
+    mPositions = std::move(vb);
     mType = PrimitiveType::PT_LINE;
     vbcount = this->GetValidVertexBufferCount();
 

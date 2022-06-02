@@ -37,6 +37,8 @@ void ProjectEngine::World::Finalize() noexcept {
 }
 
 void ProjectEngine::World::Tick() noexcept {
+
+    mCameraSystem->Tick();
     mMeshRenderSystem->Tick();
 }
 
