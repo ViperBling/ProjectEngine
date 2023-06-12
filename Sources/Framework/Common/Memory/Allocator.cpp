@@ -55,11 +55,11 @@ void* ProjectEngine::Allocator::Allocate()
     if (!m_pFreeList)
     {
         // allocate a new page
-        PageHeader* pNewPage = reinterpret_cast<PageHeader*>(new uint8_t[m_szPageSize]);
+        auto pNewPage = reinterpret_cast<PageHeader*>(new uint8_t[m_szPageSize]);
         pNewPage->pNext = nullptr;
         ++m_nPages;
-        m_nBlocks += m_nBlocksPerPage;
-        m_nFreeBlocks += m_nBlocksPerPage;
+        m_nBlocks += static_cast<uint32_t>(m_nBlocksPerPage);
+        m_nFreeBlocks += static_cast<uint32_t>(m_nBlocksPerPage);
 
 #if defined(PROJECTENGINE_DEBUG)
         DebugFillFreePage(pNewPage);

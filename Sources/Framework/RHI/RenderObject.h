@@ -11,7 +11,7 @@ namespace ProjectEngine
     public:
         virtual void Render();
 
-        bool IsVisible() const { return mVisible; }
+        [[nodiscard]] bool IsVisible() const { return mVisible; }
         void SetVisible(bool visible) { mVisible = visible; }
 
         std::string GetName() { return mName; }

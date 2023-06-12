@@ -1,8 +1,5 @@
 ﻿#include "MemoryManager.h"
 
-extern "C" void* malloc(size_t size);
-extern "C" void  free(void* p);
-
 using namespace ProjectEngine;
 
 namespace ProjectEngine
