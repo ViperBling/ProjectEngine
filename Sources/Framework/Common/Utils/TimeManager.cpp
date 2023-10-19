@@ -21,7 +21,7 @@ void ProjectEngine::TimeManager::Finalize() noexcept {
 
 }
 
-void ProjectEngine::TimeManager::Tick() noexcept {
+void ProjectEngine::TimeManager::Tick(float deltaTime) noexcept {
 
     auto duration = mFrameStartTime - mLastStatisticTime;
     if (duration > std::chrono::seconds(1)) {
@@ -43,7 +43,8 @@ void ProjectEngine::TimeManager::PreTick() noexcept {
     }
 
     mFrameStartTime = std::chrono::high_resolution_clock::now();
-    mDeltaTime = mFrameStartTime - mLastUpdateTime;
+    auto deltaTime = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(mFrameStartTime - mLastUpdateTime).count();
+    mDeltaTime = (float)deltaTime / 1000.0f;
     mLastUpdateTime = mFrameStartTime;
 }
 

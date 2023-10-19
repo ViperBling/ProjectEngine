@@ -24,6 +24,6 @@ namespace ProjectEngine
     public:
         virtual int Initialize() noexcept = 0;
         virtual void Finalize() noexcept = 0;
-        virtual void Tick() noexcept = 0;
+        virtual void Tick(float deltaTime) noexcept = 0;
     };
 }

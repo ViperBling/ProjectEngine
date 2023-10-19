@@ -19,7 +19,7 @@ namespace ProjectEngine
         virtual int Initialize() noexcept;
         virtual int InitializeWithWindow(HWND hwnd) noexcept;
         virtual void Finalize() noexcept;
-        virtual void Tick() noexcept;
+        virtual void Tick(float deltaTime) noexcept;
 
         virtual void Present() noexcept;
         virtual void ClearRenderTarget(float r, float g, float b, float a) noexcept;

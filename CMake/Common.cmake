@@ -20,16 +20,16 @@ endif()
 
 MESSAGE( STATUS "TARGET_ARCH: " ${TARGET_ARCH} )
 
-IF (CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "None")
+set(CMAKE_BUILD_TYPE Debug)
+
+if(CMAKE_BUILD_TYPE MATCHES "Debug" OR CMAKE_BUILD_TYPE MATCHES "None")
     set(BuildType Debug)
     add_compile_definitions(PEDEBUG)
 
-ELSEIF (CMAKE_BUILD_TYPE MATCHES "Release")
+elseif(CMAKE_BUILD_TYPE MATCHES "Release")
     set(BuildType Release)
     add_compile_definitions(PERELEASE)
-
-ELSE ()
-ENDIF ()
+endif()
 
 MESSAGE( STATUS "BuildType: " ${BuildType} )
 

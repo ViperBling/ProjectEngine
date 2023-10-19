@@ -11,12 +11,14 @@ namespace ProjectEngine
     public:
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
-        virtual void Tick() noexcept;
+        virtual void Tick(float deltaTime) noexcept;
 
         void PreTick() noexcept;
         void PostTick() noexcept;
 
         void MicroSleep(unsigned long long ns) noexcept;
+
+        float GetDeltaTime()const { return mDeltaTime; }
 
     private:
         bool mbFirstUpdate;
@@ -30,6 +32,6 @@ namespace ProjectEngine
 
         int mFrameCount;
         int mFPS;
-        std::chrono::nanoseconds mDeltaTime;
+        float mDeltaTime;   // seconds
     };
 }

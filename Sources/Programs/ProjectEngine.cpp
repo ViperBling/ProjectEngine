@@ -26,18 +26,18 @@ int main()
     PROJECTENGINE_LOG(info) << "EngineTargetPlatform: " << PROJECTENGINE_PLATFORM;
     PROJECTENGINE_LOG(info) << "EngineBuildType: " << BUILD_TYPE;
 
-#if defined(PROJECTENGINE_WINDOWS)
+// #if defined(PROJECTENGINE_WINDOWS)
     GApp->SetSize(1280, 720);
     CHECK_APPLICATION_INIT(GApp->Initialize());
     GApp->mWorld->LoadScene("Asset/Scene/aili_cycle.fbx");
-    GApp->mWorld->DumpEntities();
-    GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
-//    GApp->mWorld->GetRenderDebugSystem()->CreateDebugAxis();
+    // GApp->mWorld->DumpEntities();
+    // GApp->mWorld->GetRenderDebugSystem()->CreateDebugMesh();
+    // GApp->mWorld->GetRenderDebugSystem()->CreateDebugAxis();
 
     GApp->Run();
     GApp->Finalize();
 
-#endif
+// #endif
 
     return 0;
 }

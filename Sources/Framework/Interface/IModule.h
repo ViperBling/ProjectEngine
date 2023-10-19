@@ -13,6 +13,6 @@ namespace ProjectEngine
 
     class ITickableModule : public IModule
     {
-        virtual void Tick() noexcept = 0;
+        virtual void Tick(float deltaTime) noexcept = 0;
     };
 }

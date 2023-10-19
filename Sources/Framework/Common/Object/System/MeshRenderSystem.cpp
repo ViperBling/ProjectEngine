@@ -21,7 +21,7 @@ void ProjectEngine::MeshRenderSystem::Finalize() noexcept {
     mMeshes.clear();
 }
 
-void ProjectEngine::MeshRenderSystem::Tick() noexcept {
+void ProjectEngine::MeshRenderSystem::Tick(float deltaTime) noexcept {
 
 }
 

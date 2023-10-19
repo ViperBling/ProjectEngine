@@ -30,7 +30,13 @@ void CameraSystem::SetMainCamera(std::shared_ptr<Entity> camera) {
     mMainCamera = std::move(camera);
 }
 
-void CameraSystem::Tick() noexcept {
+void CameraSystem::Tick(float deltaTime) noexcept {
 
     auto camera = mMainCamera->GetComponent<CameraComponent>();
+    camera->Update(deltaTime);
+}
+
+void ProjectEngine::CameraSystem::UpdateCamera(MouseManager* mouseManager, KeyboardManager* keyboardManager, float deltaTime)
+{
+
 }

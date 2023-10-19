@@ -26,7 +26,7 @@ namespace ProjectEngine
     public:
         int Initialize() noexcept override;
         void Finalize() noexcept override;
-        void Tick() noexcept override;
+        void Tick(float deltaTime) noexcept override;
         virtual void Render() noexcept;
 
         World(Application* app);

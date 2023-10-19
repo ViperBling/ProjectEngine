@@ -259,7 +259,7 @@ void ProjectEngine::GraphicsManagerD3D11::Finalize() noexcept {
     SAFE_RELEASE_DXOBJ(m_swapChain);
 }
 
-void ProjectEngine::GraphicsManagerD3D11::Tick() noexcept {
+void ProjectEngine::GraphicsManagerD3D11::Tick(float deltaTime) noexcept {
 
 }
 

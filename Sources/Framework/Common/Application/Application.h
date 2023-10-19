@@ -7,6 +7,7 @@
 #include "Framework/Common/Object/World.h"
 #include "Framework/Common/Utils/TimeManager.h"
 #include "Framework/Common/Memory/MemoryManager.h"
+#include "Framework/Common/Object/System/CameraSystem.h"
 
 namespace ProjectEngine
 {
@@ -31,7 +32,6 @@ namespace ProjectEngine
 
         KeyboardManager* mKbdManager{};
         MouseManager* mMouseManager{};
-
 
         int width{1280};
         int height{720};

@@ -19,6 +19,8 @@ namespace ProjectEngine
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
 
+        void Update(float deltaTime);
+
         const Matrix4f&	GetViewMatrix();
         const Matrix4f&	GetPerspectiveMatrix();
 
@@ -61,5 +63,7 @@ namespace ProjectEngine
 
         float mWidth;
         float mHeight;
+
+        float mMoveSpeed;
     };
 }

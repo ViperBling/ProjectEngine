@@ -36,10 +36,10 @@ void ProjectEngine::World::Finalize() noexcept {
     mCameraSystem->Finalize();
 }
 
-void ProjectEngine::World::Tick() noexcept {
+void ProjectEngine::World::Tick(float deltaTime) noexcept {
 
-    mCameraSystem->Tick();
-    mMeshRenderSystem->Tick();
+    mCameraSystem->Tick(deltaTime);
+    mMeshRenderSystem->Tick(deltaTime);
 }
 
 void ProjectEngine::World::Render() noexcept {

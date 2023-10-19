@@ -45,6 +45,7 @@ void ProjectEngine::WindowsApplication::Finalize() noexcept
 void ProjectEngine::WindowsApplication::Tick() noexcept
 {
     mTimeManager->PreTick();
+    float deltaTime = mTimeManager->GetDeltaTime();
     Application::Tick();
     MSG msg = {};
     if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -52,9 +53,10 @@ void ProjectEngine::WindowsApplication::Tick() noexcept
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+    mWorld->Tick(deltaTime);
+    mWorld->GetCameraSystem()->Tick(deltaTime);
     Render();
-
-    mTimeManager->Tick();
+    mTimeManager->Tick(deltaTime);
     mTimeManager->PostTick();
 }
 
@@ -71,20 +73,20 @@ HWND ProjectEngine::WindowsApplication::GetWindowsHandler() noexcept
 void ProjectEngine::WindowsApplication::CreateMainWindow()
 {
     HINSTANCE hInstance = GetModuleHandle(nullptr);
-    WNDCLASSEX windowClass = {0};
+    WNDCLASSEXA windowClass = {0};
     windowClass.cbSize = sizeof(WNDCLASSEX);
     windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
     windowClass.lpfnWndProc = HandleMsgSetup;
     windowClass.hInstance = hInstance;
     windowClass.hCursor = LoadCursor(nullptr, IDC_ARROW);
     windowClass.lpszClassName = "ProjectEngine";
-    RegisterClassEx(&windowClass);
+    RegisterClassExA(&windowClass);
 
     RECT windowRect = {0, 0, width, height};
     AdjustWindowRect(&windowRect, WS_OVERLAPPEDWINDOW, FALSE);
 
     // Create the window and store a handle to it.
-    mHWND = CreateWindow(
+    mHWND = CreateWindowA(
             windowClass.lpszClassName,
             "ProjectEngine[Windows]",
             WS_OVERLAPPEDWINDOW | WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,

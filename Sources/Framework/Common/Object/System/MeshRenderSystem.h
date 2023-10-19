@@ -20,7 +20,7 @@ namespace ProjectEngine
 
         virtual int Initialize() noexcept;
         virtual void Finalize() noexcept;
-        virtual void Tick() noexcept;
+        virtual void Tick(float deltaTime) noexcept;
 
     public:
         virtual void AddComponent(MeshRenderComponent* meshRenderComp);
